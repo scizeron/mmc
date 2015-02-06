@@ -1,0 +1,25 @@
+<div class="container-fluid">
+ <form class="form-horizontal" role="form" ng-submit="update()">
+  <h1>{{doc.title}}
+   <div class="btn-group" style="float: right;">
+    <button type="submit" class="btn btn-success">Save</button>
+    <button type="button" class="btn btn-cancel" ng-click="reset()">Reset</button>
+    <button type="button" ng-click="gotoView()" type="button" class="btn btn-primary">Back</button>
+   </div>
+  </h1>
+  <tabset>
+	  <tab heading="General">
+	   <div style="padding-top: 15px"></div>
+    <ng-include src="'views/music/p_general.html'"></ng-include>
+	  </tab>
+	  <tab heading="Price">
+    <div style="padding-top: 15px"></div>
+    <ng-include src="'views/music/p_price.html'"></ng-include>
+	  </tab>
+	  <tab heading="Photos">
+	   <div style="padding-top: 15px"></div>
+	   <ng-include src="'views/music/p_photos.html'"></ng-include>
+	  </tab>
+	 </tabset>
+ </form>
+</div>

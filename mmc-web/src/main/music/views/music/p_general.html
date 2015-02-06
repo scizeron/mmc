@@ -1,0 +1,88 @@
+<div class="form-group">
+ <label class="control-label col-md-2" for="title">Title</label>
+ <div class="col-md-8">          
+  <input type="text" class="form-control" id="title" name="title" ng-model="doc.title" placeholder="title">
+ </div>
+</div>
+<div class="form-group">
+ <label class="control-label col-md-2" for="artist">Artist</label>
+ <div class="col-md-8">          
+  <input type="text" class="form-control" id="artist" name="artist" ng-model="doc.artist" placeholder="artist">
+ </div>
+</div>
+<div class="form-group">
+ <label class="control-label col-md-2" for="mainType">Format</label>
+ <div class="col-md-2">
+  <select class="form-control" id="mainType" name="mainType" ng-model="doc.mainType">
+   <option ng-repeat="type in types" ng-selected="type == 'LP'">{{type}}</option>
+  </select>
+ </div>
+ <label class="control-label col-md-1" for="nbType">Nb</label>
+ <div class="col-md-2">          
+  <select class="form-control" id="nbType" name="nbType" ng-model="doc.nbType">
+   <option ng-repeat="nbType in nbTypeRange" ng-selected="nbType == '01'">{{nbType}}</option>
+  </select>
+ </div>
+ <label class="control-label col-md-1" for="promo">Promo</label>
+ <div class="col-md-1 checkbox">
+  <input type="checkbox" id="promo" name="promo" ng-model="doc.promo">
+ </div>
+</div>
+<div class="form-group">
+ <label class="control-label col-md-2" for="issue">Issue</label>
+ <div class="col-md-2">   
+  <select class="form-control" id="issue" name="issue" ng-model="doc.issue">
+   <option></option>
+   <option ng-repeat="year in years">{{year}}</option>
+  </select>   
+ </div>
+ <label class="control-label col-md-1" for="edition">Edition</label>  
+ <div class="col-md-2">          
+  <select class="form-control" id="edition" name="edition" ng-model="doc.edition">
+   <option></option>
+   <option ng-repeat="year in years">{{year}}</option>
+  </select>   
+ </div>     
+</div> 
+<div class="form-group">
+ <label class="control-label col-md-2" for="origin">Origin</label>
+ <div class="col-md-2">          
+  <select class="form-control" id="origin" name="origin" ng-model="doc.origin">
+   <option ng-repeat="country in countries" value="{{country.code}}" ng-selected="country.code == defaultMusicCountry">{{country.name}}</option>
+  </select>
+ </div>
+ <label class="control-label col-md-1" for="obiColor" ng-show="doc.origin == 'JP' && doc.mainType == 'LP'">Obi</label>
+ <div class="col-md-2" ng-show="doc.origin == 'JP' && doc.mainType == 'LP'">          
+  <input id="obiColor" type="color" name="obiColor" class="form-control col-md-1" ng-model="doc.obiColor">   
+  <input id="obiPos" type="text" name="obiPos" class="form-control col-md-1">   
+ </div>  
+</div> 
+<div class="form-group">
+ <label class="control-label col-md-2" for="serialNumber">Serial N&deg</label>
+ <div class="col-md-2">   
+  <input type="text" class="form-control" id="serialNumber" name="serialNumber" ng-model="doc.serialNumber" placeholder="serial number">    
+ </div>
+ <label class="control-label col-md-1" for="pubNum">Pub</label>  
+ <div class="col-md-1">          
+  <input type="text" class="form-control" id="pubNum" name="pubNum" ng-model="doc.pubNum" placeholder="n&deg">          
+ </div>
+ <div class="col-md-1">
+  <input type="text" class="form-control" name="pubTotal" ng-model="doc.pubTotal" placeholder="total"> 
+ </div>
+</div>
+<div class="form-group">
+ <label class="control-label col-md-2" for="recordCompany">Record Company</label>
+ <div class="col-md-2">   
+  <input type="text" class="form-control" id="recordCompany" name="recordCompany" ng-model="doc.recordCompany" placeholder="record company"> 
+ </div>
+ <label class="control-label col-md-1" for="label">Label</label>
+ <div class="col-md-2">
+  <input type="text" class="form-control" id="label" name="label" ng-model="doc.label" placeholder="record label">    
+ </div>
+</div>
+<div class="form-group">
+ <label class="control-label col-md-2" for="comment">Comment</label>
+ <div class="col-md-8">          
+  <textarea type="text" class="form-control" rows="3" id="comment"  name="comment" ng-model="doc.comment"></textarea>
+ </div>
+</div>

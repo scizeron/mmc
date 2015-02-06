@@ -1,0 +1,28 @@
+<div class="container-fluid">
+ <script type="text/ng-template" id="result">
+  <div class="modal-header"></div>
+  <div class="modal-body alert alert-success" ng-show="ok">
+   <strong>{{doc.id}}</strong> successfully created.
+  </div>
+  <div class="modal-body alert alert-warning" ng-show="!ok">
+   <strong>Error! Please retry.</strong>
+  </div>
+  <div class="modal-footer" ng-show="ok">
+   <button class="btn btn-primary" ng-click="newWithValues()">New (with values)</button>
+   <button class="btn btn-success" ng-click="newDoc()">New</button>
+  </div>
+  <div class="modal-footer" ng-show="!ok">
+   <button class="btn btn-primary" ng-click="newWithValues()">OK</button>
+  </div>
+ </script>
+ <form class="form-horizontal" role="form" ng-submit="submit()">
+  <ng-include src="'views/music/p_general.html'"></ng-include>
+  <ng-include src="'views/music/p_price.html'"></ng-include>
+  <div class="form-group">        
+   <div class="col-md-offset-2 col-md-10">
+    <input type="submit" class="btn btn-primary" value="Save"/>
+    <input type="button" class="btn btn-cancel" ng-click="cancel()" value="Cancel"/>
+   </div>
+  </div>
+ </form>
+</div>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mmcApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="music collection">
+  <meta name="author" content="stfciz">
+  <title>My Music Collection</title>
+ 
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/app.css" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.ico">
+</head>
+<body ng-controller="appCtrl">
+<div class="container-fluid">
+ <ng-include src="'views/navbar.html'"></ng-include>
+ <ng-include src="'views/jumbotron.html'" ng-show="app.jumbotron.show"></ng-include>
+ <!-- la vue courante -->
+ <ng-view></ng-view>
+</div>
+<!-- angular.js --> 
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
+<script type="text/javascript" src="https://code.angularjs.org/1.2.16/angular.min.js"></script>
+<script type="text/javascript" src="https://code.angularjs.org/1.2.16/angular-route.min.js"></script>
+<script type="text/javascript" src="https://code.angularjs.org/1.2.16/angular-resource.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.min.js"></script>
+<!-- oauth2 -->
+<script src="js/env.js"></script>
+<script src="js/oauth2/oauth2.js"></script>
+<script src="js/oauth2/utils.js"></script>
+<script src="js/oauth2/oidc/base64-min.js"></script>
+<script src="js/oauth2/oidc/base64x-1.1.min.js"></script>
+<script src="js/oauth2/oidc/core-min.js"></script>
+<script src="js/oauth2/oidc/crypto-1.1.min.js"></script>
+<script src="js/oauth2/oidc/jsbn-min.js"></script>
+<script src="js/oauth2/oidc/jsbn2-min.js"></script>
+<script src="js/oauth2/oidc/json-sans-eval.js"></script>
+<script src="js/oauth2/oidc/jws-2.0.min.js"></script>
+<script src="js/oauth2/oidc/rsa-min.js"></script>
+<script src="js/oauth2/oidc/rsa2-min.js"></script>
+<script src="js/oauth2/oidc/rsasign-1.2.min.js"></script>
+<script src="js/oauth2/oidc/sha256-min.js"></script>
+<script src="js/oauth2/oidc/oidc-1.0.js"></script>
+<!-- modules -->
+<script type="text/javascript" src="js/settings.js"></script>
+<script type="text/javascript" src="js/modules/main.js"></script>
+<!-- services -->
+<script type="text/javascript" src="js/services/utils.js"></script>
+<script type="text/javascript" src="js/services/user.js"></script>
+<script type="text/javascript" src="js/services/music.js"></script>
+<!--  directives -->
+<script type="text/javascript" src="js/directives/htmldiv.js"></script>
+<script type="text/javascript" src="js/directives/upload.js"></script>
+<!-- controllers -->
+<script type="text/javascript" src="js/controllers/app.js"></script>
+<script type="text/javascript" src="js/controllers/home.js"></script>
+<script type="text/javascript" src="js/controllers/music/add.js"></script>
+<script type="text/javascript" src="js/controllers/music/doc.js"></script>
+<script type="text/javascript" src="js/controllers/music/list.js"></script>
+</body>
+</html>

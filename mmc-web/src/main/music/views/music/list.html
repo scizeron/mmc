@@ -1,0 +1,26 @@
+<div class="row">
+ <div class="alert alert-danger alert-dismissible col-md-12" role="alert" ng-show="action.result == 1">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>Error</strong>
+ </div>
+</div>
+<div class="row">
+ <div class="col-md-4">
+  <span class="glyphicon glyphicon-filter"></span>
+  <input type="text" ng-focus="focus=true" ng-model="query" placeholder="Filter"/>
+ </div>
+ <div class="col-md-8">
+  <htmldiv content="navigation"></htmldiv>
+ </div>
+</div>
+<div class="row">
+ <div class="col-md-12">
+  <ul class="docs">
+   <li ng-repeat="doc in searchResult.docs | filter:query" class="thumbnail">
+    <a href="#/music_view/{{doc.id}}" class="thumb"><img ng-src="{{doc.thumbImageUrl}}"/></a>
+    <a href="#/music_view/{{doc.id}}" class="thumb">{{doc.title}}</a>
+    <p>{{doc.artist}}</p>
+   </li> 
+  </ul> 
+ </div>
+</div>
