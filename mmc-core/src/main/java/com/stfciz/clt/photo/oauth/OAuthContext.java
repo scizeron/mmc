@@ -1,0 +1,20 @@
+package com.stfciz.clt.photo.oauth;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import com.flickr4java.flickr.auth.Permission;
+
+@Target(value={ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface OAuthContext {
+
+  /**
+   * 
+   * @return
+   */
+  int value() default Permission.READ_TYPE;
+  
+}
