@@ -8,6 +8,6 @@
  <modules>
   <module>mmc-parent</module>
   <module>mmc-core</module>
-  <module>mmc-api</module>
+  <module>mmc-rest</module>
  </modules> 
 </project>
