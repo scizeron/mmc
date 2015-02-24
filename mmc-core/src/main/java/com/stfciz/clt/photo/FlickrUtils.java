@@ -29,9 +29,9 @@ public final class FlickrUtils {
    * n small, 320 on longest side
    * - moyen, côté le plus long de 500
    * z Moyen 640, côté le plus long de 640
-   * c moyen 800, 800 sur la longueur†
+   * c moyen 800, 800 sur la longueur
    * b grand, côté le plus long de 1 024*
-   * h largeur 1 600, longueur 1 600†
+   * h largeur 1 600, longueur 1 600
    * k largeur 2 048, longueur 2 048†
    * o image d'origine, jpg, gif ou png selon le format source
    * 
