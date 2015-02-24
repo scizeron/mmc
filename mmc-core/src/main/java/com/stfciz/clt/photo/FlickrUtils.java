@@ -30,12 +30,12 @@ public final class FlickrUtils {
    * - moyen, côté le plus long de 500
    * z Moyen 640, côté le plus long de 640
    * c moyen 800, 800 sur la longueur
-   * b grand, côté le plus long de 1 024*
+   * b grand, côté le plus long de 1 024
    * h largeur 1 600, longueur 1 600
-   * k largeur 2 048, longueur 2 048†
+   * k largeur 2 048, longueur 2 048
    * o image d'origine, jpg, gif ou png selon le format source
    * 
-   * † Les photos de taille moyenne de 800, ainsi que celle de largeur 1 600 et 2 048 n'existent que depuis le 1er mars 2012.
+   * Les photos de taille moyenne de 800, ainsi que celle de largeur 1 600 et 2 048 n'existent que depuis le 1er mars 2012.
 
    * ex : 
    * 2014-11-26 09:23:14.716 DEBUG [main] FlickrApiImpl - com.flickr4java.flickr.photos.Photo@633b0e85[
