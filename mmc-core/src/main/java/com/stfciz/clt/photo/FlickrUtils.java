@@ -22,15 +22,15 @@ public final class FlickrUtils {
    * or
    * https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{o-secret}_o.(jpg|gif|png)
    * 
-   * s  petit carré 75x75
+   * s  petit carrÃ© 75x75
    * q large square 150x150
-   * t miniature, côté le plus long de 100
-   * m petit, côté le plus long de 240
+   * t miniature, ccÃ´tÃ© le plus long de 100
+   * m petit, cÃ´tÃ© le plus long de 240
    * n small, 320 on longest side
-   * - moyen, côté le plus long de 500
-   * z Moyen 640, côté le plus long de 640
+   * - moyen, cÃ´tÃ© le plus long de 500
+   * z Moyen 640, cote le plus long de 640
    * c moyen 800, 800 sur la longueur
-   * b grand, côté le plus long de 1 024
+   * b grand, cÃ´tÃ© le plus long de 1 024
    * h largeur 1 600, longueur 1 600
    * k largeur 2 048, longueur 2 048
    * o image d'origine, jpg, gif ou png selon le format source
