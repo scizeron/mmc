@@ -1,0 +1,18 @@
+# SERVER CONFIGURATION
+server: 
+ port: 5678
+
+# MANAGEMENT HTTP SERVER 
+management:
+ port: 5679
+ contextPath: /admin
+ 
+# JMX
+spring:
+ jmx:
+  enabled: true
+
+# ENDPOINTS
+endpoints:
+ shutdown:
+  enabled: false

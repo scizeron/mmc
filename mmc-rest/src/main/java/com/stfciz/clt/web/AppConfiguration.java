@@ -1,8 +1,10 @@
 package com.stfciz.clt.web;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-@ConfigurationProperties(prefix = "app.web")
+@Component
+@ConfigurationProperties(prefix = "web")
 public class AppConfiguration {
 
   private String oauth2VerifyUri;

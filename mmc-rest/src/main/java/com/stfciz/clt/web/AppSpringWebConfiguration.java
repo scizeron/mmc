@@ -12,13 +12,11 @@ import org.springframework.boot.actuate.autoconfigure.TraceWebFilterAutoConfigur
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import com.stfciz.clt.CoreConfiguration;
 import com.stfciz.clt.web.controller.CorsFilter;
 import com.stfciz.clt.web.oauth2.OAuth2Filter;
 
@@ -33,7 +31,6 @@ import com.stfciz.clt.web.oauth2.OAuth2Filter;
   , TraceWebFilterAutoConfiguration.class
   , EndpointMBeanExportAutoConfiguration.class // exports de endpoints
 })
-@EnableConfigurationProperties({CoreConfiguration.class, AppConfiguration.class})
 public class AppSpringWebConfiguration {
   
   private static final String [] FILTER_URL_PATTERNS = {"/*"};
