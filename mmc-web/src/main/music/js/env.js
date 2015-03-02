@@ -4,7 +4,7 @@ var env = {
   {
    id : 'dev.local',
    oauth2: {
-    url: 'http://localhost:11002',
+    url: 'http://localhost:3000/authz',
     client_id : 'test',
     oidc : {
      scopes : 'openid profile',
@@ -13,7 +13,7 @@ var env = {
     }
    },
    api : {
-    url : 'http://localhost:5678' 	   
+    url : 'http://localhost:4000/mmc-api' 	   
    }
   },
   {
