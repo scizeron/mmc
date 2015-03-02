@@ -7,6 +7,7 @@ function($scope, $rootScope, $http, $location, $routeParams, userService, musicS
  $scope.action = { 'result' : -1};
  $scope.fileItems = [];
  
+ $scope.grades = musicService.getGrades();
  $scope.countries = musicService.getCountries();
  $scope.nbTypeRange = musicService.getNbTypeRange();
  $scope.years = musicService.getYears();

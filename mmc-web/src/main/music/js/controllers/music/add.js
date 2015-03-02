@@ -32,7 +32,9 @@ function($scope, $http, $location, musicService, userService, utils, $modal) {
  $scope.$emit('jumbotron.show', false);
   
  $scope.doc = {};
+ 
  $scope.countries = musicService.getCountries();
+ $scope.grades = musicService.getGrades();
  $scope.nbTypeRange = musicService.getNbTypeRange();
  $scope.years = musicService.getYears();
  $scope.defaultMusicCountry = settings.music.defaultCountry;

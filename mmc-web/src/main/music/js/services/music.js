@@ -5,6 +5,7 @@ angular.module('mmcApp')
  var docs = null;
  var selectedPage = -1;
  var countries = null;
+ var grades = null;
  var nbTypeRange = null;
  var years = null;
  
@@ -44,6 +45,16 @@ angular.module('mmcApp')
    countries = response;	 
   });
   return countries;
+ };
+ 
+ function getGrades() {
+  if (grades != null) {
+   return grades;	  
+  }
+  $http.get("assets/grades.json").success(function(response) {
+   grades = response;	 
+  });
+  return grades;
  };
  
  function getDocs(page, reload, onSuccessCallback, onErrorCallack) {
@@ -115,11 +126,11 @@ angular.module('mmcApp')
   var fd = new FormData();
   fd.append('file', image); 
   $http.post(uri + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id')), fd, {
-	  transformRequest: angular.identity,
-	  headers: {
-	   'Content-Type': undefined
-	  ,'Authorization': 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken')
-	  }
+	transformRequest: angular.identity,
+	headers: {
+	  'Content-Type': undefined
+	 ,'Authorization': 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken')
+	 }
    }).success(function(status) {
 	onSuccessCallback();
    }).error(function(status) {
@@ -134,6 +145,7 @@ angular.module('mmcApp')
   addDoc: addDoc,
   updateDoc: updateDoc,
   getCountries : getCountries,
+  getGrades : getGrades,
   getNbTypeRange : getNbTypeRange,
   getYears : getYears,
   addImage: addImage

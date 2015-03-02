@@ -1,0 +1,14 @@
+[
+  {"name" : "Sealed"        , "code" : "S"}, 
+  {"name" : "Mint"          , "code" : "M"},
+  {"name" : "Near Mint"     , "code" : "NM"},
+  {"name" : "Excellent"     , "code" : "EX"},
+  {"name" : "Very Good ++"  , "code" : "VG++"},
+  {"name" : "Very Good +"   , "code" : "VG+"},
+  {"name" : "Very Good"     , "code" : "VG"},
+  {"name" : "Very Good -"   , "code" : "VG-"},
+  {"name" : "Good"          , "code" : "G"},
+  {"name" : "Bad"           , "code" : "B"},
+  {"name" : "Not Applicable", "code" : "NA"}
+]
+  
