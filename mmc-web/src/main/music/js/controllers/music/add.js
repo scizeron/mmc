@@ -20,8 +20,8 @@ angular.module('mmcApp').controller('musicAddResultCtrl', function($scope, $moda
 });
 
 angular.module('mmcApp')
-.controller('musicAddCtrl', ['$scope', '$http', '$location', 'musicService','userService', 'utils', '$modal',
-function($scope, $http, $location, musicService, userService, utils, $modal) {
+.controller('musicAddCtrl', ['$scope', '$http', '$location', 'musicService','userService', 'utils', 'refValues', '$modal',
+function($scope, $http, $location, musicService, userService, utils, refValues, $modal) {
  oauth2.start(window.location.href, settings.scopes, false, function(expiresIn) {
   userService.setUserInfosIfAbsent(expiresIn, function(user) {
   utils.debug('emit "authenticated.user" : ' + user);	  
@@ -32,11 +32,14 @@ function($scope, $http, $location, musicService, userService, utils, $modal) {
  $scope.$emit('jumbotron.show', false);
   
  $scope.doc = {};
- 
- $scope.countries = musicService.getCountries();
- $scope.grades = musicService.getGrades();
- $scope.nbTypeRange = musicService.getNbTypeRange();
- $scope.years = musicService.getYears();
+ refValues.getCountriesPromise().then(function(data){
+  $scope.countries = data;
+ });
+ refValues.getGradesPromise().then(function(data){
+  $scope.grades = data;
+ });
+ $scope.nbTypeRange = refValues.getNbTypeRange();
+ $scope.years = refValues.getYears();
  $scope.defaultMusicCountry = settings.music.defaultCountry;
  $scope.types = settings.music.types;
  

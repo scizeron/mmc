@@ -1,62 +1,10 @@
 'use strict';
 
 angular.module('mmcApp')
-.factory('musicService', ['$http', 'utils', function($http, utils) {
+.factory('musicService', ['$http', '$q', 'utils', function($http, $q, utils) {
  var docs = null;
  var selectedPage = -1;
- var countries = null;
- var grades = null;
- var nbTypeRange = null;
- var years = null;
- 
- function getYears() {
-  if (years != null) {
-	return years;  
-  }
-  var minYear = settings.music.minYear; 
-  var maxYear = new Date().getFullYear();
-  years = [];
-  for (var j=minYear; j <= maxYear; j++) {
-   years.push(j);	 
-  }
-  return years;
- };
- 
- function getNbTypeRange() {
-  if (nbTypeRange != null) {
-	return nbTypeRange;  
-  }	
-  var nbTypeRange = [];
-  for (var i=1; i < settings.music.nbMaxType; i++) {
-   if ( i < 10) {
-	nbTypeRange.push("0" + i);	 
-   } else {
-    nbTypeRange.push(i);
-   }
-  }  
-  return nbTypeRange;
- };
- 
- function getCountries() {
-  if (countries != null) {
-   return countries;	  
-  }
-  $http.get("assets/country.json").success(function(response) {
-   countries = response;	 
-  });
-  return countries;
- };
- 
- function getGrades() {
-  if (grades != null) {
-   return grades;	  
-  }
-  $http.get("assets/grades.json").success(function(response) {
-   grades = response;	 
-  });
-  return grades;
- };
- 
+  
  function getDocs(page, reload, onSuccessCallback, onErrorCallack) {
   if( typeof(page) == 'undefined') {
    if (selectedPage == -1) {
@@ -144,10 +92,6 @@ angular.module('mmcApp')
   getDoc: getDoc,
   addDoc: addDoc,
   updateDoc: updateDoc,
-  getCountries : getCountries,
-  getGrades : getGrades,
-  getNbTypeRange : getNbTypeRange,
-  getYears : getYears,
   addImage: addImage
  }
  

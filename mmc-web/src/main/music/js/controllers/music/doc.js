@@ -1,16 +1,20 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('musicEditViewCtrl', ['$scope', '$rootScope', '$http', '$location', '$routeParams','userService', 'musicService', 'utils', 
-function($scope, $rootScope, $http, $location, $routeParams, userService, musicService, utils) {
+.controller('musicEditViewCtrl', ['$scope', '$rootScope', '$http', '$location', '$routeParams','userService', 'musicService', 'refValues', 'utils', 
+function($scope, $rootScope, $http, $location, $routeParams, userService, musicService, refValues, utils) {
  
  $scope.action = { 'result' : -1};
  $scope.fileItems = [];
  
- $scope.grades = musicService.getGrades();
- $scope.countries = musicService.getCountries();
- $scope.nbTypeRange = musicService.getNbTypeRange();
- $scope.years = musicService.getYears();
+ refValues.getCountriesPromise().then(function(data){
+  $scope.countries = data;
+ });
+ refValues.getGradesPromise().then(function(data){
+  $scope.grades = data;
+ });
+ $scope.nbTypeRange = refValues.getNbTypeRange();
+ $scope.years = refValues.getYears();
  $scope.defaultMusicCountry = settings.music.defaultCountry;
  $scope.types = settings.music.types;
  
