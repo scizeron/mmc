@@ -1,7 +1,8 @@
 package com.stfciz.clt.web.oauth2;
+
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public class OAuth2Context {
@@ -21,7 +22,7 @@ public class OAuth2Context {
     return context.get();
   }
   
-  public static void  set(OAuth2Context auth2Context) {
+  public static void set(OAuth2Context auth2Context) {
     context.set(auth2Context);
   }
 

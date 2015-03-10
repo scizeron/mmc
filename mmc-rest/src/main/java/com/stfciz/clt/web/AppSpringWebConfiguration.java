@@ -20,6 +20,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import com.stfciz.clt.web.controller.CorsFilter;
 import com.stfciz.clt.web.oauth2.OAuth2Filter;
 
+/**
+ * 
+ * @author stfciz
+ *
+ */
 @Configuration
 @EnableAutoConfiguration(exclude = { 
     AuditAutoConfiguration.class

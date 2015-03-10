@@ -27,6 +27,11 @@ import com.stfciz.clt.web.oauth2.OAuth2ScopeApi;
 import com.stfciz.clt.web.oauth2.Permission;
 import com.stfciz.clt.web.oauth2.UserRole;
 
+/**
+ * 
+ * @author stfciz
+ *
+ */
 @RestController
 public class PhotoController {
 

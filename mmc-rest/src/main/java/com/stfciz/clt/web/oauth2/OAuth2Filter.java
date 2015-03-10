@@ -15,8 +15,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * 
- * @author ByTel
- * 
+ * @author stfciz
+ *
  */
 @Component
 public class OAuth2Filter extends OncePerRequestFilter {

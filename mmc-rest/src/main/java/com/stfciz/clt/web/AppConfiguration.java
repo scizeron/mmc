@@ -3,6 +3,11 @@ package com.stfciz.clt.web;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * 
+ * @author stfciz
+ *
+ */
 @Component
 @ConfigurationProperties(prefix = "web")
 public class AppConfiguration {

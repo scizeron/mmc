@@ -1,11 +1,10 @@
-package com.stfciz.clt.photo;
+package com.stfciz.clt.photo.flickr;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.stfciz.clt.music.api.MusicDocumentOut;
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public final class FlickrUtils {
@@ -79,14 +78,5 @@ public final class FlickrUtils {
    */
   public static String getThumbPhotoUrl(String url) {
     return getPhotoUrl(url, "t");
-  }
-  
-  /**
-   * 
-   * @param url
-   * @return
-   */
-  public static String getThumbPhotoUrl(MusicDocumentOut doc) {
-    return getPhotoUrl(doc.getMainImageUrl(), "t");
   }
 }

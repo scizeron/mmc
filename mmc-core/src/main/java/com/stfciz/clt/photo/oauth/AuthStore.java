@@ -1,9 +1,10 @@
 package com.stfciz.clt.photo.oauth;
 
 import com.flickr4java.flickr.auth.Permission;
+
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public interface AuthStore {

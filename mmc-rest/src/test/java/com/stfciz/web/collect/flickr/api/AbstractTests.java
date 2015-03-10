@@ -33,7 +33,7 @@ import com.stfciz.clt.web.AppSpringWebConfiguration;
 )
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public abstract class AbstractTests implements AcessTokenProvider {
+public abstract class AbstractTests implements AccessTokenProvider {
 
   protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractTests.class);
   

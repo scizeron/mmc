@@ -6,7 +6,7 @@ import com.stfciz.clt.AppSpringCoreConfiguration;
 
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public class App {

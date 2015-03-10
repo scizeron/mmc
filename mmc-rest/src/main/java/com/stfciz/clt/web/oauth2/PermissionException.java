@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 @ResponseStatus(value=HttpStatus.UNAUTHORIZED) 

@@ -1,4 +1,4 @@
-package com.stfciz.clt.photo;
+package com.stfciz.clt.photo.flickr;
 
 import javax.annotation.PostConstruct;
 
@@ -12,6 +12,11 @@ import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.REST;
 import com.stfciz.clt.CoreConfiguration;
 
+/**
+ * 
+ * @author stfciz
+ *
+ */
 @Component
 public class FlickrConnectImpl implements FlickrConnect {
 

@@ -5,7 +5,7 @@ import com.stfciz.clt.CoreConfiguration;
 
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public final class PermissionUtils {

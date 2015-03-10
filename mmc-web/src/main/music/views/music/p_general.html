@@ -1,13 +1,11 @@
 <div class="form-group">
  <label class="control-label col-md-2" for="title">Title</label>
- <div class="col-md-8">          
-  <input type="text" class="form-control" id="title" name="title" ng-model="doc.title" placeholder="title">
+ <div class="col-md-2">          
+  <input type="text" class="form-control" id="title" name="title" ng-model="doc.title" placeholder="title" required>
  </div>
-</div>
-<div class="form-group">
- <label class="control-label col-md-2" for="artist">Artist</label>
- <div class="col-md-8">          
-  <input type="text" class="form-control" id="artist" name="artist" ng-model="doc.artist" placeholder="artist">
+ <label class="control-label col-md-1" for="artist">Artist</label>
+ <div class="col-md-2">          
+  <input type="text" class="form-control" id="artist" name="artist" ng-model="doc.artist" placeholder="artist" required>
  </div>
 </div>
 <div class="form-group">
@@ -47,24 +45,30 @@
 <div class="form-group">
  <label class="control-label col-md-2" for="origin">Origin</label>
  <div class="col-md-2">          
-  <select class="form-control" id="origin" name="origin" ng-model="doc.origin">
-   <option ng-repeat="country in countries" value="{{country.code}}" ng-selected="country.code == defaultMusicCountry">{{country.name}}</option>
+  <select class="form-control" id="origin" name="origin" ng-model="doc.origin" ng-options="country.code as country.name for country in countries">
   </select>
  </div>
- <label class="control-label col-md-1" for="obiColor" ng-show="doc.origin == 'JP' && doc.mainType == 'LP'">Obi</label>
- <div class="col-md-2" ng-show="doc.origin == 'JP' && doc.mainType == 'LP'">          
-  <input id="obiColor" type="color" name="obiColor" class="form-control col-md-1" ng-model="doc.obiColor">   
-  <input id="obiPos" type="text" name="obiPos" class="form-control col-md-1">   
- </div>  
-</div> 
+ <div ng-show="doc.origin == 'JP' && doc.mainType == 'LP'">
+  <label class="control-label col-md-1" for="obiColor">Obi</label>
+  <div class="col-md-1">          
+   <input id="obiColor" type="color" name="obiColor" class="form-control col-md-1" ng-model="doc.obiColor"> 
+  </div>
+  <div class="col-md-1">
+   <select class="form-control" id="obiPos" name="obiPos" ng-model="doc.obiPos">
+    <option value="V">V</option>
+    <option value="H">H</option>
+   </select>
+  </div>
+ </div>
+</div>
 <div class="form-group">
  <label class="control-label col-md-2" for="serialNumber">Serial N&deg</label>
  <div class="col-md-2">   
   <input type="text" class="form-control" id="serialNumber" name="serialNumber" ng-model="doc.serialNumber" placeholder="serial number">    
  </div>
- <label class="control-label col-md-1" for="pubNum">Pub</label>  
+ <label class="control-label col-xs-1" for="pubNum">Limited</label>  
  <div class="col-md-1">          
-  <input type="text" class="form-control" id="pubNum" name="pubNum" ng-model="doc.pubNum" placeholder="n&deg">          
+  <input type="text" class="form-control" id="pubNum" name="pubNum" ng-model="doc.pubNum" placeholder="n&deg">
  </div>
  <div class="col-md-1">
   <input type="text" class="form-control" name="pubTotal" ng-model="doc.pubTotal" placeholder="total"> 
@@ -78,27 +82,5 @@
  <label class="control-label col-md-1" for="label">Label</label>
  <div class="col-md-2">
   <input type="text" class="form-control" id="label" name="label" ng-model="doc.label" placeholder="record label">    
- </div>
-</div>
-<div class="form-group">
- <label class="control-label col-md-2" for="quality">Sleeve</label>
- <div class="col-md-2">   
-  <select class="form-control" id="sleeveQuality" name="sleeveQuality" ng-model="doc.sleeveQuality">
-   <option></option>
-   <option ng-repeat="grade in grades" value="{{grade.code}}">{{grade.name}}</option>
-  </select>   
- </div> 	
- <label class="control-label col-md-1" for="quality">Record</label>
- <div class="col-md-2">   
-  <select class="form-control" id="recordQuality" name="recordQuality" ng-model="doc.recordQuality">
-   <option></option>
-   <option ng-repeat="grade in grades" value="{{grade.code}}">{{grade.name}}</option>
-  </select>   
- </div> 	
-</div>
-<div class="form-group">
- <label class="control-label col-md-2" for="comment">Comment</label>
- <div class="col-md-8">          
-  <textarea type="text" class="form-control" rows="3" id="comment"  name="comment" ng-model="doc.comment"></textarea>
  </div>
 </div>

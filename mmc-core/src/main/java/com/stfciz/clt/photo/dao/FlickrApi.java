@@ -7,7 +7,7 @@ import com.flickr4java.flickr.photosets.Photosets;
 
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public interface FlickrApi {

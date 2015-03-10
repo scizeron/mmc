@@ -1,13 +1,15 @@
 package com.stfciz.clt.music.domain;
 
 import java.util.Date;
+
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public class Purchase {
   
+  /** euro */
   private int    price;
   
   private Date   date;

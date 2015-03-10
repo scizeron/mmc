@@ -13,9 +13,9 @@ import org.springframework.http.client.ClientHttpResponse;
  */
 public class OAuth2ClientInterceptor implements ClientHttpRequestInterceptor {
 
-  private AcessTokenProvider accAcessTokenProvider;
+  private AccessTokenProvider accAcessTokenProvider;
 
-  public OAuth2ClientInterceptor(AcessTokenProvider accAcessTokenProvider) {
+  public OAuth2ClientInterceptor(AccessTokenProvider accAcessTokenProvider) {
     this.accAcessTokenProvider = accAcessTokenProvider;
   }
 

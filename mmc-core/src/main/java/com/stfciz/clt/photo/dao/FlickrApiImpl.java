@@ -22,9 +22,14 @@ import com.flickr4java.flickr.photos.PhotoList;
 import com.flickr4java.flickr.photosets.Photosets;
 import com.flickr4java.flickr.uploader.UploadMetaData;
 import com.flickr4java.flickr.uploader.Uploader;
-import com.stfciz.clt.photo.FlickrConnect;
+import com.stfciz.clt.photo.flickr.FlickrConnect;
 import com.stfciz.clt.photo.oauth.OAuthContext;
 
+/**
+ * 
+ * @author stfciz
+ *
+ */
 @Component
 public class FlickrApiImpl implements FlickrApi {
 

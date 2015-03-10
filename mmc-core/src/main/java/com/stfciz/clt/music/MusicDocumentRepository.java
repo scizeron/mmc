@@ -1,4 +1,4 @@
-package com.stfciz.clt.music.impl;
+package com.stfciz.clt.music;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -6,9 +6,10 @@ import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import com.stfciz.clt.music.domain.MusicDocument;
+
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public interface MusicDocumentRepository extends ElasticsearchRepository<MusicDocument, String> {

@@ -7,6 +7,11 @@ import java.lang.annotation.Target;
 
 import com.flickr4java.flickr.auth.Permission;
 
+/**
+ * 
+ * @author stfciz
+ *
+ */
 @Target(value={ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OAuthContext {

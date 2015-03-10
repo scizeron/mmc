@@ -2,7 +2,7 @@ package com.stfciz.clt.music.domain;
 
 /**
  * 
- * @author stcizero
+ * @author stfciz
  *
  */
 public class Photo {

@@ -31,7 +31,10 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
  
  $scope.$emit('jumbotron.show', false);
   
- $scope.doc = {};
+ $scope.doc = { 'mainType' : 'LP', 'origin' : settings.music.defaultCountry, 'obiPos':'V'};
+ 
+ utils.debug('Initial doc: ' + JSON.stringify($scope.doc));  
+ 
  refValues.getCountriesPromise().then(function(data){
   $scope.countries = data;
  });
@@ -40,7 +43,6 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
  });
  $scope.nbTypeRange = refValues.getNbTypeRange();
  $scope.years = refValues.getYears();
- $scope.defaultMusicCountry = settings.music.defaultCountry;
  $scope.types = settings.music.types;
  
  $scope.action = { 'result' : -1};

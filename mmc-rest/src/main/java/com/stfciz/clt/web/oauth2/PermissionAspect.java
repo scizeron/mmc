@@ -25,6 +25,11 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.stfciz.clt.web.AppConfiguration;
 
+/**
+ * 
+ * @author stfciz
+ *
+ */
 @Aspect
 @Component
 public class PermissionAspect {

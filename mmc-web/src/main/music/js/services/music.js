@@ -31,6 +31,10 @@ angular.module('mmcApp')
  };
  
  function addDoc(doc, onSuccessCallback, onErrorCallack) {
+  if (doc.origin != 'JP') {
+	doc.obiPos = null;
+	doc.obiColor = null;
+  }
   $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
   $http.post(env.get('api.url') + '/music/md'  + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id')),JSON.stringify(doc)).
    success(function(data, status) {

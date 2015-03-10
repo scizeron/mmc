@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import com.stfciz.clt.photo.FlickrConfiguration;
+import com.stfciz.clt.photo.flickr.FlickrConfiguration;
 
 @Component
 @ConfigurationProperties(prefix = "core")

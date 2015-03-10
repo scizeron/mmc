@@ -4,8 +4,8 @@ import java.util.Comparator;
 
 /**
  * 
- * @author ByTel
- * 
+ * @author stfciz
+ *
  */
 public class ImageComparator implements Comparator<Image> {
   @Override

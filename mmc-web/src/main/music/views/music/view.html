@@ -2,8 +2,8 @@
 	<img ng-src="{{mainImage.url}}" class="doc"/>
 	<h1>{{doc.title}}
   <div class="btn-group" style="float: right;">
-   <button ng-click="gotoEdit()" ng-show="canEdit" type="button" class="btn btn-success">Edit</button>
-   <button type="button" ng-click="gotoFind()" type="button" class="btn btn-primary">Back</button>
+   <button type="button" ng-click="gotoFind()" type="button" class="btn">Back</button>
+   <button ng-click="gotoEdit()" ng-show="canEdit" type="button" class="btn btn-primary">Edit</button>
   </div>
  </h1>
 	<p>{{doc.artist}}</p>

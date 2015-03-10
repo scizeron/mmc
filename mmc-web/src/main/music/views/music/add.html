@@ -16,13 +16,23 @@
   </div>
  </script>
  <form class="form-horizontal" role="form" ng-submit="submit()">
-  <ng-include src="'views/music/p_general.html'"></ng-include>
-  <ng-include src="'views/music/p_price.html'"></ng-include>
-  <div class="form-group">        
-   <div class="col-md-offset-2 col-md-10">
-    <input type="submit" class="btn btn-primary" value="Save"/>
-    <input type="button" class="btn btn-cancel" ng-click="cancel()" value="Cancel"/>
-   </div>
+  <div ng-show="doc.title != null && doc.title != ''">
+   <h1>{{doc.title}}
+    <div class="btn-group" style="float: right;">
+     <input type="button" class="btn btn-cancel" ng-click="cancel()" value="Reset"/>
+     <input type="submit" class="btn btn-primary" value="Save"/>
+    </div>
+   </h1>
   </div>
+  <tabset>
+ 	 <tab heading="General">
+    <div style="padding-top: 15px"></div>
+    <ng-include src="'views/music/p_general.html'"></ng-include>
+   </tab>
+   <tab heading="Purchase">
+    <div style="padding-top: 15px"></div>
+    <ng-include src="'views/music/p_purchase.html'"></ng-include>
+   </tab>
+ 	</tabset>
  </form>
 </div>

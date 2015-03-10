@@ -1,7 +1,8 @@
 package com.stfciz.clt.web.oauth2;
+
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public enum OAuth2ScopeApi {

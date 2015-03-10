@@ -1,11 +1,10 @@
-package com.stfciz.clt.photo;
+package com.stfciz.clt.photo.flickr;
 
 import javax.validation.constraints.NotNull;
 
-
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public class FlickrConfiguration {

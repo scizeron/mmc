@@ -1,7 +1,8 @@
 package com.stfciz.clt.web;
+
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public class ErrorRepresentation {

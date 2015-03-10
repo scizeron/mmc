@@ -1,9 +1,10 @@
-package com.stfciz.clt.photo;
+package com.stfciz.clt.photo.flickr;
 
 import com.flickr4java.flickr.Flickr;
+
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 public interface FlickrConnect {

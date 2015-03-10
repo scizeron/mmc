@@ -3,14 +3,25 @@ package com.stfciz.clt.photo.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author stfciz
+ *
+ */
 public class UploadPhoto {
 
   private String       filename;
+  
   private byte[]       content;
+  
   private String       photoSetId;
+  
   private String       documentId;
+  
   private String       title;
+  
   private boolean      async;
+  
   private List<String> tags;
 
   /**

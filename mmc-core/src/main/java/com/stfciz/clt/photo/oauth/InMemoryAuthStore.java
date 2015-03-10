@@ -13,10 +13,11 @@ import com.flickr4java.flickr.RequestContext;
 import com.flickr4java.flickr.auth.Auth;
 import com.flickr4java.flickr.auth.Permission;
 import com.stfciz.clt.CoreConfiguration;
-import com.stfciz.clt.photo.FlickrConnect;
+import com.stfciz.clt.photo.flickr.FlickrConnect;
+
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 @Component

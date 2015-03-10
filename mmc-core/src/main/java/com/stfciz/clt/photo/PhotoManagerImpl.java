@@ -12,7 +12,7 @@ import com.stfciz.clt.photo.dao.UploadPhoto;
 
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 @Component
@@ -44,7 +44,11 @@ public class PhotoManagerImpl implements PhotoManager {
   }
 
   @Override
-  public void deletePhoto(String photoId) throws FlickrException {
-    this.flickrApi.deletePhoto(photoId);
+  public void deletePhoto(String photoId) throws PhotoException{
+    try {
+      this.flickrApi.deletePhoto(photoId);
+    } catch (FlickrException e) {
+      throw new PhotoException("Error when deleting " +photoId, e);
+    }
   }
 }

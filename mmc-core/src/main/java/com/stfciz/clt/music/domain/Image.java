@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
- * @author ByTel
- * 
+ * @author stfciz
+ *
  */
 public class Image {
 
@@ -22,7 +22,7 @@ public class Image {
 
   public Image(String url, Integer order) {
     // bug dans Photo _getBaseImageUrl
-    this.url = StringUtils.replace(url,"static.flickr", "staticflickr",1);
+    this.url = StringUtils.replace(url, "static.flickr", "staticflickr",1);
     this.order = order;
   }
 

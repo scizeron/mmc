@@ -15,7 +15,7 @@ import com.stfciz.clt.web.oauth2.PermissionException;
 
 /**
  * 
- * @author ByTel
+ * @author stfciz
  *
  */
 @ControllerAdvice(annotations = RestController.class)
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     LOGGER.error("Handle exception >> ", exception);
     int responseStatus = HttpStatus.INTERNAL_SERVER_ERROR.value();
     ErrorRepresentation error = new ErrorRepresentation();
-    error.setReason(exception.getLocalizedMessage());
+    error.setReason(exception.getMessage());
     
     if (exception instanceof PermissionException) {
       PermissionException permissionException = (PermissionException) exception;

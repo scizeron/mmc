@@ -8,11 +8,10 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * 
- * @author ByTel
- * 
+ * @author stfciz
+ *
  */
 @Document(indexName = "music", type = "md")
-
 public class MusicDocument {
 
   @Id
@@ -24,27 +23,38 @@ public class MusicDocument {
 
   private boolean           promo;
   
+  /** CODE ISO **/
   private String            origin;
 
   private String            serialNumber;
 
+  /** year  **/
   private Integer           edition;
 
+  /** year  **/
   private Integer           issue;
 
+  /** code : LP, EP, CD ... **/
   private String            mainType;
-  
-  private String            obiColor;
 
+  /** 2 CD**/
   private String            nbType;
+    
+  private Obi               obi;
 
+  /** limited edition number **/
   private Integer           pubNum;
 
+  /** limited edition total **/
   private Integer           pubTotal;
 
-  private String            recordCompany;
+  private RecordCompany     recordCompany;
 
-  private String            label;
+  /** uses the Goldmine Standard code **/
+  private String            sleeveGrade;
+  
+  /** uses the Goldmine Standard code **/
+  private String            recordGrade;
 
   private String            comment;
 
@@ -53,8 +63,6 @@ public class MusicDocument {
   private Purchase          purchase;
 
   private List<UpdatePrice> prices;
-  
-
 
   /**
    * @return the id
@@ -224,7 +232,7 @@ public class MusicDocument {
   /**
    * @return the recordCompany
    */
-  public String getRecordCompany() {
+  public RecordCompany getRecordCompany() {
     return this.recordCompany;
   }
 
@@ -232,23 +240,8 @@ public class MusicDocument {
    * @param recordCompany
    *          the recordCompany to set
    */
-  public void setRecordCompany(String recordCompany) {
+  public void setRecordCompany(RecordCompany recordCompany) {
     this.recordCompany = recordCompany;
-  }
-
-  /**
-   * @return the label
-   */
-  public String getLabel() {
-    return this.label;
-  }
-
-  /**
-   * @param label
-   *          the label to set
-   */
-  public void setLabel(String label) {
-    this.label = label;
   }
 
   /**
@@ -314,25 +307,35 @@ public class MusicDocument {
     return this.images;
   }
 
-  /**
-   * @return the obiColor
-   */
-  public String getObiColor() {
-    return this.obiColor;
-  }
-
-  /**
-   * @param obiColor the obiColor to set
-   */
-  public void setObiColor(String obiColor) {
-    this.obiColor = obiColor;
-  }
-
   public boolean isPromo() {
     return promo;
   }
 
   public void setPromo(boolean promo) {
     this.promo = promo;
-  }  
+  }
+
+  public String getSleeveGrade() {
+    return this.sleeveGrade;
+  }
+
+  public void setSleeveGrade(String sleeveGrade) {
+    this.sleeveGrade = sleeveGrade;
+  }
+  
+  public String getRecordGrade() {
+    return this.recordGrade;
+  }
+
+  public void setRecordGrade(String recordGrade) {
+    this.recordGrade = recordGrade;
+  }
+
+  public Obi getObi() {
+    return this.obi;
+  }
+
+  public void setObi(Obi obi) {
+    this.obi = obi;
+  }
 }
