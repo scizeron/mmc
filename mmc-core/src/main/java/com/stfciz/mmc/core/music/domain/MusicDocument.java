@@ -1,6 +1,7 @@
 package com.stfciz.mmc.core.music.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -63,6 +64,8 @@ public class MusicDocument {
   private Purchase          purchase;
 
   private List<UpdatePrice> prices;
+  
+  private Date              modified;
 
   /**
    * @return the id
@@ -337,5 +340,13 @@ public class MusicDocument {
 
   public void setObi(Obi obi) {
     this.obi = obi;
+  }
+
+  public Date getModified() {
+    return this.modified;
+  }
+
+  public void setModified(Date modified) {
+    this.modified = modified;
   }
 }

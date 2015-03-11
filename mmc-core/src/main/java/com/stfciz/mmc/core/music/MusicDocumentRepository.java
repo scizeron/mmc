@@ -49,7 +49,7 @@ public interface MusicDocumentRepository extends ElasticsearchRepository<MusicDo
    * @param pageable
    * @return
    */
-  Page<MusicDocument> findByTitleOrArtistAllIgnoreCaseOrderByTitleAsc(String title, String artist, Pageable pageable);
+  Page<MusicDocument> findByTitleOrArtistAllIgnoreCase(String title, String artist, Pageable pageable);
   
   /**
    * 

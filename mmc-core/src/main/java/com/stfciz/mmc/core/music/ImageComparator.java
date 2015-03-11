@@ -39,5 +39,4 @@ public class ImageComparator implements Comparator<Image> {
     
     return img1.getOrder().compareTo(img2.getOrder());
   }
-
 }
