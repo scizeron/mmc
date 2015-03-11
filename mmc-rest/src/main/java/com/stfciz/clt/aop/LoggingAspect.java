@@ -15,7 +15,7 @@ public class LoggingAspect {
 
   private static final Logger LOGGER       = LoggerFactory.getLogger(LoggingAspect.class);
   
-  @Pointcut("within(com.stfciz.clt.web.controller..*) ")
+  @Pointcut("within(com.stfciz.mmc.core.web.controller..*) ")
   public void loggingControllerPointcut() {}
   
   @Around("loggingPointcut()")

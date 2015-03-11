@@ -1,0 +1,6 @@
+{"index": {"_index": "music", "_type": "md", "_id": "1" }}
+{"id":1, "title": "The Wall", "artist": "Pink Floyd", "modified" : 1425945600}
+{"index": {"_index": "music", "_type": "md", "_id": "2" }}
+{"id":2, "title": "More", "artist": "Pink Floyd", "modified" : 1423526400}
+{"index": {"_index": "music", "_type": "md", "_id": "3" }}
+{"id":3, "title": "A momentary lapse of reason", "artist": "Pink Floyd", "modified" : 1426032000}

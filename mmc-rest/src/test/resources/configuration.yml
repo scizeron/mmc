@@ -1,0 +1,15 @@
+core:
+ flickr:
+  appGalleryId: 00000000000000000000
+  user:
+   id: 1111111111
+   apiKey: 22222222222222222
+   secretCode: 3333333333333333333
+  tokens:
+   secretCode: 444444444444444
+   read: 55555555555555
+   write: 66666666666666666
+   delete: 777777777777777777
+web:
+ oauth2VerifyUri: http://localhost:3000/authz/verify
+  
