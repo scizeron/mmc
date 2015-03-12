@@ -21,43 +21,8 @@ public interface MusicDocumentRepository extends ElasticsearchRepository<MusicDo
    * @return
    */
   //@Query("{\"bool\" : {\"must\" : {\"query_string\" : {\"query\" : \"*?*\",\"fields\" : [ \"title\", \"artist\" ],\"analyze_wildcard\" : true}}}}")
-  @Query("{\"bool\" : {\"must\" : {\"query_string\" : {\"query\" : \"?\",\"fields\" : [ \"artist\", \"title\"]}}}}")
+  //@Query("{\"bool\" : {\"must\" : {\"query_string\" : {\"query\" : \"?\",\"fields\" : [ \"artist\", \"title\"]}}}}")
   //@Query("{\"bool\" : {\"should\" : [ {\"field\" : {\"artist\" : \"?\"}}, {\"field\" : {\"title\" : \"?\"}} ]}}")
-  Page<MusicDocument> search(String value, Pageable pageable);
-
-  
-//  {
-//    "bool" : {
-//      "must" : {
-//        "query_string" : {
-//          "query" : "animals",
-//          "fields" : [ "title" ]
-//        }
-//      },
-//      "should" : {
-//        "query_string" : {
-//          "query" : "animals",
-//          "fields" : [ "artist" ]
-//        }
-//      }
-//    }
-//  }
-  /**
-   * 
-   * @param title
-   * @param artist
-   * @param pageable
-   * @return
-   */
-  Page<MusicDocument> findByTitleOrArtistAllIgnoreCase(String title, String artist, Pageable pageable);
-  
-  /**
-   * 
-   * @param value
-   * @param pageable
-   * @return
-   */
-  Page<MusicDocument> findByTitleIgnoreCase(String value, Pageable pageable);
-  
-  
+  @Query("{\"bool\" : {\"should\" : {\"query_string\" : {\"query\" : \"*?*\",\"fields\" : [ \"title\" ],\"analyze_wildcard\" : true }},\"should\" : {\"query_string\" : {\"query\" : \"*?*\",\"fields\" : [ \"artist\" ],\"analyze_wildcard\" : true}}}}")
+  Page<MusicDocument> search(String title, Pageable pageable);
 }

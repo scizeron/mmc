@@ -55,18 +55,18 @@ public class MusicControllerTests extends AbstractWebApplicationTests {
     Assert.assertThat(response.getDocs().get(1).getModified().after(response.getDocs().get(2).getModified()), CoreMatchers.is(true));
   }
   
-//  /**
-//   * 
-//   * @throws Exception
-//   */
-//  @Test public void findByCriteria() throws Exception {
-//    // when
-//    MvcResult result = this.mockMvc.perform(get("/music/md").param("q", "pink floyd"))
-//      .andDo(print())
-//      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//      .andExpect(status().is2xxSuccessful()).andReturn();
-//    // then
-//    FindResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), FindResponse.class);
-//    Assert.assertThat(response.getDocs().size(), CoreMatchers.is(3));
-//  }
+  /**
+   * 
+   * @throws Exception
+   */
+  @Test public void search() throws Exception {
+    // when
+    MvcResult result = this.mockMvc.perform(get("/music/md").param("q", "fl"))
+      .andDo(print())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is2xxSuccessful()).andReturn();
+    // then
+    FindResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), FindResponse.class);
+    Assert.assertThat(response.getDocs().size(), CoreMatchers.is(3));
+  }
 }

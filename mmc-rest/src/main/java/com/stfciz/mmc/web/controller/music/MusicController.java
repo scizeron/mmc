@@ -61,19 +61,19 @@ public class MusicController {
   @RequestMapping(method = RequestMethod.GET)
   @Permission(scopes = { OAuth2ScopeApi.READ })
   public FindResponse find(
-      @RequestParam(value = "q", required = false) String search,
+      @RequestParam(value = "q", required = false) String input,
       @RequestParam(value = "p", required = false, defaultValue = "0") int page,
       @RequestParam(value = "s", required = false, defaultValue = "50") int pageSize) {
 
-    PageRequest pageable = new PageRequest(page, pageSize , new Sort(new  Sort.Order(Sort.Direction.ASC,"title")));
+    PageRequest pageable = null;
     Page<MusicDocument> result = null;
     
-    if (StringUtils.isBlank(search)) {
+    if (StringUtils.isBlank(input)) {
       pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.DESC, "modified")));
       result = this.repository.findAll(pageable);
     } else {
       pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.ASC, "title")));
-      result = this.repository.findByTitleOrArtistAllIgnoreCase(search, search, pageable);
+      result = this.repository.search(input, pageable);
     }
     
     FindResponse response = new FindResponse();
