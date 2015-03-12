@@ -2,6 +2,7 @@ package com.stfciz.mmc.web;
 
 import java.util.Arrays;
 
+import org.elasticsearch.client.Client;
 import org.springframework.boot.actuate.autoconfigure.AuditAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.EndpointMBeanExportAutoConfiguration;
@@ -19,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -35,7 +38,7 @@ import com.stfciz.mmc.web.oauth2.PermissionAspect;
 @Configuration
 @ComponentScan(basePackages={"com.stfciz.mmc"})
 @EnableAspectJAutoProxy(proxyTargetClass=true)
-@EnableElasticsearchRepositories(basePackages={"com.stfciz.mmc"})
+@EnableElasticsearchRepositories(basePackages={"com.stfciz.mmc"}, elasticsearchTemplateRef="elasticsearchOperations")
 @ImportResource({"classpath:applicationContext-clt-core.xml"})
 @EnableAutoConfiguration(exclude = { 
     AuditAutoConfiguration.class
@@ -75,6 +78,11 @@ public class AppSpringWebConfiguration {
     registrationBean.setName(filter.getClass().getSimpleName());
     registrationBean.setOrder(2);
     return registrationBean;
+  }
+  
+  @Bean
+  public ElasticsearchOperations elasticsearchOperations(Client client) {
+    return new ElasticsearchTemplate(client);
   }
   
   @Bean 
