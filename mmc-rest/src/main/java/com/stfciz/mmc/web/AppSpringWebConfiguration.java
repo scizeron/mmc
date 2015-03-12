@@ -10,7 +10,8 @@ import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfig
 import org.springframework.boot.actuate.autoconfigure.TraceRepositoryAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.TraceWebFilterAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.redis.RedisAutoConfiguration;
+import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration;
+import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchDataAutoConfiguration;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,18 +34,19 @@ import com.stfciz.mmc.web.oauth2.PermissionAspect;
  */
 @Configuration
 @ComponentScan(basePackages={"com.stfciz.mmc"})
-@EnableElasticsearchRepositories(basePackages={"com.stfciz.mmc"})
 @EnableAspectJAutoProxy(proxyTargetClass=true)
+@EnableElasticsearchRepositories(basePackages={"com.stfciz.mmc"})
 @ImportResource({"classpath:applicationContext-clt-core.xml"})
 @EnableAutoConfiguration(exclude = { 
     AuditAutoConfiguration.class
-  , RedisAutoConfiguration.class
   , CrshAutoConfiguration.class
   , MetricFilterAutoConfiguration.class
   , MetricRepositoryAutoConfiguration.class
   , TraceRepositoryAutoConfiguration.class
   , TraceWebFilterAutoConfiguration.class
   , EndpointMBeanExportAutoConfiguration.class // exports de endpoints
+  , ElasticsearchAutoConfiguration.class
+  , ElasticsearchDataAutoConfiguration.class
 })
 public class AppSpringWebConfiguration {
   

@@ -15,28 +15,6 @@
 		<app.runner.version>1.0.4-SNAPSHOT</app.runner.version>
 	</properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.stfciz</groupId>
-				<artifactId>app-runner-maven-plugin</artifactId>
-				<version>${app.runner.version}</version>
-				<executions>
-					<execution>
-						<id>distrib</id>
-						<goals>
-							<goal>distrib</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.stfciz</groupId>
@@ -88,4 +66,45 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>com.stfciz</groupId>
+						<artifactId>app-runner-maven-plugin</artifactId>
+						<version>${app.runner.version}</version>
+						<executions>
+							<execution>
+								<id>distrib</id>
+								<goals>
+									<goal>distrib</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>travis-ci</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>		
+	</profiles>
 </project>
