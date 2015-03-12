@@ -24,7 +24,7 @@ angular.module('mmcApp')
 function($scope, $http, $location, musicService, userService, utils, refValues, $modal) {
  oauth2.start(window.location.href, settings.scopes, false, function(expiresIn) {
   userService.setUserInfosIfAbsent(expiresIn, function(user) {
-  utils.debug('emit "authenticated.user" : ' + user);	  
+   utils.debug('emit "authenticated.user" : ' + user);	  
    $scope.$emit('authenticated.user', user); 
   });
  });

@@ -4,9 +4,11 @@ angular.module('mmcApp')
 .factory('userService', ['$http', function($http) {
 
  function getUser() {
-  var user = webUtils.getSessionItem('user');	
-  if (user != null) {
+  var userInSession = webUtils.getSessionItem('user');	
+  var user = null;
+  if (userInSession != null) {
    webUtils.debug('The user is already in session');	
+   user = new User(userInSession.firstName, userInSession.lastName, userInSession.roles);
   } else {
    webUtils.debug('no session user');
   }
@@ -18,13 +20,11 @@ angular.module('mmcApp')
   if (user == null) {
    return false;
   }
-  var hasRole = false;
-  user.roles.forEach(function(role) {
-   if (role == expectedRole) {
-    hasRole = true;
-   }
-  });
-  return hasRole;
+  return user.hasRole(expectedRole);
+ };
+ 
+ function isAdmin() {
+  return userHasRole('ADMIN');
  };
  
  function setUserInfosIfAbsent(expiresIn, authenticatedUserCallback) {
@@ -38,7 +38,7 @@ angular.module('mmcApp')
   success(function(response) {
    webUtils.debug('set the user in session');	
    webUtils.setSessionItem('user', response, expiresIn);
-   authenticatedUserCallback(response);
+   authenticatedUserCallback(new User(response.firstName, response.lastName, response.roles));
    return response;
   }).
   error(function(data, status, headers, config) {
@@ -61,5 +61,6 @@ angular.module('mmcApp')
   userHasRole: userHasRole,
   setUserInfosIfAbsent: setUserInfosIfAbsent,
   logout: logout,
+  isAdmin: isAdmin
  }
 }]);

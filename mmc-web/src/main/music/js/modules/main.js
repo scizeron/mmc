@@ -24,7 +24,11 @@ angular.module('mmcApp', [
   when('/music_view/:musicDocId', {
    templateUrl: 'views/music/view.html',
    controller: 'musicEditViewCtrl'
-  }). 
+  }).
+  when('/admin', {
+   templateUrl: 'views/admin.html',
+   controller: 'adminCtrl'
+  }).
   otherwise({
    redirectTo: '/home'
   });

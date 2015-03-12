@@ -15,11 +15,9 @@ function ($scope, $http, $location, userService, musicService, utils) {
  }
  
  $scope.$on('authenticated.user', function(event, user) {
-  webUtils.debug('on "authenticated.user" : ' + user);	 
-  $scope.user = user.firstName + ' ' + user.lastName; 
-  $scope.navbarMenuUser = true;
-  $scope.navbarMenuLogin = false;
-  $scope.navbarMenuLogout = true;
+  webUtils.debug('on "authenticated.user" : ' + user.toString());	 
+  $scope.userDisplay = user.firstName + ' ' + user.lastName;
+  $scope.navbarMenuAdmin = user.isAdmin();
  }); 
  
  $scope.$on('jumbotron.show', function(event, value) {
@@ -27,24 +25,8 @@ function ($scope, $http, $location, userService, musicService, utils) {
   $scope.app.jumbotron = {show: value};
  });
  
- var user = userService.getUser();
- if (user != null) { 
-  $scope.user = user.firstName + ' ' + user.lastName; 
-  $scope.navbarMenuUser = true;
-  $scope.navbarMenuLogin = false;
-  $scope.navbarMenuLogout = true;
- } else {
-  $scope.navbarMenuUser = false;
-  $scope.navbarMenuLogin = true;
-  $scope.navbarMenuLogout = false;
- } 
- 
  $scope.navIsActive = function (viewLocation) {
   return $location.path().lastIndexOf(viewLocation, 0) == 0; 
- };
- 
- $scope.logout = function($http) {
-  userService.logout();
  };
  
 }]);
