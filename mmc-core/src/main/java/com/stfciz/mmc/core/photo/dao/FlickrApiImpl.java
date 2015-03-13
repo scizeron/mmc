@@ -1,11 +1,9 @@
 package com.stfciz.mmc.core.photo.dao;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -14,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.auth.Permission;
@@ -22,6 +22,9 @@ import com.flickr4java.flickr.photos.PhotoList;
 import com.flickr4java.flickr.photosets.Photosets;
 import com.flickr4java.flickr.uploader.UploadMetaData;
 import com.flickr4java.flickr.uploader.Uploader;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.stfciz.mmc.core.photo.domain.Tag;
 import com.stfciz.mmc.core.photo.flickr.FlickrConnect;
 import com.stfciz.mmc.core.photo.oauth.OAuthContext;
 
@@ -38,6 +41,8 @@ public class FlickrApiImpl implements FlickrApi {
   private Set<String>         GET_PHOTOS_EXTRAS = new HashSet<>(Arrays.asList("url_t", "url_s", "url_m", "url_o"));
 
   private FlickrConnect       flickrConnect;
+  
+  private final ObjectMapper  tagMapper = new ObjectMapper();
 
   @Autowired
   public FlickrApiImpl(FlickrConnect flickrConnect) {
@@ -96,17 +101,21 @@ public class FlickrApiImpl implements FlickrApi {
     metaData.setFilename(filename);
     metaData.setTitle(uploadPhoto.getTitle() != null ? uploadPhoto.getTitle() : filename);
     metaData.setAsync(uploadPhoto.isAsync());
+    
     if (CollectionUtils.isNotEmpty(uploadPhoto.getTags())) {
-      metaData.setTags(uploadPhoto.getTags());
+      metaData.setTags(Collections2.transform(uploadPhoto.getTags(), new Function<Tag,String>(){
+        @Override
+        public String apply(Tag tag) {
+         try {
+          return tagMapper.writeValueAsString(tag);
+         } catch (JsonProcessingException e) {
+           LOGGER.error("write tag error", e);
+           return null;
+         }
+        }
+      }));
     }
     
-    // identifiant du document
-    if (uploadPhoto.getDocumentId() != null) {
-      List<String> tags = new ArrayList<String>();
-      tags.add(String.format("music:id=%s", uploadPhoto.getDocumentId()));
-      metaData.setTags(tags);
-    }
-
     Uploader uploader = this.flickrConnect.getFlickr().getUploader();
     
     setFilemimeType(filename, metaData);

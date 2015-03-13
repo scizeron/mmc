@@ -1,6 +1,15 @@
 package com.stfciz.mmc.core.photo.flickr;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.photos.Photo;
+import com.google.common.collect.Maps;
+import com.stfciz.mmc.core.music.domain.PhotoMusicDocument;
 
 /**
  * 
@@ -9,6 +18,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class FlickrUtils {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(FlickrUtils.class);
+  
   private FlickrUtils() {
     /** EMPTY **/
   }
@@ -56,27 +67,30 @@ public final class FlickrUtils {
    *  ,photoUrl=<null>,usage=<null>,hasPeople=false,locality=<null>,county=<null>,region=<null>
    *  ,country=<null>,stats=<null>] 
    */
-
-  /**
-   * 
-   * @param url
-   * @param format
-   * @return
-   */
-  public static String getPhotoUrl(String url, String format) {
-    if (url == null) {
-      return null;
+  public static Map<String, String> getUrls(PhotoMusicDocument photoMusicDocument) {
+    if (photoMusicDocument == null) {
+      return Maps.newHashMap();
     }
-    int posExt = StringUtils.lastIndexOf(url,'.');
-    return url.substring(0, posExt -1) + format + url.substring(posExt);
-  }
-
-  /**
-   * 
-   * @param url
-   * @return
-   */
-  public static String getThumbPhotoUrl(String url) {
-    return getPhotoUrl(url, "t");
+    
+    Map<String, String> urls = new HashMap<>();
+    Photo photo = new Photo();
+    photo.setId(photoMusicDocument.getId());
+    photo.setServer(photoMusicDocument.getServerId());
+    photo.setFarm(photoMusicDocument.getFarmId());
+    photo.setSecret(photoMusicDocument.getSecret());
+    photo.setOriginalSecret(photoMusicDocument.getOrginalSecret());
+    
+    try {
+      urls.put("o", photo.getOriginalUrl());
+      urls.put("t", photo.getThumbnailUrl());
+      urls.put("m", photo.getMediumUrl());
+      urls.put("s", photo.getSmallUrl());
+      return urls;
+      
+    } catch (FlickrException e) {
+      LOGGER.error("Error when getting url from {}", photoMusicDocument.getId(), e);
+      return Maps.newHashMap();
+    }
+    
   }
 }

@@ -1,20 +1,20 @@
 package com.stfciz.mmc.web.api.music;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.flickr4java.flickr.FlickrException;
-import com.stfciz.mmc.core.music.ImageComparator;
-import com.stfciz.mmc.core.music.domain.Image;
 import com.stfciz.mmc.core.music.domain.MusicDocument;
 import com.stfciz.mmc.core.music.domain.Obi;
+import com.stfciz.mmc.core.music.domain.PhotoMusicDocument;
 import com.stfciz.mmc.core.music.domain.Purchase;
 import com.stfciz.mmc.core.music.domain.RecordCompany;
+import com.stfciz.mmc.core.photo.flickr.FlickrUtils;
 
 /**
  * 
@@ -22,64 +22,51 @@ import com.stfciz.mmc.core.music.domain.RecordCompany;
  *
  */
 @Component
-public class ApiConverter {
+public class MusicApiConverter {
 
   /**
    * 
-   * @param src
-   * @return
-   * @throws FlickrException 
-   */
-  public com.stfciz.mmc.web.api.Photo convertPhotoDomain(com.flickr4java.flickr.photos.Photo src) throws FlickrException {
-    com.stfciz.mmc.web.api.Photo target = new com.stfciz.mmc.web.api.Photo();
-    target.setId(src.getId());
-    target.putUrl("t", src.getThumbnailUrl());
-    target.putUrl("o", src.getOriginalUrl());
-    target.putUrl("m", src.getMediumUrl());
-    return target;
-  }
-  
-  /**
-   * 
-   * @param src
+   * @param request
    * @return
    */
-  public MusicDocument convertNewMusicRequestIn(NewRequest src) {
+  public MusicDocument convertNewMusicRequestIn(NewRequest request) {
     MusicDocument target = new MusicDocument();
-    target.setModified(new Date());
-    target.setId(UUID.randomUUID().toString());
-    target.setTitle(src.getTitle());
-    target.setArtist(src.getArtist());
-    target.setComment(src.getComment());
-    target.setPromo(src.isPromo());
-    target.setEdition(src.getEdition());
-    target.setIssue(src.getIssue());
-    target.setMainType(src.getMainType());
-    target.setNbType(src.getNbType());
-    target.setPubNum(src.getPubNum());
-    target.setPubTotal(src.getPubTotal());
-    target.setSleeveGrade(src.getSleeveGrade());
-    target.setRecordGrade(src.getRecordGrade());
-    target.setOrigin(src.getOrigin());
     
-    if (StringUtils.isNotBlank(src.getRecordCompany())) {
+    target.setId(UUID.randomUUID().toString());
+    target.setModified(new Date());
+    
+    target.setTitle(request.getTitle());
+    target.setArtist(request.getArtist());
+    target.setComment(request.getComment());
+    target.setPromo(request.isPromo());
+    target.setEdition(request.getEdition());
+    target.setIssue(request.getIssue());
+    target.setMainType(request.getMainType());
+    target.setNbType(request.getNbType());
+    target.setPubNum(request.getPubNum());
+    target.setPubTotal(request.getPubTotal());
+    target.setSleeveGrade(request.getSleeveGrade());
+    target.setRecordGrade(request.getRecordGrade());
+    target.setOrigin(request.getOrigin());
+    
+    if (StringUtils.isNotBlank(request.getRecordCompany())) {
       RecordCompany rc = new RecordCompany();
-      rc.setName(src.getRecordCompany());
-      rc.setLabel(src.getLabel());
+      rc.setName(request.getRecordCompany());
+      rc.setLabel(request.getLabel());
       target.setRecordCompany(rc);
     }
     
-    if ("JP".equals(src.getOrigin()) && StringUtils.isNotBlank(src.getObiColor()) && StringUtils.isNotBlank(src.getObiPos())) {
-      target.setObi(new Obi(src.getObiColor(), Obi.Orientation.valueOf(src.getObiPos())));
+    if ("JP".equals(request.getOrigin()) && StringUtils.isNotBlank(request.getObiColor()) && StringUtils.isNotBlank(request.getObiPos())) {
+      target.setObi(new Obi(request.getObiColor(), Obi.Orientation.valueOf(request.getObiPos())));
     }
     
-    if (src.getPurchasePrice() != null) {
+    if (request.getPurchasePrice() != null) {
       Purchase purchase = new Purchase();
       target.setPurchase(purchase);
-      purchase.setPrice(src.getPurchasePrice());
-      purchase.setContext(src.getPurchaseContext());
-      purchase.setDate(src.getPurchaseDate());
-      purchase.setVendor(src.getPurchaseVendor());
+      purchase.setPrice(request.getPurchasePrice());
+      purchase.setContext(request.getPurchaseContext());
+      purchase.setDate(request.getPurchaseDate());
+      purchase.setVendor(request.getPurchaseVendor());
     }
     
     return target;
@@ -100,17 +87,22 @@ public class ApiConverter {
     target.setNbType(src.getNbType());
     target.setOrigin(src.getOrigin());
     target.setModified(src.getModified());
+    
+    if (src.getPhotos() != null && src.getPhotos().size() >= 1) {
+      target.setThumbImageUrl(FlickrUtils.getUrls(src.getPhotos().get(0)).get("t"));
+    };
+    
     return target;
   }
   
   /**
    * 
-   * @param src
+   * @param request
    * @return
    */
-  public MusicDocument convertUpdateMusicRequestIn(UpdateRequest src) {
-    MusicDocument target = convertNewMusicRequestIn(src);
-    target.setId(src.getId());
+  public MusicDocument convertUpdateMusicRequestIn(UpdateRequest request) {
+    MusicDocument target = convertNewMusicRequestIn(request);
+    target.setId(request.getId());
     return target;
   }
   
@@ -156,24 +148,14 @@ public class ApiConverter {
       // TODO
     }
     
-    if (src.getImages() != null && !src.getImages().isEmpty()) {
-      List<Image> sortedImages = getSortedImages(src.getImages());
-      for (Image image : sortedImages) {
-       target.getImageUrls().add(image.getUrl());
+    if (src.getPhotos() != null && !src.getPhotos().isEmpty()) {
+      List<Map<String,String>> images = new ArrayList<>();
+      for (PhotoMusicDocument photoMusicDocument : src.getPhotos()) {
+        images.add(FlickrUtils.getUrls(photoMusicDocument));
       }
+      target.setImages(images);
     }
     
     return target;
-  }
-  
-  /**
-   * 
-   * @return
-   */
-  public List<Image> getSortedImages(List<Image> imgs) {
-    if (imgs != null) {
-      Collections.sort(imgs, ImageComparator.get());
-    }
-    return imgs;
   }
 }

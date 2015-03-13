@@ -20,10 +20,12 @@ function($scope, $rootScope, $http, $location, $routeParams, userService, musicS
  
  musicService.getDoc($routeParams.musicDocId, function(response) {
   $scope.action.resut = 0;
-  $scope.canEdit = userService.userHasRole("WRITE");
+  $scope.canEdit = userService.userHasRole('WRITE');
   $scope.doc = response;
-  $scope.mainImage = response.sortedImages[0];
-  $scope.images = response.sortedImages;  
+  if (response.images != null && response.images.length > 0) {
+   $scope.mainImage = response.images[0];
+   $scope.images = response.images;
+  }
  }, function() {
   $scope.action.resut = 1;	 
  });
@@ -63,10 +65,9 @@ function($scope, $rootScope, $http, $location, $routeParams, userService, musicS
  $scope.uploadFile = function(fileItem) { 
   // status 'i' : init, 'p' : progress, 'o' : ok, 'e' : error  
   var docId = $scope.doc.id;
-  utils.debug('upload "' + fileItem.file.name + '"'); 	 
-  utils.debug('doc: "' + docId + '"');
+  utils.debug('upload "' + fileItem.file.name + '", doc: "' + docId + '"');
   fileItem.status='p';
-  musicService.addImage(docId, fileItem.file, function() {
+  musicService.uploadPhoto(docId, fileItem.file, function() {
    utils.debug('upload ok "' + fileItem.file.name + '"');
    fileItem.status='o';
   }, function() {

@@ -2,14 +2,14 @@ package com.stfciz.mmc.core.music;
 
 import java.util.Comparator;
 
-import com.stfciz.mmc.core.music.domain.Image;
+import com.stfciz.mmc.core.music.domain.PhotoMusicDocument;
 
 /**
  * 
  * @author stfciz
  *
  */
-public class ImageComparator implements Comparator<Image> {
+public class ImageComparator implements Comparator<PhotoMusicDocument> {
   
   private static ImageComparator INSTANCE = new ImageComparator();
   
@@ -24,7 +24,7 @@ public class ImageComparator implements Comparator<Image> {
   }
   
   @Override
-  public int compare(Image img1, Image img2) {
+  public int compare(PhotoMusicDocument img1, PhotoMusicDocument img2) {
     if (img1.getOrder() == null && img2.getOrder() == null) {
       return 0;
     }

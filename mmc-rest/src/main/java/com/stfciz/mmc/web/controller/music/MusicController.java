@@ -22,15 +22,16 @@ import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.photos.Photo;
 import com.stfciz.mmc.core.CoreConfiguration;
 import com.stfciz.mmc.core.music.MusicDocumentRepository;
-import com.stfciz.mmc.core.music.domain.Image;
 import com.stfciz.mmc.core.music.domain.MusicDocument;
 import com.stfciz.mmc.core.photo.dao.FlickrApi;
 import com.stfciz.mmc.core.photo.dao.UploadPhoto;
-import com.stfciz.mmc.web.api.music.ApiConverter;
+import com.stfciz.mmc.core.photo.domain.Tag;
 import com.stfciz.mmc.web.api.music.FindResponse;
 import com.stfciz.mmc.web.api.music.GetResponse;
+import com.stfciz.mmc.web.api.music.MusicApiConverter;
 import com.stfciz.mmc.web.api.music.NewRequest;
 import com.stfciz.mmc.web.api.music.UpdateRequest;
+import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
 import com.stfciz.mmc.web.oauth2.Permission;
 
@@ -53,7 +54,10 @@ public class MusicController {
   private FlickrApi flickrApi;
 
   @Autowired
-  private ApiConverter apiConverter;
+  private MusicApiConverter apiConverter;
+  
+  @Autowired
+  private PhotoApiConverter photoApiConverter;
 
   @Autowired
   private CoreConfiguration configuration;
@@ -95,21 +99,15 @@ public class MusicController {
   @RequestMapping(method = RequestMethod.POST)
   @Permission(scopes = { OAuth2ScopeApi.WRITE })
   public ResponseEntity<GetResponse> create(@RequestBody(required = true) NewRequest req) {
-    MusicDocument doc = this.apiConverter.convertNewMusicRequestIn(req);
-    return new ResponseEntity<GetResponse>(
-        this.apiConverter.convertMusicDocumentToGetResponse(this.repository
-            .save(doc)), HttpStatus.CREATED);
+    return new ResponseEntity<GetResponse>(this.apiConverter.convertMusicDocumentToGetResponse(
+        this.repository.save(this.apiConverter.convertNewMusicRequestIn(req))), HttpStatus.CREATED);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-  @Permission(scopes = { OAuth2ScopeApi.WRITE })
-  public ResponseEntity<GetResponse> update(@PathVariable String id,
-      @RequestBody(required = true) UpdateRequest req) {
-    return new ResponseEntity<GetResponse>(
-        this.apiConverter.convertMusicDocumentToGetResponse(this.repository
-            .save(this.apiConverter.convertNewMusicRequestIn(req))),
-        HttpStatus.OK);
-
+  @Permission(scopes = { OAuth2ScopeApi.WRITE})
+  public ResponseEntity<GetResponse> update(@PathVariable String id, @RequestBody(required = true) UpdateRequest req) {
+    return new ResponseEntity<GetResponse>(this.apiConverter.convertMusicDocumentToGetResponse(
+          this.repository.save(this.apiConverter.convertUpdateMusicRequestIn(req))), HttpStatus.OK);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -124,37 +122,41 @@ public class MusicController {
         HttpStatus.OK);
   }
 
-  @RequestMapping(value = "/{id}/images", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+  @RequestMapping(value = "/{id}/photos", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
   @Permission(scopes = { OAuth2ScopeApi.WRITE })
-  public ResponseEntity<String> uploadImage(@PathVariable String id,
-      @RequestParam("file") MultipartFile[] files) throws Exception {
+  public ResponseEntity<String> uploadImage(@PathVariable String id, @RequestParam("file") MultipartFile file) throws Exception {
     MusicDocument doc = this.repository.findOne(id);
     if (doc == null) {
+      LOGGER.error("Document \"{}\" not found");
+      return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+    }
+    
+    if (file == null || file.isEmpty()) {
+      LOGGER.error("No file to upload ...");
       return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
     }
 
-    for (MultipartFile file : files) {
-      LOGGER.debug("Upload {} ...", file.getOriginalFilename());
-      try {
-        UploadPhoto uploadPhoto = new UploadPhoto();
-        uploadPhoto.setAsync(false);
-        uploadPhoto.setFilename(file.getOriginalFilename());
-        uploadPhoto.setDocumentId(id);
-        uploadPhoto.setPhotoSetId(this.configuration.getFlickr()
-            .getAppGalleryId());
-        uploadPhoto.setContent(file.getBytes());
-        String photoId = this.flickrApi.uploadPhoto(uploadPhoto);
-        Photo photo = this.flickrApi.getPhoto(photoId);
-        LOGGER.debug("photoId: {}", photoId);
-        doc.getImages().add(
-            new Image(photo.getMediumUrl(), doc.getImages().size()));
-        this.repository.save(doc);
-      } catch (FlickrException flickrException) {
-        LOGGER.error("save error", flickrException);
-        return new ResponseEntity<String>(String.format(
-            "Error when uploading %s", file.getOriginalFilename()),
-            HttpStatus.SERVICE_UNAVAILABLE);
-      }
+    LOGGER.debug("Upload {} ...", file.getOriginalFilename());
+    try {
+      UploadPhoto uploadPhoto = new UploadPhoto();
+      uploadPhoto.setAsync(false);
+      uploadPhoto.setFilename(file.getOriginalFilename());
+      uploadPhoto.getTags().add(new Tag("musicDoc", id));
+      uploadPhoto.setPhotoSetId(this.configuration.getFlickr().getAppGalleryId());
+      uploadPhoto.setContent(file.getBytes());
+      
+      String photoId = this.flickrApi.uploadPhoto(uploadPhoto);
+      Photo photo = this.flickrApi.getPhoto(photoId);
+      
+      LOGGER.debug("photoId: {}", photoId);
+      doc.getPhotos().add(this.photoApiConverter.convertToPhotoMusicDocument(photo, doc.getPhotos().size()));
+      this.repository.save(doc);
+      
+    } catch (FlickrException flickrException) {
+      LOGGER.error("save error", flickrException);
+      return new ResponseEntity<String>(String.format(
+          "Error when uploading %s", file.getOriginalFilename()),
+          HttpStatus.SERVICE_UNAVAILABLE);
     }
     return new ResponseEntity<String>(HttpStatus.OK);
   }

@@ -2,11 +2,15 @@ package com.stfciz.mmc.web.api.music;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * 
  * @author stfciz
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class FindElement {
   
   private String thumbImageUrl;

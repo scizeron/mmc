@@ -3,12 +3,17 @@ package com.stfciz.mmc.web.api.music;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * 
  * @author stfciz
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class FindResponse {
+ 
   private int pageSize;
 
   private int page;

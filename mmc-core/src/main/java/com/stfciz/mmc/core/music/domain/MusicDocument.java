@@ -1,11 +1,14 @@
 package com.stfciz.mmc.core.music.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+
+import com.stfciz.mmc.core.music.ImageComparator;
 
 /**
  * 
@@ -59,7 +62,7 @@ public class MusicDocument {
 
   private String            comment;
 
-  private List<Image>       images;
+  private List<PhotoMusicDocument>       photos;
 
   private Purchase          purchase;
 
@@ -263,11 +266,14 @@ public class MusicDocument {
   }
 
   /**
-   * @param images
-   *          the images to set
+   * @param photos
+   *          the photos to set
    */
-  public void setImages(List<Image> images) {
-    this.images = images;
+  public void setPhotos(List<PhotoMusicDocument> photos) {
+    if (photos != null) {
+      Collections.sort(photos, ImageComparator.get());
+      this.photos = photos;
+    }
   }
 
   /**
@@ -301,13 +307,13 @@ public class MusicDocument {
   }
   
   /**
-   * @return the images
+   * @return the photos
    */
-  public List<Image> getImages() {
-    if (this.images == null) {
-      this.images = new ArrayList<>();
+  public List<PhotoMusicDocument> getPhotos() {
+    if (this.photos == null) {
+      this.photos = new ArrayList<>();
     }
-    return this.images;
+    return this.photos;
   }
 
   public boolean isPromo() {

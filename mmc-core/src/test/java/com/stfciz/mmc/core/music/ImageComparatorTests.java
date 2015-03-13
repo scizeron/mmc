@@ -4,7 +4,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.stfciz.mmc.core.music.domain.Image;
+import com.stfciz.mmc.core.music.domain.PhotoMusicDocument;
 
 /**
  * 
@@ -18,10 +18,10 @@ public class ImageComparatorTests {
    */
   @Test public void compare() {
     // given
-    Image img1 = new Image();
+    PhotoMusicDocument img1 = new PhotoMusicDocument();
     img1.setOrder(1);
 
-    Image img2 = new Image();
+    PhotoMusicDocument img2 = new PhotoMusicDocument();
     img2.setOrder(2);
 
     // when

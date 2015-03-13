@@ -24,7 +24,7 @@ angular.module('mmcApp')
  };
  
  function isAdmin() {
-  return userHasRole('ADMIN');
+  return this.userHasRole('ADMIN');
  };
  
  function setUserInfosIfAbsent(expiresIn, authenticatedUserCallback) {

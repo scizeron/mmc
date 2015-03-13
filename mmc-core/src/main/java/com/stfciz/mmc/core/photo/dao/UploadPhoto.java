@@ -3,6 +3,8 @@ package com.stfciz.mmc.core.photo.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.stfciz.mmc.core.photo.domain.Tag;
+
 /**
  * 
  * @author stfciz
@@ -15,14 +17,12 @@ public class UploadPhoto {
   private byte[]       content;
   
   private String       photoSetId;
-  
-  private String       documentId;
-  
+
   private String       title;
   
   private boolean      async;
   
-  private List<String> tags;
+  private List<Tag>    tags;
 
   /**
    * @return the filename
@@ -52,21 +52,6 @@ public class UploadPhoto {
    */
   public void setPhotoSetId(String photoSetId) {
     this.photoSetId = photoSetId;
-  }
-
-  /**
-   * @return the documentId
-   */
-  public String getDocumentId() {
-    return this.documentId;
-  }
-
-  /**
-   * @param documentId
-   *          the documentId to set
-   */
-  public void setDocumentId(String documentId) {
-    this.documentId = documentId;
   }
 
   /**
@@ -117,7 +102,7 @@ public class UploadPhoto {
   /**
    * @return the tags
    */
-  public List<String> getTags() {
+  public List<Tag> getTags() {
     if (this.tags == null) {
       this.tags = new ArrayList<>();
     }
@@ -127,7 +112,7 @@ public class UploadPhoto {
   /**
    * @param tags the tags to set
    */
-  public void setTags(List<String> tags) {
+  public void setTags(List<Tag> tags) {
     this.tags = tags;
   }
 }

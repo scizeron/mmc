@@ -25,9 +25,9 @@ angular.module('mmcApp', [
    templateUrl: 'views/music/view.html',
    controller: 'musicEditViewCtrl'
   }).
-  when('/admin', {
-   templateUrl: 'views/admin.html',
-   controller: 'adminCtrl'
+  when('/admin_img', {
+   templateUrl: 'views/admin/img.html',
+   controller: 'adminImgCtrl'
   }).
   otherwise({
    redirectTo: '/home'

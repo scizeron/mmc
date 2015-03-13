@@ -20,9 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotoList;
+import com.stfciz.mmc.core.CoreConfiguration;
 import com.stfciz.mmc.core.photo.PhotoManager;
 import com.stfciz.mmc.core.photo.dao.FlickrApi;
-import com.stfciz.mmc.web.api.music.ApiConverter;
+import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
 import com.stfciz.mmc.web.oauth2.Permission;
 import com.stfciz.mmc.web.oauth2.UserRole;
@@ -38,7 +39,10 @@ public class PhotoController {
   private static final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
   
   @Autowired
-  private ApiConverter converter;
+  private CoreConfiguration coreConfiguration;
+
+  @Autowired
+  private PhotoApiConverter converter;
   
   @Autowired
   private PhotoManager photoManager;
@@ -51,15 +55,20 @@ public class PhotoController {
   public String get() throws FlickrException {
     return String.valueOf(this.flickrApi.getPhotosetCount());
   }
-
+  
   @RequestMapping(value = "/photosets/{id}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
   @Permission(scopes={OAuth2ScopeApi.READ})
-  public List<com.stfciz.mmc.web.api.Photo> getPhotos(@PathVariable(value = "id") String id,
+  public List<com.stfciz.mmc.web.api.photo.Photo> getPhotos(@PathVariable(value = "id") String id,
       @RequestParam(value = "perPage", required = false) Integer perPage, @RequestParam(value = "page", required = false) Integer page) throws FlickrException {
     try {
-      PhotoList<Photo> photos = this.flickrApi.getPhotos(id, perPage, page);
+      PhotoList<Photo> photos = null;
+      if ("appgallery".equals(id)) {
+        photos = this.flickrApi.getPhotos(this.coreConfiguration.getFlickr().getAppGalleryId(), perPage, page);
+      } else {
+        photos = this.flickrApi.getPhotos(id, perPage, page);
+      }
       ListIterator<Photo> photosIt = photos.listIterator();
-      List<com.stfciz.mmc.web.api.Photo> result = new ArrayList<com.stfciz.mmc.web.api.Photo>(photos.getTotal());
+      List<com.stfciz.mmc.web.api.photo.Photo> result = new ArrayList<com.stfciz.mmc.web.api.photo.Photo>(photos.getTotal());
       while (photosIt.hasNext()) {
         result.add(this.converter.convertPhotoDomain(photosIt.next()));
       }

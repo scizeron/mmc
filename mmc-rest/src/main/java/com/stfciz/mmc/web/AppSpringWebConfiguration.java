@@ -23,8 +23,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.stfciz.mmc.web.controller.CorsFilter;
 import com.stfciz.mmc.web.oauth2.OAuth2Filter;
@@ -54,13 +52,6 @@ import com.stfciz.mmc.web.oauth2.PermissionAspect;
 public class AppSpringWebConfiguration {
   
   private static final String [] FILTER_URL_PATTERNS = {"/*"};
-
-  @Bean
-  public MultipartResolver multipartResolver() {
-    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-    multipartResolver.setMaxUploadSize(-1);
-    return multipartResolver;
-  }
  
   @Bean 
   public FilterRegistrationBean getCORSFilter(CorsFilter filter) {

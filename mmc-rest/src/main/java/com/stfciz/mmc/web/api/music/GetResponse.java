@@ -1,14 +1,18 @@
 package com.stfciz.mmc.web.api.music;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * 
  * @author stfciz
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class GetResponse {
 
   private String            id;
@@ -57,7 +61,7 @@ public class GetResponse {
   
   private String            purchaseContext;
   
-  private List<String>      imageUrls;
+  private List<Map<String,String>> images;
   
   public String getTitle() {
     return this.title;
@@ -235,22 +239,19 @@ public class GetResponse {
     this.purchaseContext = purchaseContext;
   }
 
-  public List<String> getImageUrls() {
-    if ( this.imageUrls == null) {
-      this.imageUrls = new ArrayList<>();
-    }
-    return this.imageUrls;
-  }
-
-  public void setImageUrls(List<String> imageUrls) {
-    this.imageUrls = imageUrls;
-  }
-
   public String getId() {
     return this.id;
   }
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public List<Map<String, String>> getImages() {
+    return this.images;
+  }
+
+  public void setImages(List<Map<String, String>> images) {
+    this.images = images;
   }
 }

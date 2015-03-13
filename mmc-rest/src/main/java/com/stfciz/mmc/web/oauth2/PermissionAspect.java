@@ -45,7 +45,7 @@ public class PermissionAspect {
     String clientId = OAuth2Context.get().getClientId();
     
     if (StringUtils.isBlank(accessToken) || StringUtils.isBlank(clientId)) {
-      throw new PermissionException("Missing parameters", 401);
+      throw new PermissionException("Missing parameters : client_id and/or access_token", 401);
     }
     
     String method = ((MethodSignature)pjp.getSignature()).getMethod().getName();

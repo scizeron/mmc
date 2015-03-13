@@ -72,11 +72,11 @@ angular.module('mmcApp')
   );
  };
  
- function addImage(id, image, onSuccessCallback, onErrorCallack) {
-  var uri = env.get('api.url') + '/music/md' + '/' + id + '/images';
-  utils.debug('upload uri: ' + uri);
+ function uploadPhoto(id, file, onSuccessCallback, onErrorCallack) {
+  var uri = env.get('api.url') + '/music/md/' + id + '/photos';
+  utils.debug('upload uri: ' + uri + ', file:' + file.name);
   var fd = new FormData();
-  fd.append('file', image); 
+  fd.append('file', file); 
   $http.post(uri + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id')), fd, {
 	transformRequest: angular.identity,
 	headers: {
@@ -84,6 +84,7 @@ angular.module('mmcApp')
 	 ,'Authorization': 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken')
 	 }
    }).success(function(status) {
+	utils.debug('status: ' + status);   
 	onSuccessCallback();
    }).error(function(status) {
 	utils.error('status: ' + status);
@@ -96,7 +97,7 @@ angular.module('mmcApp')
   getDoc: getDoc,
   addDoc: addDoc,
   updateDoc: updateDoc,
-  addImage: addImage
+  uploadPhoto: uploadPhoto
  }
  
 }]);

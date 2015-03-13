@@ -14,6 +14,8 @@ function ($scope, $http, $location, userService, musicService, utils) {
   app.jumbotron = {show: true};
  }
  
+ $scope.navbarMenuAdmin=userService.isAdmin();
+ 
  $scope.$on('authenticated.user', function(event, user) {
   webUtils.debug('on "authenticated.user" : ' + user.toString());	 
   $scope.userDisplay = user.firstName + ' ' + user.lastName;
