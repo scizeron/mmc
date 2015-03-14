@@ -15,54 +15,56 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class GetResponse {
 
-  private String            id;
-  
-  private String            title;
+  private String id;
 
-  private String            artist;
+  private String title;
 
-  private boolean           promo;
-  
-  private String            origin;
+  private String artist;
 
-  private String            serialNumber;
+  private boolean promo;
 
-  private Integer           edition;
+  private String origin;
 
-  private Integer           issue;
+  private String serialNumber;
 
-  private String            mainType;
-  
-  private String            obiColor;
+  private Integer edition;
 
-  private String            obiPos;
-  
-  private String            nbType;
+  private Integer issue;
 
-  private Integer           pubNum;
+  private String mainType;
 
-  private Integer           pubTotal;
+  private String obiColor;
 
-  private String            recordCompany;
+  private String obiPos;
 
-  private String            label;
-  
-  private String            sleeveGrade;
-  
-  private String            recordGrade;
+  private String nbType;
 
-  private String            comment;
-  
-  private Date              purchaseDate;
-  
-  private Integer           purchasePrice;
-  
-  private String            purchaseVendor;
-  
-  private String            purchaseContext;
-  
-  private List<Map<String,String>> images;
-  
+  private Integer pubNum;
+
+  private Integer pubTotal;
+
+  private String recordCompany;
+
+  private String label;
+
+  private String sleeveGrade;
+
+  private String recordGrade;
+
+  private String comment;
+
+  private Date purchaseDate;
+
+  private Integer purchasePrice;
+
+  private String purchaseVendor;
+
+  private String purchaseContext;
+
+  private Date lastModified;
+
+  private List<Map<String, String>> images;
+
   public String getTitle() {
     return this.title;
   }
@@ -253,5 +255,13 @@ public class GetResponse {
 
   public void setImages(List<Map<String, String>> images) {
     this.images = images;
+  }
+
+  public Date getLastModified() {
+    return this.lastModified;
+  }
+
+  public void setLastModified(Date lastModified) {
+    this.lastModified = lastModified;
   }
 }

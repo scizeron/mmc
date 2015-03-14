@@ -21,7 +21,7 @@
     <td>{{fileItem.file.size/1024/1024|number:2 }} MB</td>
     <td>
      <span class="glyphicon glyphicon-question-sign" ng-show="fileItem.status == 'i'"></span>
-     <span class="glyphicon glyphicon-adjust" ng-show="fileItem.status == 'p'"> loading ...</span>
+     <span class="glyphicon glyphicon-adjust" ng-show="fileItem.status == 'p'">in progress ...</span>
      <span class="glyphicon glyphicon-remove-sign" ng-show="fileItem.status == 'e'"></span>
      <span class="glyphicon glyphicon-ok-sign" ng-show="fileItem.status == 'o'"></span>
     </td>

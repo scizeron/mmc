@@ -1,15 +1,20 @@
 <div class="container-fluid">
-	<img ng-src="{{mainImage.m}}" class="doc"/>
-	<h1>{{doc.title}}
-  <div class="btn-group" style="float: right;">
-   <button type="button" ng-click="gotoFind()" type="button" class="btn">Back</button>
-   <button ng-click="gotoEdit()" ng-show="canEdit" type="button" class="btn btn-primary">Edit</button>
-  </div>
+ <img ng-src="{{mainImage.m}}" class="doc"/>
+ <h1>{{doc.title}}
+	<div class="btn-group" style="float: right;">
+	 <button type="button" ng-click="gotoFind()" type="button" class="btn">Back</button>
+	 <button ng-click="gotoEdit()" ng-show="canEdit" type="button" class="btn btn-primary">Edit</button>
+	</div>
  </h1>
-	<p>{{doc.artist}}</p>
-	<ul class="doc-thumbs">
-	 <li ng-repeat="img in images">
-	  <img ng-src="{{img.t}}" ng-click="setImage(img)">
-	 </li>
-	</ul>
+ <div>
+  <p>{{line1}}</p>
+  <p>{{line2}}</p>
+  <p>{{line3}}</p>
+  <p>{{line4}}</p>
+ </div>
+ <ul class="doc-thumbs">
+	<li ng-repeat="img in images">
+	 <img ng-src="{{img.t}}" ng-click="setImage(img)">
+	</li>
+ </ul>
 </div>

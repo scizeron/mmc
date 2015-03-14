@@ -43,6 +43,7 @@ public class MusicApiConverter {
     target.setIssue(request.getIssue());
     target.setMainType(request.getMainType());
     target.setNbType(request.getNbType());
+    target.setSerialNumber(request.getSerialNumber());
     target.setPubNum(request.getPubNum());
     target.setPubTotal(request.getPubTotal());
     target.setSleeveGrade(request.getSleeveGrade());
@@ -82,11 +83,21 @@ public class MusicApiConverter {
     target.setId(src.getId());
     target.setTitle(src.getTitle());
     target.setArtist(src.getArtist());
+    target.setPromo(src.isPromo());
     target.setEdition(src.getEdition());
+    target.setIssue(src.getIssue());
+    target.setSerialNumber(src.getSerialNumber());
     target.setMainType(src.getMainType());
     target.setNbType(src.getNbType());
+    target.setPubNum(src.getPubNum());
+    target.setPubTotal(src.getPubTotal());
+    target.setSleeveGrade(src.getSleeveGrade());
+    target.setRecordGrade(src.getRecordGrade());
     target.setOrigin(src.getOrigin());
-    target.setModified(src.getModified());
+    if (src.getRecordCompany() != null) {
+      target.setLabel(src.getRecordCompany().getLabel());
+      target.setRecordCompany(src.getRecordCompany().getName());
+    }
     
     if (src.getPhotos() != null && src.getPhotos().size() >= 1) {
       target.setThumbImageUrl(FlickrUtils.getUrls(src.getPhotos().get(0)).get("t"));
@@ -113,6 +124,7 @@ public class MusicApiConverter {
    */
   public GetResponse convertMusicDocumentToGetResponse(MusicDocument src) {
     GetResponse target = new GetResponse();
+    target.setLastModified(src.getModified());
     target.setId(src.getId());
     target.setTitle(src.getTitle());
     target.setArtist(src.getArtist());
@@ -120,6 +132,7 @@ public class MusicApiConverter {
     target.setPromo(src.isPromo());
     target.setEdition(src.getEdition());
     target.setIssue(src.getIssue());
+    target.setSerialNumber(src.getSerialNumber());
     target.setMainType(src.getMainType());
     target.setNbType(src.getNbType());
     target.setPubNum(src.getPubNum());
@@ -127,6 +140,10 @@ public class MusicApiConverter {
     target.setSleeveGrade(src.getSleeveGrade());
     target.setRecordGrade(src.getRecordGrade());
     target.setOrigin(src.getOrigin());
+    if (src.getRecordCompany() != null) {
+      target.setLabel(src.getRecordCompany().getLabel());
+      target.setRecordCompany(src.getRecordCompany().getName());
+    }
     
     if ("JP".equals(src.getOrigin()) && src.getObi() != null && src.getObi().getOrientation() != null) {
       target.setObiColor(src.getObi().getColor());
@@ -138,12 +155,7 @@ public class MusicApiConverter {
       target.setPurchaseContext(src.getPurchase().getContext());
       target.setPurchaseVendor(src.getPurchase().getVendor());     
     }
-    
-    if (src.getRecordCompany() != null) {
-      target.setLabel(src.getRecordCompany().getLabel());
-      target.setRecordCompany(src.getRecordCompany().getName());
-    }
-    
+        
     if (src.getPrices() != null && ! src.getPrices().isEmpty()) {
       // TODO
     }

@@ -1,7 +1,5 @@
 package com.stfciz.mmc.web.api.music;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -12,25 +10,41 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 @JsonInclude(Include.NON_NULL)
 public class FindElement {
-  
+
   private String thumbImageUrl;
-  
+
   private String id;
-  
+
   private String title;
-  
+
   private String artist;
-  
+
+  private boolean promo;
+
+  private String origin;
+
+  private String serialNumber;
+
   private Integer edition;
-  
+
+  private Integer issue;
+
   private String mainType;
 
   private String nbType;
-  
-  private String origin;
 
-  private Date modified;
+  private Integer pubNum;
   
+  private Integer pubTotal;
+
+  private String recordCompany;
+
+  private String label;
+
+  private String sleeveGrade;
+
+  private String recordGrade;
+
   public String getId() {
     return this.id;
   }
@@ -95,11 +109,75 @@ public class FindElement {
     this.origin = origin;
   }
 
-  public Date getModified() {
-    return this.modified;
+  public Integer getIssue() {
+    return this.issue;
   }
 
-  public void setModified(Date modified) {
-    this.modified = modified;
+  public void setIssue(Integer issue) {
+    this.issue = issue;
+  }
+
+  public boolean isPromo() {
+    return this.promo;
+  }
+
+  public void setPromo(boolean promo) {
+    this.promo = promo;
+  }
+
+  public String getSerialNumber() {
+    return this.serialNumber;
+  }
+
+  public void setSerialNumber(String serialNumber) {
+    this.serialNumber = serialNumber;
+  }
+
+  public Integer getPubNum() {
+    return this.pubNum;
+  }
+
+  public void setPubNum(Integer pubNum) {
+    this.pubNum = pubNum;
+  }
+
+  public String getRecordCompany() {
+    return this.recordCompany;
+  }
+
+  public void setRecordCompany(String recordCompany) {
+    this.recordCompany = recordCompany;
+  }
+
+  public String getLabel() {
+    return this.label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
+  }
+
+  public String getSleeveGrade() {
+    return this.sleeveGrade;
+  }
+
+  public void setSleeveGrade(String sleeveGrade) {
+    this.sleeveGrade = sleeveGrade;
+  }
+
+  public String getRecordGrade() {
+    return this.recordGrade;
+  }
+
+  public void setRecordGrade(String recordGrade) {
+    this.recordGrade = recordGrade;
+  }
+
+  public Integer getPubTotal() {
+    return this.pubTotal;
+  }
+
+  public void setPubTotal(Integer pubTotal) {
+    this.pubTotal = pubTotal;
   }
 }
