@@ -16,11 +16,12 @@
 <div class="row">
  <div class="col-md-12">
   <ul class="docs">
-   <li ng-repeat="doc in searchResult.docs | filter:query" class="thumbnail">
-    <a href="#/music_view/{{doc.id}}" class="thumb"><img ng-src="{{doc.thumbImageUrl}}"/></a>
+   <li ng-repeat="doc in docsInfos | filter:query" class="thumbnail">
+    <a href="#/music_view/{{doc.id}}" class="thumb"><img ng-src="{{doc.url}}"/></a>
     <a href="#/music_view/{{doc.id}}" class="thumb">{{doc.title}}</a>
-    <p>{{doc.artist}}</p>
-    <p>{{doc.issue}}</p>
+    <p>{{doc.line1}}</p>
+    <p>{{doc.line2}}</p>
+    <p>{{doc.line3}}</p>
    </li> 
   </ul> 
  </div>
