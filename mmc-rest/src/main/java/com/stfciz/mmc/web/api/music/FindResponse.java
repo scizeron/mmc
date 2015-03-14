@@ -24,7 +24,7 @@ public class FindResponse {
 
   private boolean previous;
 
-  private List<FindElement> docs;
+  private List<FindElementResponse> docs;
 
   public int getPageSize() {
     return this.pageSize;
@@ -66,14 +66,14 @@ public class FindResponse {
     this.previous = previous;
   }
 
-  public List<FindElement> getDocs() {
+  public List<FindElementResponse> getDocs() {
     if (this.docs == null) {
       this.docs = new ArrayList<>();
     }
     return this.docs;
   }
 
-  public void setDocs(List<FindElement> docs) {
+  public void setDocs(List<FindElementResponse> docs) {
     this.docs = docs;
   }
 }

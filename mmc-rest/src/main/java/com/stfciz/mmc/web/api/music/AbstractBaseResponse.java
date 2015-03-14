@@ -11,43 +11,29 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  *
  */
 @JsonInclude(Include.NON_NULL)
-public class FindElement {
-
-  private String thumbImageUrl;
+public class AbstractBaseResponse {
 
   private String id;
-
   private String title;
-
   private String artist;
-
   private boolean promo;
-
   private String origin;
-
   private String serialNumber;
-
   private Integer edition;
-
   private Integer issue;
-
   private String mainType;
-
   private String nbType;
-
   private Integer pubNum;
-  
   private Integer pubTotal;
-
   private String recordCompany;
-
   private String label;
-
   private String sleeveGrade;
-
   private String recordGrade;
-  
   private Date lastModified;
+
+  public AbstractBaseResponse() {
+    super();
+  }
 
   public String getId() {
     return this.id;
@@ -79,14 +65,6 @@ public class FindElement {
 
   public void setEdition(Integer edition) {
     this.edition = edition;
-  }
-
-  public String getThumbImageUrl() {
-    return this.thumbImageUrl;
-  }
-
-  public void setThumbImageUrl(String thumbImageUrl) {
-    this.thumbImageUrl = thumbImageUrl;
   }
 
   public String getMainType() {
@@ -192,4 +170,5 @@ public class FindElement {
   public void setLastModified(Date lastModified) {
     this.lastModified = lastModified;
   }
+
 }

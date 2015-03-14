@@ -38,7 +38,7 @@ public class MusicApiConverterTests {
     // given
     MusicDocument doc = newMusicDocument();
     // when
-    FindElement result = this.apiConverter.convertMusicDocumentToFindDocument(doc);
+    AbstractBaseResponse result = this.apiConverter.convertMusicDocumentToFindDocument(doc);
     // then
     Assert.assertThat(result.getId(), CoreMatchers.notNullValue());
   }
@@ -63,7 +63,7 @@ public class MusicApiConverterTests {
     // given
     MusicDocument doc = newMusicDocument();
     // when
-    FindElement result = this.apiConverter.convertMusicDocumentToFindDocument(doc);
+    AbstractBaseResponse result = this.apiConverter.convertMusicDocumentToFindDocument(doc);
     // then
     Assert.assertThat(result.getId(), CoreMatchers.notNullValue());
   }
