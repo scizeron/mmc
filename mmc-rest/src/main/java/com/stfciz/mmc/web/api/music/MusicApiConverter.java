@@ -80,6 +80,7 @@ public class MusicApiConverter {
    */
   public FindElement convertMusicDocumentToFindDocument(MusicDocument src) {
     FindElement target = new FindElement();
+    target.setLastModified(src.getModified());
     target.setId(src.getId());
     target.setTitle(src.getTitle());
     target.setArtist(src.getArtist());

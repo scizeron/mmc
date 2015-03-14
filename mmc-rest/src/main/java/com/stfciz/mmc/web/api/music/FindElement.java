@@ -1,5 +1,7 @@
 package com.stfciz.mmc.web.api.music;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -44,6 +46,8 @@ public class FindElement {
   private String sleeveGrade;
 
   private String recordGrade;
+  
+  private Date lastModified;
 
   public String getId() {
     return this.id;
@@ -179,5 +183,13 @@ public class FindElement {
 
   public void setPubTotal(Integer pubTotal) {
     this.pubTotal = pubTotal;
+  }
+
+  public Date getLastModified() {
+    return this.lastModified;
+  }
+
+  public void setLastModified(Date lastModified) {
+    this.lastModified = lastModified;
   }
 }

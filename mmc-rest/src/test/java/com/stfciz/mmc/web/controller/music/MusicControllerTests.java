@@ -51,8 +51,8 @@ public class MusicControllerTests extends AbstractWebApplicationTests {
     // then
     FindResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), FindResponse.class);
     Assert.assertThat(response.getDocs().size(), CoreMatchers.is(3));
-    Assert.assertThat(response.getDocs().get(0).getModified().after(response.getDocs().get(1).getModified()), CoreMatchers.is(true));
-    Assert.assertThat(response.getDocs().get(1).getModified().after(response.getDocs().get(2).getModified()), CoreMatchers.is(true));
+    Assert.assertThat(response.getDocs().get(0).getLastModified().after(response.getDocs().get(1).getLastModified()), CoreMatchers.is(true));
+    Assert.assertThat(response.getDocs().get(1).getLastModified().after(response.getDocs().get(2).getLastModified()), CoreMatchers.is(true));
   }
   
   /**
