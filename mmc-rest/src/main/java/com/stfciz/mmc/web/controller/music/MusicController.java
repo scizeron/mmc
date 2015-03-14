@@ -106,8 +106,14 @@ public class MusicController {
   @RequestMapping(value = "/{id}", method = RequestMethod.POST)
   @Permission(scopes = { OAuth2ScopeApi.WRITE})
   public ResponseEntity<GetResponse> update(@PathVariable String id, @RequestBody(required = true) UpdateRequest req) {
-    return new ResponseEntity<GetResponse>(this.apiConverter.convertMusicDocumentToGetResponse(
-          this.repository.save(this.apiConverter.convertUpdateMusicRequestIn(req))), HttpStatus.OK);
+    MusicDocument partialDoc = this.apiConverter.convertUpdateMusicRequestIn(req);
+    // docToUpdate ne contient pas les images, elles seront supprimées si update
+    MusicDocument docToUpdate = this.repository.findOne(id);
+    if (docToUpdate == null) {
+     return new ResponseEntity<GetResponse>(HttpStatus.BAD_REQUEST);  
+    }
+    partialDoc.setPhotos(docToUpdate.getPhotos());
+    return new ResponseEntity<GetResponse>(this.apiConverter.convertMusicDocumentToGetResponse(this.repository.save(partialDoc)), HttpStatus.OK);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
