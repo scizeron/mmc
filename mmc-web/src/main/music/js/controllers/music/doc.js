@@ -137,10 +137,10 @@ function($scope, $rootScope, $http, $location, $routeParams, userService, musicS
  }; 
  
  $scope.remove = function(id) {
-  musicService.remove(id, function() {
-   utils.error("error when removing " + id);
-  })
-  $location.path('/music_list');
+  var callback = function() {
+   $location.path('/music_list');
+  }
+  musicService.remove(id, callback, callback);
  };  
  
 }]);
