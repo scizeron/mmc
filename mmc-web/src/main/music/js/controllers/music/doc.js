@@ -7,7 +7,9 @@ function($scope, $rootScope, $http, $location, $routeParams, userService, musicS
  $scope.action = { 'result' : -1};
  
  if ($location.path().indexOf('/music_edit/') > -1) {
-  $scope.fileItems = [];	 
+  $scope.fileItems = [];
+  $scope.images = [];
+  
   refValues.getCountriesPromise().then(function(data){
    $scope.countries = data;
   });
@@ -24,22 +26,25 @@ function($scope, $rootScope, $http, $location, $routeParams, userService, musicS
   $scope.action.resut = 0;
   $scope.canEdit = userService.userHasRole('WRITE');
   $scope.doc = response;
+
   if ($location.path().indexOf('/music_view/') > -1) {
    if (response.images != null && response.images.length > 0) {
     $scope.mainImage = response.images[0];
     $scope.images = response.images;
    }
-   $scope.line1 = response.artist;
-   $scope.line2 = '';
-   $scope.line3 = '';
-   $scope.line4 = '';
    
-   $scope.line2 = appendToLine($scope.line2, response.issue);
-   $scope.line2 = appendToLine($scope.line2, response.edition, function(value) {
+   $scope.lines = []
+   var line1 = response.artist;
+   var line2 = '';
+   var line3 = '';
+   var line4 = '';
+   
+   line2 = appendToLine(line2, response.issue);
+   line2 = appendToLine(line2, response.edition, function(value) {
 	return 'ed. ' + value;   
    });
-   $scope.line2 = appendToLine($scope.line2, response.origin);
-   $scope.line2 = appendToLine($scope.line2, response.mainType, function(value) {
+   line2 = appendToLine(line2, response.origin);
+   line2 = appendToLine(line2, response.mainType, function(value) {
     if (response.nbType != null && response.nbType > 1) {
      if (response.nbType.indexOf('0') == 0) {
       return response.nbType.substring(1) + ' ' + value; 	 
@@ -50,20 +55,24 @@ function($scope, $rootScope, $http, $location, $routeParams, userService, musicS
     }
    });
   
-   $scope.line2 = appendToLine($scope.line2, response.promo, function(value) {
+   line2 = appendToLine(line2, response.promo, function(value) {
 	return 'promo';   
    });
    
-   $scope.line3 = appendToLine($scope.line3, response.recordCompany);
-   $scope.line3 = appendToLine($scope.line3, response.label);
+   line3 = appendToLine(line3, response.recordCompany);
+   line3 = appendToLine(line3, response.label);
    
-   $scope.line4 = appendToLine($scope.line4, response.serialNumber, function(value) {
+   line4 = appendToLine(line4, response.serialNumber, function(value) {
 	return 'N° ' + value;   
    });
-   $scope.line4 = appendToLine($scope.line4, response.pubNum, function(value) {
+   line4 = appendToLine(line4, response.pubNum, function(value) {
 	return 'Limited Edition : ' + value + '/' + response.pubTotal;   
    });
    
+   $scope.lines.push(line1);
+   $scope.lines.push(line2);
+   $scope.lines.push(line3);
+   $scope.lines.push(line4);
   }
  }, function() {
   $scope.action.resut = 1;	 
@@ -126,5 +135,12 @@ function($scope, $rootScope, $http, $location, $routeParams, userService, musicS
  $scope.gotoFind = function() {
   $location.path('/music_list');
  }; 
+ 
+ $scope.remove = function(id) {
+  musicService.remove(id, function() {
+   utils.error("error when removing " + id);
+  })
+  $location.path('/music_list');
+ };  
  
 }]);

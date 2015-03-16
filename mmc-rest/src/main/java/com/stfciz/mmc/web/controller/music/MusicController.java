@@ -1,5 +1,7 @@
 package com.stfciz.mmc.web.controller.music;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,7 @@ import com.flickr4java.flickr.photos.Photo;
 import com.stfciz.mmc.core.CoreConfiguration;
 import com.stfciz.mmc.core.music.MusicDocumentRepository;
 import com.stfciz.mmc.core.music.domain.MusicDocument;
+import com.stfciz.mmc.core.music.domain.PhotoMusicDocument;
 import com.stfciz.mmc.core.photo.dao.FlickrApi;
 import com.stfciz.mmc.core.photo.dao.UploadPhoto;
 import com.stfciz.mmc.core.photo.domain.Tag;
@@ -34,6 +37,7 @@ import com.stfciz.mmc.web.api.music.UpdateRequest;
 import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
 import com.stfciz.mmc.web.oauth2.Permission;
+import com.stfciz.mmc.web.oauth2.UserRole;
 
 /**
  * 
@@ -126,6 +130,28 @@ public class MusicController {
     return new ResponseEntity<GetResponse>(
         this.apiConverter.convertMusicDocumentToGetResponse(result),
         HttpStatus.OK);
+  }
+  
+  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+  @Permission(scopes = { OAuth2ScopeApi.DELETE}, roles= { UserRole.ADMIN})
+  public ResponseEntity<String> delete(@PathVariable String id) {
+    MusicDocument result = this.repository.findOne(id);
+    if (result == null) {
+      return new ResponseEntity<String>(HttpStatus.OK);
+    }
+    
+    List<PhotoMusicDocument> photos = result.getPhotos();
+    if (photos != null && !photos.isEmpty()) {
+      for (PhotoMusicDocument photo : photos) {
+        try {
+          this.flickrApi.deletePhoto(photo.getId());
+        } catch (FlickrException e) {
+          LOGGER.error("Error when deleting the \'{}\' photo. It wwill become orphan", e);
+        }
+      }
+    }
+    this.repository.delete(id);    
+    return new ResponseEntity<String>((HttpStatus.OK));
   }
 
   @RequestMapping(value = "/{id}/photos", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })

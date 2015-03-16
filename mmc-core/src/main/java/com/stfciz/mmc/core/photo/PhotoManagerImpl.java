@@ -48,7 +48,7 @@ public class PhotoManagerImpl implements PhotoManager {
     try {
       this.flickrApi.deletePhoto(photoId);
     } catch (FlickrException e) {
-      throw new PhotoException("Error when deleting " +photoId, e);
+      throw new PhotoException("Error when deleting " + photoId, e);
     }
   }
 }

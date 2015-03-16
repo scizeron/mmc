@@ -106,12 +106,19 @@ angular.module('mmcApp')
    });  
  };
  
+ function remove(id, onErrorCallack) {
+  var uri = env.get('api.url') + '/music/md/' + id + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id'))
+  $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
+  $http.delete(uri).error(function(data, status, headers, config) { onErrorCallack();});
+ }
+ 
  return { 
   getDocs: getDocs,
   getDoc: getDoc,
   addDoc: addDoc,
   updateDoc: updateDoc,
-  uploadPhoto: uploadPhoto
+  uploadPhoto: uploadPhoto,
+  remove: remove
  }
  
 }]);

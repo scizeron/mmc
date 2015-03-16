@@ -83,7 +83,7 @@ public class PhotoController {
   }
   
   @RequestMapping(value = "/photosets/{id}", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-  @Permission(scopes = {OAuth2ScopeApi.WRITE}, roles = {UserRole.UPLOAD_PHOTO})
+  @Permission(scopes = {OAuth2ScopeApi.WRITE}, roles = {UserRole.WRITE})
   @ResponseStatus(value=HttpStatus.CREATED)
   public void addPhoto(@PathVariable String id, @RequestParam("file") MultipartFile[] files) throws Exception {
     for (MultipartFile file : files) {
@@ -93,7 +93,7 @@ public class PhotoController {
   }   
   
   @RequestMapping(value = "/photo/{id}", method = RequestMethod.DELETE, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-  @Permission(scopes = {OAuth2ScopeApi.WRITE}, roles = {UserRole.DELETE_PHOTO})
+  @Permission(scopes = {OAuth2ScopeApi.WRITE}, roles = {UserRole.ADMIN})
   @ResponseStatus(value=HttpStatus.OK)
   public void deletePhoto(@PathVariable String photoId) throws Exception {
     this.photoManager.deletePhoto(photoId);

@@ -6,5 +6,5 @@ package com.stfciz.mmc.web.oauth2;
  *
  */
 public enum OAuth2ScopeApi {
-  READ, WRITE;
+  READ, WRITE, DELETE;
 }
