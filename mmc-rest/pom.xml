@@ -13,6 +13,7 @@
 
 	<properties>
 		<app.runner.version>1.0.4-SNAPSHOT</app.runner.version>
+		<swagger-springmvc.version>0.9.5</swagger-springmvc.version>
 	</properties>
 
 	<dependencies>
@@ -61,16 +62,33 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.scala-lang</groupId>
-			<artifactId>scala-library</artifactId>
-			<version>2.10.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.neo4j</groupId>
-			<artifactId>neo4j-cypher-compiler-2.1</artifactId>
-			<version>2.1.5</version>
+			<groupId>com.mangofactory</groupId>
+			<artifactId>swagger-springmvc</artifactId>
+			<version>${swagger-springmvc.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jackson-module-scala_2.10</artifactId>
+					<groupId>com.fasterxml.jackson.module</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>scalap</artifactId>
+					<groupId>org.scala-lang</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>scala-compiler</artifactId>
+					<groupId>org.scala-lang</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>oss-jfrog-artifactory</id>
+			<name>oss-jfrog-artifactory-releases</name>
+			<url>http://oss.jfrog.org/artifactory/oss-release-local</url>
+		</repository>
+	</repositories>
 
 	<profiles>
 		<profile>
@@ -101,7 +119,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>travis-ci</id>
+			<id>no-stfciz-deps</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -110,6 +128,6 @@
 					</plugin>
 				</plugins>
 			</build>
-		</profile>		
+		</profile>
 	</profiles>
 </project>
