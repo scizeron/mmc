@@ -1,20 +1,19 @@
 package com.stfciz.mmc.web.api.music;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.stfciz.mmc.core.music.domain.MusicDocument;
 import com.stfciz.mmc.core.music.domain.Obi;
-import com.stfciz.mmc.core.music.domain.PhotoMusicDocument;
 import com.stfciz.mmc.core.music.domain.Purchase;
 import com.stfciz.mmc.core.music.domain.RecordCompany;
-import com.stfciz.mmc.core.photo.flickr.FlickrUtils;
+import com.stfciz.mmc.web.api.photo.Photo;
+import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 
 /**
  * 
@@ -24,6 +23,13 @@ import com.stfciz.mmc.core.photo.flickr.FlickrUtils;
 @Component
 public class MusicApiConverter {
 
+  private PhotoApiConverter photoApiConverter;
+  
+  @Autowired
+  public MusicApiConverter( PhotoApiConverter photoApiConverter) {
+    this.photoApiConverter = photoApiConverter;
+  }
+  
   /**
    * 
    * @param request
@@ -109,8 +115,10 @@ public class MusicApiConverter {
     FindElementResponse target = new FindElementResponse();
     populateAbstractBaseResponseFromMusicDocument(target, src);
     
-    if (src.getPhotos() != null && src.getPhotos().size() >= 1) {
-      target.setThumbImageUrl(FlickrUtils.getUrls(src.getPhotos().get(0)).get("t"));
+    List<Photo> photos = this.photoApiConverter.convertToApiPhotos(src.getPhotos());
+    
+    if (photos != null && photos.size() >= 1) {
+      target.setThumbImageUrl(photos.get(0).getDetails().get("t").getUrl());
     };
     
     return target;
@@ -151,14 +159,8 @@ public class MusicApiConverter {
       // TODO
     }
     
-    if (src.getPhotos() != null && !src.getPhotos().isEmpty()) {
-      List<Map<String,String>> images = new ArrayList<>();
-      for (PhotoMusicDocument photoMusicDocument : src.getPhotos()) {
-        images.add(FlickrUtils.getUrls(photoMusicDocument));
-      }
-      target.setImages(images);
-    }
-    
+    target.setImages(this.photoApiConverter.convertToApiPhotos(src.getPhotos()));
+   
     return target;
   }
 }

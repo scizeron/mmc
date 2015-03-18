@@ -2,7 +2,8 @@ package com.stfciz.mmc.web.api.music;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
+import com.stfciz.mmc.web.api.photo.Photo;
 
 /**
  * 
@@ -25,7 +26,7 @@ public class GetResponse extends AbstractBaseResponse {
 
   private String purchaseContext;
 
-  private List<Map<String, String>> images;
+  private List<Photo> images;
 
   public String getObiColor() {
     return this.obiColor;
@@ -83,11 +84,11 @@ public class GetResponse extends AbstractBaseResponse {
     this.purchaseContext = purchaseContext;
   }
 
-  public List<Map<String, String>> getImages() {
+  public List<Photo> getImages() {
     return this.images;
   }
 
-  public void setImages(List<Map<String, String>> images) {
+  public void setImages(List<Photo> images) {
     this.images = images;
   }
 }

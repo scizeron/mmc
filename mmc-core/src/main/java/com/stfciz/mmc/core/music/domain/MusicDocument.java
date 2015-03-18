@@ -62,7 +62,7 @@ public class MusicDocument {
 
   private String            comment;
 
-  private List<PhotoMusicDocument>       photos;
+  private List<PhotoMusicDocument> photos;
 
   private Purchase          purchase;
 

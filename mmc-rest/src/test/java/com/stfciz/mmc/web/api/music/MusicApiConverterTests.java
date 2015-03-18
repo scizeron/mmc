@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.stfciz.mmc.core.music.domain.MusicDocument;
+import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 /**
  * 
  * @author stfciz
@@ -14,7 +15,7 @@ import com.stfciz.mmc.core.music.domain.MusicDocument;
  */
 public class MusicApiConverterTests {
   
-  private MusicApiConverter apiConverter = new MusicApiConverter();
+  private MusicApiConverter apiConverter = new MusicApiConverter(new PhotoApiConverter());
   
   private MusicDocument newMusicDocument() {
     MusicDocument doc = new MusicDocument();

@@ -2,6 +2,7 @@ package com.stfciz.mmc.core.photo.dao;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -19,6 +20,7 @@ import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.auth.Permission;
 import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotoList;
+import com.flickr4java.flickr.photos.Size;
 import com.flickr4java.flickr.photosets.Photosets;
 import com.flickr4java.flickr.uploader.UploadMetaData;
 import com.flickr4java.flickr.uploader.Uploader;
@@ -81,7 +83,7 @@ public class FlickrApiImpl implements FlickrApi {
       Iterator<Photo> iterator = photos.iterator();
       while (iterator.hasNext()) {
         Photo photo = iterator.next();
-        LOGGER.debug("id:{}, title:{}, url_c:{}", new Object[]{photo.getId(), photo.getTitle(), photo.getMedium800Url()});
+        LOGGER.debug("id:{}, title:{}, url:{}", new Object[]{photo.getId(), photo.getTitle(), photo.getOriginalUrl()});
       }
     } else {
       LOGGER.info("No photo for photoSetId: {}, perPage: {}, page: {}", new Object[]{photoSetId, perPage, page});
@@ -158,6 +160,11 @@ public class FlickrApiImpl implements FlickrApi {
   @Override
   @OAuthContext(Permission.READ_TYPE)
   public Photo getPhoto(String photoId) throws FlickrException {
-    return this.flickrConnect.getFlickr().getPhotosInterface().getPhoto(photoId);
+    Photo photo = this.flickrConnect.getFlickr().getPhotosInterface().getPhoto(photoId);
+    if (photo != null) {
+      Collection<Size> sizes = this.flickrConnect.getFlickr().getPhotosInterface().getSizes(photoId);
+      photo.setSizes(sizes);
+    }
+    return photo;
   }
 }

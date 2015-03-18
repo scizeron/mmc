@@ -1,5 +1,8 @@
 package com.stfciz.mmc.core.music.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * {
@@ -23,7 +26,10 @@ public class PhotoMusicDocument {
   private String serverId;
   
   private Integer order;
-
+  
+  private boolean main;
+  
+  private Map<String,PhotoMusicDocumentSize> sizes = new HashMap<>();
 
   /**
    * 
@@ -95,5 +101,24 @@ public class PhotoMusicDocument {
 
   public void setSecret(String secret) {
     this.secret = secret;
+  }
+
+  public boolean isMain() {
+    return this.main;
+  }
+
+
+  public void setMain(boolean main) {
+    this.main = main;
+  }
+
+
+  public Map<String, PhotoMusicDocumentSize> getSizes() {
+    return this.sizes;
+  }
+
+
+  public void setSizes(Map<String, PhotoMusicDocumentSize> sizes) {
+    this.sizes = sizes;
   }
 }

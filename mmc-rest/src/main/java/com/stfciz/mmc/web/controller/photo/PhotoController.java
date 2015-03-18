@@ -70,7 +70,7 @@ public class PhotoController {
       ListIterator<Photo> photosIt = photos.listIterator();
       List<com.stfciz.mmc.web.api.photo.Photo> result = new ArrayList<com.stfciz.mmc.web.api.photo.Photo>(photos.getTotal());
       while (photosIt.hasNext()) {
-        result.add(this.converter.convertPhotoDomain(photosIt.next()));
+        result.add(this.converter.convertFlickrPhotoToApiPhoto(photosIt.next()));
       }
       return result;
     } catch(FlickrException e ) {
