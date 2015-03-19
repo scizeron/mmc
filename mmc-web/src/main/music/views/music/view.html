@@ -17,17 +17,18 @@
     </div>
    </div>
   </div>
-  <div class="col-md-9">
-   <ul class="images">
-    <li ng-repeat="image in images" ng-mouseover="setCurrentImage($index)">
-     <img ng-src="{{image.details.t.url}}"/>
-    </li>
-   </ul>
+  <div id="gallery" class="col-md-9">
+   <a ng-repeat="image in images" 
+   	  data-image="{{image.details.m.url}}" 
+   	  data-zoom-image="{{image.details.o.url}}" 
+   	  class="elevatezoom-gallery"> 
+    <img ng-src="{{image.details.t.url}}" ng-mouseover="setCurrentImage($index)"/>
+   </a>
   </div>
  </div>
  <div class="row">
   <div class="col-md-offset-3 col-md-9">
-   <img ng-src="{{currentImage.url}}"  ng-mouseover="onImage('over')" ng-mouseleave="onImage('leave')"  style="border: solid;"/>
+	<img id="zoom" ng-elevate-zoom ng-src="{{currentImage.m_url}}" data-zoom-image="{{currentImage.o_url}}"/>
   </div>
  </div>
 </div>

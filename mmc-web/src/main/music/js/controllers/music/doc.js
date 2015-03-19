@@ -24,17 +24,12 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   $scope.types = settings.music.types;
  } else {
   $scope.setCurrentImage = function(index) {
+   utils.debug("currentImage: " + index);
    $scope.currentImagePos = index;
-   $scope.currentImage = {'url' : $scope.images[index].details.m.url};
-  };
-  $scope.onImage = function(eventType) {
-	utils.debug('onImage : ' + eventType + ', currentPos:' + $scope.currentImagePos);
-	var image = $scope.images[$scope.currentImagePos];
-	if ('leave' == eventType) {
-	 $scope.currentImage = {'url' : image.details.m.url};	
-	} else if ('over' == eventType) {
-	 $scope.currentImage = {'url' : image.details.o.url};
-	}
+   $scope.currentImage = {
+	   'm_url' : $scope.images[index].details.m.url,
+	   'o_url' : $scope.images[index].details.o.url
+   };
   };
  }
  
@@ -46,12 +41,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   if ($location.path().indexOf('/music_view/') > -1) {
    if (response.images != null && response.images.length > 0) {
     $scope.images = response.images;
-    $scope.currentImagePos = 0
-    $scope.currentImage = {
-     'url' : $scope.images[0].details.m.url
-    };
-    
-    $scope.slider="<script type=\"text/javascript\">$(document).ready(function(){$(\"#my-als-list\").als();});</script>";
+    $scope.setCurrentImage(0);
    }
    
    $scope.lines = []
@@ -99,10 +89,6 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   $scope.action.resut = 1;	 
  });
 
- $scope.setImage = function(image) {
-  $scope.mainImage = image;
- }; 
- 
  $scope.reset = function() {
   musicService.getDoc($routeParams.musicDocId, function(response) {
    $scope.action.resut = 0;
