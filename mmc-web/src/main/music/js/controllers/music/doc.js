@@ -26,10 +26,22 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   $scope.setCurrentImage = function(index) {
    utils.debug("currentImage: " + index);
    $scope.currentImagePos = index;
-   $scope.currentImage = {
-	   'm_url' : $scope.images[index].details.m.url,
-	   'o_url' : $scope.images[index].details.o.url
-   };
+   var size = $scope.images[index].details.m;
+   var ratioH = 1;
+   var ratioW = 1;
+   var height = size.height;
+   var width = size.width;
+   var heightMax = 400;
+   var widthMax = 400;
+   var ratio = width / widthMax; 
+   height =  height / ratio;
+   width =  width / ratio;
+   utils.debug("ratio: " + ratio + ", " + "height : " + size.height + " => " + height + ", " + "width : " + size.width + " => " + width);
+	   $scope.currentImage = {
+		   'm' : {'url' : $scope.images[index].details.m.url, 'height' : height, 'width' : width},
+		   'o' : {'url' : $scope.images[index].details.o.url}
+	   };
+	   utils.debug("currentImage : " + JSON.stringify( $scope.currentImage ));
   };
  }
  
