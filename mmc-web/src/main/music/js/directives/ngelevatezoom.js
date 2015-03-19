@@ -15,7 +15,7 @@ angular.module('mmcApp').directive('ngElevateZoom', function() {
         if (!attrs.zoomImage) return;
         element.attr('data-zoom-image',attrs.zoomImage);
         //$(element).elevateZoom({'gallery' : 'gallery', 'galleryActiveClass': 'active', 'zoomType': 'inner', 'cursor' : 'crosshair'}); 
-        $(element).elevateZoom({'gallery' : 'gallery', 'galleryActiveClass': 'active', 'zoomType': 'inner', 'cursor' : 'crosshair'});
+        $(element).elevateZoom({'gallery' : 'gallery', 'galleryActiveClass': 'active'});
         // selectionne la premiere image
         $('#gallery a').first().addClass('active');
       }
@@ -24,4 +24,18 @@ angular.module('mmcApp').directive('ngElevateZoom', function() {
 
     }
   };
+});
+
+angular.module('mmcApp').directive('ngElevateZoomLast', function() {
+ return function (scope, element, attrs) {
+  if (scope.$last=== true) {
+   var zoom = $("#zoom");  
+   zoom.ready(function () {
+    console.log("last image, elevateZoom ...");
+    zoom.elevateZoom({'gallery' : 'gallery', 'galleryActiveClass': 'active'}); 
+    // selectionne la premiere image
+    $('#gallery a').first().addClass('active');
+   });
+  }
+ };
 });
