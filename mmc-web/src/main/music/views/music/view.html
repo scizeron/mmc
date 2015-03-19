@@ -1,23 +1,33 @@
 <div class="container-fluid">
- <!--  <img ng-src="{{mainImage.m}}" class="doc"/> -->
- <h1>{{doc.title}}
-  <div class="btn-group" style="float: right;">
-   <button type="button" ng-click="gotoFind()" type="button" class="btn">Back</button>
-   <button ng-click="gotoEdit()" ng-show="canEdit" type="button" class="btn btn-primary">Edit</button>
+ <div class="row">
+  <div class="col-md-12">
+   <h1>{{doc.title}}
+	<div class="btn-group" style="float: right;">
+	 <button type="button" ng-click="gotoFind()" type="button" class="btn">Back</button>
+	 <button ng-click="gotoEdit()" ng-show="canEdit" type="button" class="btn btn-primary">Edit</button>
+	</div>
+   </h1>	
   </div>
- </h1>
- <div style="float: left">
-  <div ng-repeat="line in lines"><p>{{line}}</p></div>
  </div>
- <div style="float: left; margin-left: 50px; width: 100px;">
-  <carousel interval="slideInterval">
-	 <slide ng-repeat="image in images" active="slide.active">
-	  <img ng-src="{{image.t}}" ng-mouseover="setImage(image)">
-	 </slide>
-  </carousel>
+ <div class="row">
+  <div class="col-md-3">
+   <div class="row" ng-repeat="line in lines">
+    <div class="col-md-12">
+     <p>{{line}}</p>
+    </div>
+   </div>
+  </div>
+  <div class="col-md-9">
+   <ul class="images">
+    <li ng-repeat="image in images" ng-mouseover="setCurrentImage($index)">
+     <img ng-src="{{image.details.t.url}}"/>
+    </li>
+   </ul>
+  </div>
  </div>
- <div style="clear:both;">
-  <img ng-src="{{mainImage.m}}" />
- </div>  
+ <div class="row">
+  <div class="col-md-offset-3 col-md-9">
+   <img ng-src="{{currentImage.url}}"  ng-mouseover="onImage('over')" ng-mouseleave="onImage('leave')"  style="border: solid;"/>
+  </div>
  </div>
 </div>

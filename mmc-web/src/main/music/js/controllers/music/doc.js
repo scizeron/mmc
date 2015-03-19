@@ -1,14 +1,16 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('musicEditViewCtrl', ['$scope', '$rootScope', '$http', '$location', '$routeParams','userService', 'musicService', 'refValues', 'utils', 
-function($scope, $rootScope, $http, $location, $routeParams, userService, musicService, refValues, utils) {
+.controller('musicEditViewCtrl', ['$document', '$scope', '$rootScope', '$http', '$location', '$routeParams','userService', 'musicService', 'refValues', 'utils', 
+function($document, $scope, $rootScope, $http, $location, $routeParams, userService, musicService, refValues, utils) {
  
  $scope.action = { 'result' : -1};
+ $scope.images = [];
+ $scope.currentImage = null;
+ $scope.currentImagePos = 0;
  
  if ($location.path().indexOf('/music_edit/') > -1) {
   $scope.fileItems = [];
-  $scope.images = [];
   
   refValues.getCountriesPromise().then(function(data){
    $scope.countries = data;
@@ -20,6 +22,20 @@ function($scope, $rootScope, $http, $location, $routeParams, userService, musicS
   $scope.years = refValues.getYears();
   $scope.defaultMusicCountry = settings.music.defaultCountry;
   $scope.types = settings.music.types;
+ } else {
+  $scope.setCurrentImage = function(index) {
+   $scope.currentImagePos = index;
+   $scope.currentImage = {'url' : $scope.images[index].details.m.url};
+  };
+  $scope.onImage = function(eventType) {
+	utils.debug('onImage : ' + eventType + ', currentPos:' + $scope.currentImagePos);
+	var image = $scope.images[$scope.currentImagePos];
+	if ('leave' == eventType) {
+	 $scope.currentImage = {'url' : image.details.m.url};	
+	} else if ('over' == eventType) {
+	 $scope.currentImage = {'url' : image.details.o.url};
+	}
+  };
  }
  
  musicService.getDoc($routeParams.musicDocId, function(response) {
@@ -29,8 +45,13 @@ function($scope, $rootScope, $http, $location, $routeParams, userService, musicS
 
   if ($location.path().indexOf('/music_view/') > -1) {
    if (response.images != null && response.images.length > 0) {
-    $scope.mainImage = response.images[0];
     $scope.images = response.images;
+    $scope.currentImagePos = 0
+    $scope.currentImage = {
+     'url' : $scope.images[0].details.m.url
+    };
+    
+    $scope.slider="<script type=\"text/javascript\">$(document).ready(function(){$(\"#my-als-list\").als();});</script>";
    }
    
    $scope.lines = []
