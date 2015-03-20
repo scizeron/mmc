@@ -15,9 +15,10 @@ angular.module('mmcApp').directive('ngElevateZoom', function() {
         if (!attrs.zoomImage) return;
         element.attr('data-zoom-image',attrs.zoomImage);
         //$(element).elevateZoom({'gallery' : 'gallery', 'galleryActiveClass': 'active', 'zoomType': 'inner', 'cursor' : 'crosshair'}); 
-        $(element).elevateZoom({'gallery' : 'gallery', 'galleryActiveClass': 'active'});
+        //$(element).elevateZoom({'gallery' : 'gallery', 'galleryActiveClass': 'active'});
+        
         // selectionne la premiere image
-        $('#gallery a').first().addClass('active');
+        //$('#gallery a').first().addClass('active');
       }
 
       linkElevateZoom();

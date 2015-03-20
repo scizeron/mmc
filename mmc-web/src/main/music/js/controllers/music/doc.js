@@ -5,9 +5,7 @@ angular.module('mmcApp')
 function($document, $scope, $rootScope, $http, $location, $routeParams, userService, musicService, refValues, utils) {
  
  $scope.action = { 'result' : -1};
- $scope.images = [];
- $scope.currentImage = null;
- $scope.currentImagePos = 0;
+
  
  if ($location.path().indexOf('/music_edit/') > -1) {
   $scope.fileItems = [];
@@ -22,35 +20,41 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   $scope.years = refValues.getYears();
   $scope.defaultMusicCountry = settings.music.defaultCountry;
   $scope.types = settings.music.types;
+ 
  } else {
-  $scope.setCurrentImage = function(index) {
-   utils.debug("currentImage: " + index);
-   $scope.currentImagePos = index;
-   var size = $scope.images[index].details.m;
-   var ratioH = 1;
-   var ratioW = 1;
-   var height = size.height;
-   var width = size.width;
-   var heightMax = 400;
-   var widthMax = 400;
-   var ratio = width / widthMax; 
-   height =  height / ratio;
-   width =  width / ratio;
-   utils.debug("ratio: " + ratio + ", " + "height : " + size.height + " => " + height + ", " + "width : " + size.width + " => " + width);
+   $scope.images = [];
+   $scope.currentImage = null;
+   $scope.currentImagePos = 0;
+   
+   $scope.setCurrentImage = function(index) {
+    utils.debug("currentImage: " + index);
+    $scope.currentImagePos = index;
+    var size = $scope.images[index].details.m;
+    var ratioH = 1;
+    var ratioW = 1;
+    var height = size.height;
+    var width = size.width;
+    var heightMax = 400;
+    var widthMax = 400;
+    var ratio = width / widthMax; 
+    height =  height / ratio;
+    width =  width / ratio;
+    utils.debug("ratio: " + ratio + ", " + "height : " + size.height + " => " + height + ", " + "width : " + size.width + " => " + width);
 	   $scope.currentImage = {
 		   'm' : {'url' : $scope.images[index].details.m.url, 'height' : height, 'width' : width},
 		   'o' : {'url' : $scope.images[index].details.o.url}
 	   };
 	   utils.debug("currentImage : " + JSON.stringify( $scope.currentImage ));
-  };
+   };
  }
  
  musicService.getDoc($routeParams.musicDocId, function(response) {
   $scope.action.resut = 0;
-  $scope.canEdit = userService.userHasRole('WRITE');
   $scope.doc = response;
 
   if ($location.path().indexOf('/music_view/') > -1) {
+   $scope.canEdit = userService.userHasRole('WRITE');
+
    if (response.images != null && response.images.length > 0) {
     $scope.images = response.images;
     $scope.setCurrentImage(0);

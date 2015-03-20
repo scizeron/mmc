@@ -10,21 +10,21 @@
    </h1>
   </div>
   <tabset>
-	  <tab heading="General">
-	   <div style="padding-top: 15px"></div>
-     <ng-include src="'views/music/p_general.html'"></ng-include>
-	  </tab>
-	  <tab heading="Purchase">
-     <div style="padding-top: 15px"></div>
-     <ng-include src="'views/music/p_purchase.html'"></ng-include>
-	  </tab>
-	  <tab heading="Photos">
-	   <div style="padding-top: 15px"></div>
-	   <ng-include src="'views/music/p_photos.html'"></ng-include>
-	  </tab>
-	 </tabset>
+   <tab heading="General">
+	<div style="padding-top: 15px"></div>
+    <ng-include src="'views/music/p_general.html'"></ng-include>
+    <div style="float: right;">
+     <button type="button" class="btn btn-danger" ng-click="remove(doc.id)">Delete</button>
+    </div>
+   </tab>
+   <tab heading="Purchase">
+    <div style="padding-top: 15px"></div>
+    <ng-include src="'views/music/p_purchase.html'"></ng-include>
+   </tab>
+   <tab heading="Photos">
+    <div style="padding-top: 15px"></div>
+	<ng-include src="'views/music/p_photos.html'"></ng-include>
+   </tab>
+  </tabset>
  </form>
- <div>
-  <button type="button" class="btn btn-danger" style="float: right;" ng-click="remove(doc.id)">Delete</button>
- </div>
 </div>

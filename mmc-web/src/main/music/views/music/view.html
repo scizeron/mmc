@@ -1,85 +1,38 @@
-<div class="container-fluid">
- <div class="row">
-  <div class="col-md-5">
-<!--    <div style="font-style: left; border: 1px solid black; margin-right: 3em; margin-bottom: 2em; width: {{currentImage.m.width}}px; height: {{currentImage.m.height}}px">  -->
-<!--    	</div> -->
-   <img ng-elevate-zoom ng-src="{{currentImage.m.url}}" data-zoom-image="{{currentImage.o.url}}" 
+<div class="row">
+ <div class="col-md-5">
+  <img ng-elevate-zoom ng-src="{{currentImage.m.url}}" data-zoom-image="{{currentImage.o.url}}" 
    height="{{currentImage.m.height}}" width="{{currentImage.m.width}}"
-   style="font-style: left; border: 1px solid black; margin-right: 3em; margin-bottom: 2em;"/>
+   style="border: 1px solid black; margin-right: 3em; margin-bottom: 2em; background-color: white"/>
+ </div>
+ <div class="col-md-7"> 
+  <div class="row">
+   <div class="col-md-12">
+    <h1>{{doc.title}}
+  <div class="btn-group" style="float: right;">
+   <button type="button" ng-click="gotoFind()" type="button" class="btn">Back</button>
+   <button ng-click="gotoEdit()" ng-show="canEdit" type="button" class="btn btn-primary">Edit</button>
   </div>
-  <div class="col-md-7"> 
-   <div class="row">
-    <div class="col-md-12">
-     <h1>{{doc.title}}
-	  <div class="btn-group" style="float: right;">
-	   <button type="button" ng-click="gotoFind()" type="button" class="btn">Back</button>
-	   <button ng-click="gotoEdit()" ng-show="canEdit" type="button" class="btn btn-primary">Edit</button>
-	  </div>
-     </h1>
-    </div>
+    </h1>
    </div>
-   <div class="row">
-    <div class="col-md-12" ng-repeat="line in lines">
-     <p>{{line}}</p>
-   	</div>
-   </div>
-   <!--  reste le probleme du ng-mouseover -->
-   <div class="row">
-    <div id="gallery" class="col-md-12">
-   	 <ul class="images">
-	  <li ng-repeat="image in images">
-	   <a data-image="{{image.details.m.url}}" 
-	     data-zoom-image="{{image.details.o.url}}" 
-	     class="elevatezoom-gallery"> 
-	    <img ng-src="{{image.details.t.url}}" ng-mouseover="setCurrentImage($index)"/>
-	   </a>
-      </li>
-     </ul>
-    </div>
+  </div>
+  <div class="row">
+   <div class="col-md-12" ng-repeat="line in lines">
+    <p>{{line}}</p>
+  	</div>
+  </div>
+  <!--  reste le probleme du ng-mouseover -->
+  <div class="row">
+   <div id="gallery" class="col-md-12">
+  	 <ul class="images">
+  <li ng-repeat="image in images">
+   <a data-image="{{image.details.m.url}}" 
+     data-zoom-image="{{image.details.o.url}}" 
+     class="elevatezoom-gallery"> 
+    <img ng-src="{{image.details.t.url}}" ng-mouseover="setCurrentImage($index)"/>
+   </a>
+     </li>
+    </ul>
    </div>
   </div>
  </div>
 </div>
-  
-  
-<!--   <div> -->
-<!--    	<div class="col-md-12" ng-repeat="line in lines"> -->
-<!--      <p>{{line}}</p> -->
-<!--  	</div> -->
-<!--     </div> -->
-<!--    	<div id="gallery" style="float: left;"> -->
-<!--    	 <ul class="images"> -->
-<!-- 	   <li ng-repeat="image in images" > -->
-<!-- 	   <a data-image="{{image.details.m.url}}"  -->
-<!-- 	   	  data-zoom-image="{{image.details.o.url}}"  -->
-<!-- 	   	  class="elevatezoom-gallery">  -->
-<!-- 	    <img ng-src="{{image.details.t.url}}" ng-mouseover="setCurrentImage($index)"/> -->
-<!-- 	   </a> -->
-	   
-<!-- 	       </li> -->
-<!--    </ul> -->
-	   
-<!--   </div> -->
-<!--    </div> -->
-<!--   </div> -->
-  
-<!--  </div> -->
-<!--  <div class="row"> -->
-<!--   <div class="col-md-3"> -->
-<!--    <div class="row" ng-repeat="line in lines"> -->
-<!--     <div class="col-md-12"> -->
-<!--      <p>{{line}}</p> -->
-<!--     </div> -->
-<!--    </div> -->
-<!--   </div> -->
-<!--   <div id="gallery" class="col-md-9"> -->
-<!--    <a ng-repeat="image in images"  -->
-<!--    	  data-image="{{image.details.m.url}}"  -->
-<!--    	  data-zoom-image="{{image.details.o.url}}"  -->
-<!--    	  class="elevatezoom-gallery">  -->
-<!--     <img ng-src="{{image.details.t.url}}" ng-mouseover="setCurrentImage($index)"/> -->
-<!--    </a> -->
-<!--   </div> -->
-<!--  </div> -->
-
-<!-- </div> -->

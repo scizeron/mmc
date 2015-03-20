@@ -12,17 +12,21 @@
  <label class="control-label col-md-2" for="mainType">Format</label>
  <div class="col-md-2">
   <select class="form-control" id="mainType" name="mainType" ng-model="doc.mainType">
-   <option ng-repeat="type in types" ng-selected="type == 'LP'">{{type}}</option>
+   <option></option>
+   <option ng-repeat="type in types">{{type}}</option>
   </select>
  </div>
  <label class="control-label col-md-1" for="nbType">Nb</label>
  <div class="col-md-2">          
   <select class="form-control" id="nbType" name="nbType" ng-model="doc.nbType">
-   <option ng-repeat="nbType in nbTypeRange" ng-selected="nbType == '01'">{{nbType}}</option>
+   <option ng-repeat="nbType in nbTypeRange">{{nbType}}</option>
+  </select>
   </select>
  </div>
- <label class="control-label col-md-1" for="promo">Promo</label>
- <div class="col-md-1 checkbox">
+</div>
+<div class="form-group">
+ <label class="control-label col-md-2" for="promo">Promo</label>
+ <div class="col-md-2 checkbox">
   <input type="checkbox" id="promo" name="promo" ng-model="doc.promo">
  </div>
 </div>

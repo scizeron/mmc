@@ -20,15 +20,18 @@ function ($scope, musicService, userService) {
    
    for (idxDoc in response.docs) {
 	 var doc = response.docs[idxDoc];
-	 var docInfos = {'id' : doc.id, 'url' : doc.thumbImageUrl, 'title' : doc.title, 'line1' : '', 'line2' : '', 'line3' : ''};
+	 var lines = [];
+	 var docInfos = {'id' : doc.id, 'url' : doc.thumbImageUrl, 'title' : doc.title
+			 , 'line1' : '', 'line2' : '', 'line3' : '', 'line4' : ''};
 	 $scope.docsInfos.push(docInfos);
 	 
-	 docInfos.line1 = appendToLine(docInfos.line1, doc.issue);
-	 docInfos.line1 = appendToLine(docInfos.line1, doc.edition, function(value) {
+	 docInfos.line1 = doc.artist;
+	 docInfos.line2 = appendToLine(docInfos.line2, doc.issue);
+	 docInfos.line2 = appendToLine(docInfos.line2, doc.edition, function(value) {
 	  return 'ed. ' + value;   
      });
-	 docInfos.line1 = appendToLine(docInfos.line1, doc.origin);
-	 docInfos.line1 = appendToLine(docInfos.line1, doc.mainType, function(value) {
+	 docInfos.line2 = appendToLine(docInfos.line2, doc.origin);
+	 docInfos.line2 = appendToLine(docInfos.line2, doc.mainType, function(value) {
 	  if (doc.nbType != null && doc.nbType > 1) {
        if (doc.nbType.indexOf('0') == 0) {
         return doc.nbType.substring(1) + ' ' + value; 	 
@@ -39,17 +42,17 @@ function ($scope, musicService, userService) {
       }
      });
   
-	 docInfos.line1 = appendToLine(docInfos.line1, doc.promo, function(value) {
+	 docInfos.line2 = appendToLine(docInfos.line2, doc.promo, function(value) {
 	  return 'promo';   
      });
    
-	 docInfos.line2 = appendToLine(docInfos.line2, doc.recordCompany);
-	 docInfos.line2 = appendToLine(docInfos.line2, doc.label);
+	 docInfos.line3 = appendToLine(docInfos.line3, doc.recordCompany);
+	 docInfos.line3 = appendToLine(docInfos.line3, doc.label);
    
-	 docInfos.line3 = appendToLine(docInfos.line3, doc.serialNumber, function(value) {
+	 docInfos.line4 = appendToLine(docInfos.line4, doc.serialNumber, function(value) {
 	  return 'N° ' + value;   
      });
-	 docInfos.line3 = appendToLine(docInfos.line3, doc.pubNum, function(value) {
+	 docInfos.line4 = appendToLine(docInfos.line4, doc.pubNum, function(value) {
 	  return 'Limited Edition : ' + value + '/' + doc.pubTotal;   
      });
    }

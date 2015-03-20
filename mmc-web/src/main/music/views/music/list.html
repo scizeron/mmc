@@ -9,6 +9,8 @@
   <span class="glyphicon glyphicon-filter"></span>
   <input type="text" ng-focus="focus=true" ng-model="query" placeholder="Filter"/>
  </div>
+ <br/>
+ <br/>
  <div class="col-md-8">
   <htmldiv content="navigation"></htmldiv>
  </div>
@@ -16,12 +18,18 @@
 <div class="row">
  <div class="col-md-12">
   <ul class="docs">
-   <li ng-repeat="doc in docsInfos | filter:query" class="thumbnail">
-    <a href="#/music_view/{{doc.id}}" class="thumb"><img ng-src="{{doc.url}}"/></a>
-    <a href="#/music_view/{{doc.id}}" class="thumb">{{doc.title}}</a>
-    <p>{{doc.line1}}</p>
-    <p>{{doc.line2}}</p>
-    <p>{{doc.line3}}</p>
+   <li ng-repeat="docInfos in docsInfos | filter:query" class="thumbnail">
+    <a href="#/music_view/{{docInfos.id}}" class="thumb"><img ng-src="{{docInfos.url}}"/></a>
+    <a href="#/music_view/{{docInfos.id}}" class="thumb">{{docInfos.title}}</a>
+    <div style="float: left;"">
+     <p>{{docInfos.line1}}</p>
+    </div>
+    <br/>
+    <br/>
+    <div style="float: left;" >
+     <p>{{docInfos.line2}}</p>
+     <p>{{docInfos.line3}} - {{docInfos.line4}}</p>
+    </div>
    </li> 
   </ul> 
  </div>
