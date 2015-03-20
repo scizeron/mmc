@@ -34,26 +34,24 @@ import com.stfciz.mmc.web.oauth2.PermissionAspect;
  *
  */
 @Configuration
-@ComponentScan(basePackages={"com.stfciz.mmc"})
-@EnableAspectJAutoProxy(proxyTargetClass=true)
-@EnableElasticsearchRepositories(basePackages={"com.stfciz.mmc"}, elasticsearchTemplateRef="elasticsearchOperations")
-@ImportResource({"classpath:applicationContext-clt-core.xml"})
-@EnableAutoConfiguration(exclude = { 
-    AuditAutoConfiguration.class
-  , CrshAutoConfiguration.class
-  , MetricFilterAutoConfiguration.class
-  , MetricRepositoryAutoConfiguration.class
-  , TraceRepositoryAutoConfiguration.class
-  , TraceWebFilterAutoConfiguration.class
-  , EndpointMBeanExportAutoConfiguration.class // exports de endpoints
-  , ElasticsearchAutoConfiguration.class
-  , ElasticsearchDataAutoConfiguration.class
-})
+@ComponentScan(basePackages = { "com.stfciz.mmc" })
+@EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableElasticsearchRepositories(basePackages = { "com.stfciz.mmc" }, elasticsearchTemplateRef = "elasticsearchOperations")
+@ImportResource({ "classpath:applicationContext-clt-core.xml" })
+@EnableAutoConfiguration(exclude = { AuditAutoConfiguration.class,
+    CrshAutoConfiguration.class,
+    MetricFilterAutoConfiguration.class,
+    MetricRepositoryAutoConfiguration.class,
+    TraceRepositoryAutoConfiguration.class,
+    TraceWebFilterAutoConfiguration.class,
+    EndpointMBeanExportAutoConfiguration.class // exports de endpoints
+    , ElasticsearchAutoConfiguration.class,
+    ElasticsearchDataAutoConfiguration.class })
 public class AppSpringWebConfiguration {
-  
-  private static final String [] FILTER_URL_PATTERNS = {"/*"};
- 
-  @Bean 
+
+  private static final String[] FILTER_URL_PATTERNS = { "/*" };
+
+  @Bean
   public FilterRegistrationBean getCORSFilter(CorsFilter filter) {
     FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
     registrationBean.setUrlPatterns(Arrays.asList(FILTER_URL_PATTERNS));
@@ -61,8 +59,8 @@ public class AppSpringWebConfiguration {
     registrationBean.setOrder(1);
     return registrationBean;
   }
-  
-  @Bean 
+
+  @Bean
   public FilterRegistrationBean getOAuth2Filter(OAuth2Filter filter) {
     FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
     registrationBean.setUrlPatterns(Arrays.asList(FILTER_URL_PATTERNS));
@@ -70,15 +68,16 @@ public class AppSpringWebConfiguration {
     registrationBean.setOrder(2);
     return registrationBean;
   }
-  
+
   @Bean
   public ElasticsearchOperations elasticsearchOperations(Client client) {
     return new ElasticsearchTemplate(client);
   }
-  
-  @Bean 
+
+  @Bean
   @Profile("!test")
   public PermissionAspect permissionAspect() {
     return new PermissionAspect();
   }
+
 }

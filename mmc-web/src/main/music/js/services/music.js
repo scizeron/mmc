@@ -51,7 +51,7 @@ angular.module('mmcApp')
   $http.post(env.get('api.url') + '/music/md/' + doc.id  + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id')),JSON.stringify(doc)).
    success(function(data, status) {
 	utils.debug('update ' + JSON.stringify(doc));
-	sessionStorage.removeItem('md');
+	clearCachedDoc();
 	onSuccessCallback(data.id);
    }).error(function(data, status) {
 	utils.error('update error, status: ' + status);
@@ -59,26 +59,41 @@ angular.module('mmcApp')
    });  
  }; 
  
- function getDoc(id, onSuccessCallback, onErrorCallack) {
+ function putDocInCache(doc) {
+  sessionStorage.setItem('md', JSON.stringify(doc));
+ }
+ 
+ function getCachedDoc(id) {
   var jsonItem = sessionStorage.getItem('md');
-   
   if (jsonItem != null) {
-   var doc = JSON.parse(jsonItem);  
-   if (doc.id == id) {
-	utils.debug('get "' + id + '" in session cache : ' + jsonItem);
-    onSuccessCallback(doc);
+   return {'doc': JSON.parse(jsonItem), 'json': jsonItem};
+  }
+  return null;
+ }
+ 
+ function clearCachedDoc() {
+  sessionStorage.removeItem('md');	 
+ }
+ 
+ function getDoc(id, onSuccessCallback, onErrorCallack) {
+  var item = getCachedDoc(id);
+   
+  if (item != null) {
+   if (item.doc.id == id) {
+	utils.debug('get "' + id + '" in session cache : ' + item.json);
+    onSuccessCallback(item.doc);
     return;
    }
-   sessionStorage.removeItem('md');
+   clearCachedDoc();
   }
   
   var uri = env.get('api.url') + '/music/md' + '/' + id + '?client_id=' + encodeURIComponent(env.get('oauth2.client_id'));
   $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
   $http.get(uri).
-   success(function(response) {
-	utils.debug('get: '+ JSON.stringify(response)); 
-	sessionStorage.setItem('md', JSON.stringify(response))
-	onSuccessCallback(response);
+   success(function(doc) {
+	utils.debug('get: '+ JSON.stringify(doc)); 
+	putDocInCache(doc);
+	onSuccessCallback(doc);
    }).error(function(data, status, headers, config) {
     utils.error('get error, status: ' + status);
     onErrorCallack();
@@ -97,9 +112,11 @@ angular.module('mmcApp')
 	  'Content-Type': undefined
 	 ,'Authorization': 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken')
 	 }
-   }).success(function(status) {
-	utils.debug('status: ' + status);   
-	onSuccessCallback();
+   }).success(function(photo, status) {
+	var doc = getCachedDoc(id).doc;
+	doc.images.push(photo);
+	putDocInCache(doc);
+	onSuccessCallback(photo);
    }).error(function(status) {
 	utils.error('status: ' + status);
 	onErrorCallack();
@@ -115,6 +132,9 @@ angular.module('mmcApp')
  return { 
   getDocs: getDocs,
   getDoc: getDoc,
+  getCachedDoc : getCachedDoc,
+  clearCachedDoc : clearCachedDoc,
+  putDocInCache : putDocInCache,
   addDoc: addDoc,
   updateDoc: updateDoc,
   uploadPhoto: uploadPhoto,

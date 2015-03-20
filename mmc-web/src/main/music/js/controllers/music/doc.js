@@ -5,10 +5,11 @@ angular.module('mmcApp')
 function($document, $scope, $rootScope, $http, $location, $routeParams, userService, musicService, refValues, utils) {
  
  $scope.action = { 'result' : -1};
-
+ $scope.images = [];
  
  if ($location.path().indexOf('/music_edit/') > -1) {
   $scope.fileItems = [];
+  $scope.selectedImages = [];
   
   refValues.getCountriesPromise().then(function(data){
    $scope.countries = data;
@@ -22,10 +23,8 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   $scope.types = settings.music.types;
  
  } else {
-   $scope.images = [];
    $scope.currentImage = null;
    $scope.currentImagePos = 0;
-   $scope.prevCurrentImagePos = -1;
    
    $scope.setCurrentImage = function(index) {
     utils.debug("currentImage: " + index);
@@ -46,12 +45,6 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
 		   'o' : {'url' : $scope.images[index].details.o.url}
 	   };
 	utils.debug("currentImage : " + JSON.stringify( $scope.currentImage ));
-	
-	if ($scope.prevCurrentImagePos > -1) {
-	 $scope.images[$scope.prevCurrentImagePos].details.clazz = '';
-	}
-	$scope.images[index].details.clazz = "'active'";
-	$scope.prevCurrentImagePos = index;
    };
  }
  
@@ -59,13 +52,15 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   $scope.action.resut = 0;
   $scope.doc = response;
 
+  if (response.images != null && response.images.length > 0) {
+   $scope.images = response.images;
+  }
+  
+  utils.debug($scope.images.length + " photo(s)");
+  
   if ($location.path().indexOf('/music_view/') > -1) {
    $scope.canEdit = userService.userHasRole('WRITE');
-
-   if (response.images != null && response.images.length > 0) {
-    $scope.images = response.images;
-    $scope.setCurrentImage(0);
-   }
+   $scope.setCurrentImage(0);
    
    $scope.lines = []
    var line1 = response.artist;
@@ -145,9 +140,11 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   var docId = $scope.doc.id;
   utils.debug('upload "' + fileItem.file.name + '", doc: "' + docId + '"');
   fileItem.status='p';
-  musicService.uploadPhoto(docId, fileItem.file, function() {
+  musicService.uploadPhoto(docId, fileItem.file, function(photo) {
    utils.debug('upload ok "' + fileItem.file.name + '"');
    fileItem.status='o';
+   // MAJ LIST
+   $scope.images.push(photo);
   }, function() {
    utils.debug('upload error "' + fileItem.file.name + '"'); 	 
    fileItem.status='e';

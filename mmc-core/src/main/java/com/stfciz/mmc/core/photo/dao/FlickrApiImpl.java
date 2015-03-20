@@ -133,10 +133,10 @@ public class FlickrApiImpl implements FlickrApi {
 
     if (!uploadPhoto.isAsync()) {
       this.flickrConnect.getFlickr().getPhotosetsInterface().addPhoto(uploadPhoto.getPhotoSetId(), responseId);
-      LOGGER.debug("The \"{}\" img is added to the flickr album \"{}\".", new Object[] { responseId, uploadPhoto.getPhotoSetId() });
+      LOGGER.debug("The \"{}\" is added to the flickr album \"{}\".", new Object[] { responseId, uploadPhoto.getPhotoSetId() });
     }
     
-    LOGGER.info("Upload OK - img:\"{}\"", new Object[] { responseId });
+    LOGGER.info("The photo \"{}\" is uploaded with success", new Object[] { responseId });
     
     return responseId;
   }

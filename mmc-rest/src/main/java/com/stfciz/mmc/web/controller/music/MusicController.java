@@ -156,19 +156,19 @@ public class MusicController {
 
   @RequestMapping(value = "/{id}/photos", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
   @Permission(scopes = { OAuth2ScopeApi.WRITE })
-  public ResponseEntity<String> uploadImage(@PathVariable String id, @RequestParam("file") MultipartFile file) throws Exception {
+  public ResponseEntity<com.stfciz.mmc.web.api.photo.Photo> uploadImage(@PathVariable String id, @RequestParam("file") MultipartFile file) throws Exception {
     MusicDocument doc = this.repository.findOne(id);
     if (doc == null) {
-      LOGGER.error("Document \"{}\" not found");
-      return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+      LOGGER.error("\"{}\" not found");
+      return new ResponseEntity<com.stfciz.mmc.web.api.photo.Photo>(HttpStatus.BAD_REQUEST);
     }
     
     if (file == null || file.isEmpty()) {
       LOGGER.error("No file to upload ...");
-      return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<com.stfciz.mmc.web.api.photo.Photo>(HttpStatus.BAD_REQUEST);
     }
 
-    LOGGER.debug("Upload {} ...", file.getOriginalFilename());
+     Photo photo = null;
     try {
       UploadPhoto uploadPhoto = new UploadPhoto();
       uploadPhoto.setAsync(false);
@@ -178,18 +178,21 @@ public class MusicController {
       uploadPhoto.setContent(file.getBytes());
       
       String photoId = this.flickrApi.uploadPhoto(uploadPhoto);
-      Photo photo = this.flickrApi.getPhoto(photoId);
-      
-      LOGGER.debug("photoId: {}", photoId);
-      doc.getPhotos().add(this.photoApiConverter.convertToPhotoMusicDocument(photo, doc.getPhotos().size()));
+      photo = this.flickrApi.getPhoto(photoId);
+    
+      int order = doc.getPhotos().size();
+      PhotoMusicDocument photoMusicDocument = this.photoApiConverter.convertToPhotoMusicDocument(photo, order);
+      doc.getPhotos().add(photoMusicDocument);
       this.repository.save(doc);
       
+      LOGGER.debug("The photo \"{}\" is added to \"{}\"", photoId, doc.getId());
+      
+      com.stfciz.mmc.web.api.photo.Photo result =  this.photoApiConverter.convertPhotoMusicDocumentToPhotoApi(photoMusicDocument);
+      return new ResponseEntity<com.stfciz.mmc.web.api.photo.Photo>(result, HttpStatus.OK);
+      
     } catch (FlickrException flickrException) {
-      LOGGER.error("save error", flickrException);
-      return new ResponseEntity<String>(String.format(
-          "Error when uploading %s", file.getOriginalFilename()),
-          HttpStatus.SERVICE_UNAVAILABLE);
+      LOGGER.error("Upload error", flickrException);
+      return new ResponseEntity<com.stfciz.mmc.web.api.photo.Photo>(HttpStatus.SERVICE_UNAVAILABLE);
     }
-    return new ResponseEntity<String>(HttpStatus.OK);
   }
 }

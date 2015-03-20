@@ -26,7 +26,7 @@
   	<ul class="images">
   	 <li ng-repeat="image in images">
       <img ng-src="{{image.details.t.url}}" ng-click="setCurrentImage($index)" 
-        ng-class="{ 'active': $index == currentImagePos }"
+        ng-class="{ 'selectedThumb': $index == currentImagePos }"
       />
      </li>
     </ul>

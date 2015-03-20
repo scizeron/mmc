@@ -17,3 +17,7 @@ spring:
 endpoints:
  shutdown:
   enabled: false
+  
+multipart:
+ maxFileSize: 10000MB
+ maxRequestSize: 11000MB

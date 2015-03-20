@@ -83,6 +83,7 @@ public class PhotoApiConverter {
       com.stfciz.mmc.web.api.photo.Photo.PhotoDetails photoDetails = new com.stfciz.mmc.web.api.photo.Photo.PhotoDetails();
       target.getDetails().put(photoFeatures.getKey(), photoDetails);
       photoDetails.setType(photoFeatures.getKey());
+      
       if (photoMusicDocument.getSizes() != null && photoMusicDocument.getSizes().get(photoFeatures.getKey()) != null) {
         photoDetails.setHeight(photoMusicDocument.getSizes().get(photoFeatures.getKey()).getHeight());
         photoDetails.setWidth(photoMusicDocument.getSizes().get(photoFeatures.getKey()).getWidth());
@@ -96,6 +97,7 @@ public class PhotoApiConverter {
       photo.setOriginalSecret(photoMusicDocument.getOrginalSecret());
       photoDetails.setUrl((String)ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(photo.getClass(), photoFeatures.getValue().getUrlMethod()), photo));
     }
+    
     return target;
   }
   
@@ -119,26 +121,32 @@ public class PhotoApiConverter {
       }
     }
     
-    if (src.getTags() != null && !src.getTags().isEmpty()) {
-      target.setMusicDocIds(new ArrayList<String>(
-        Collections2.filter(Collections2.transform(
-          Collections2.transform(src.getTags(), new Function<Tag, com.stfciz.mmc.core.photo.domain.Tag>() {
-            @Override
-            public com.stfciz.mmc.core.photo.domain.Tag apply(Tag tag) {
-              try {
-                return tagMapper.readValue(tag.getValue(),com.stfciz.mmc.core.photo.domain.Tag.class);
-              } catch (IOException e) {
-                LOGGER.error("read tag error", e);
-                return null;
-              }
-            }
-          }), new Function<com.stfciz.mmc.core.photo.domain.Tag, String>() {
-                @Override
-                public String apply(com.stfciz.mmc.core.photo.domain.Tag tag) {
-                  return "musicDoc".equals(tag.getName()) ? tag.getValue() : null;
-                }
-        }), Predicates.isNull())));
-    }
+//    if (src.getTags() != null && !src.getTags().isEmpty()) {
+//      target.setMusicDocIds(new ArrayList<String>(
+//        Collections2.filter(Collections2.transform(
+//          Collections2.transform(src.getTags(), new Function<Tag, com.stfciz.mmc.core.photo.domain.Tag>() {
+//            @Override
+//            public com.stfciz.mmc.core.photo.domain.Tag apply(Tag tag) {
+//              try {
+//                if (tag == null) {
+//                  return null;
+//                }
+//                return tagMapper.readValue(tag.getValue(),com.stfciz.mmc.core.photo.domain.Tag.class);
+//              } catch (IOException e) {
+//                LOGGER.error("read tag error", e);
+//                return null;
+//              }
+//            }
+//          }), new Function<com.stfciz.mmc.core.photo.domain.Tag, String>() {
+//                @Override
+//                public String apply(com.stfciz.mmc.core.photo.domain.Tag tag) {
+//                  if (tag == null) {
+//                    return null;
+//                  }
+//                  return "musicDoc".equals(tag.getName()) ? tag.getValue() : null;
+//                }
+//        }), Predicates.isNull())));
+//    }
     return target;
   }
 

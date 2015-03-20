@@ -97,7 +97,7 @@ h1 {
 }
 
 /*Change the colour*/
-.active img{border:2px solid #333 !important;}
+.selectedThumb {border:2px solid #333 !important;}
 
 ul.images {
   border-style: none;	
