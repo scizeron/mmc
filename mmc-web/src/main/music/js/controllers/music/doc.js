@@ -25,6 +25,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
    $scope.images = [];
    $scope.currentImage = null;
    $scope.currentImagePos = 0;
+   $scope.prevCurrentImagePos = -1;
    
    $scope.setCurrentImage = function(index) {
     utils.debug("currentImage: " + index);
@@ -40,11 +41,17 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
     height =  height / ratio;
     width =  width / ratio;
     utils.debug("ratio: " + ratio + ", " + "height : " + size.height + " => " + height + ", " + "width : " + size.width + " => " + width);
-	   $scope.currentImage = {
+	$scope.currentImage = {
 		   'm' : {'url' : $scope.images[index].details.m.url, 'height' : height, 'width' : width},
 		   'o' : {'url' : $scope.images[index].details.o.url}
 	   };
-	   utils.debug("currentImage : " + JSON.stringify( $scope.currentImage ));
+	utils.debug("currentImage : " + JSON.stringify( $scope.currentImage ));
+	
+	if ($scope.prevCurrentImagePos > -1) {
+	 $scope.images[$scope.prevCurrentImagePos].details.clazz = '';
+	}
+	$scope.images[index].details.clazz = "'active'";
+	$scope.prevCurrentImagePos = index;
    };
  }
  

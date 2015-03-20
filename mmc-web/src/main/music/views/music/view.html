@@ -1,8 +1,9 @@
 <div class="row">
  <div class="col-md-5">
-  <img ng-elevate-zoom ng-src="{{currentImage.m.url}}" data-zoom-image="{{currentImage.o.url}}" 
-   height="{{currentImage.m.height}}" width="{{currentImage.m.width}}"
-   style="border: 1px solid black; margin-right: 3em; margin-bottom: 2em; background-color: white"/>
+  <img id="zomImage" ng-jet-zoom class="jetzoom" ng-src="{{currentImage.m.url}}"
+     data-large-image="{{currentImage.o.url}}"
+     height="{{currentImage.m.height}}" width="{{currentImage.m.width}}"
+     style="border: 1px solid black; margin-right: 3em; margin-bottom: 2em; background-color: white"/>
  </div>
  <div class="col-md-7"> 
   <div class="row">
@@ -20,16 +21,13 @@
     <p>{{line}}</p>
   	</div>
   </div>
-  <!--  reste le probleme du ng-mouseover -->
   <div class="row">
    <div id="gallery" class="col-md-12">
-  	 <ul class="images">
-  <li ng-repeat="image in images">
-   <a data-image="{{image.details.m.url}}" 
-     data-zoom-image="{{image.details.o.url}}" 
-     class="elevatezoom-gallery"> 
-    <img ng-src="{{image.details.t.url}}" ng-mouseover="setCurrentImage($index)"/>
-   </a>
+  	<ul class="images">
+  	 <li ng-repeat="image in images">
+      <img ng-src="{{image.details.t.url}}" ng-click="setCurrentImage($index)" 
+        ng-class="{ 'active': $index == currentImagePos }"
+      />
      </li>
     </ul>
    </div>
