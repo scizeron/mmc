@@ -1,18 +1,18 @@
 <div class="row">
- <div class="col-md-5">
+ <div class="col-md-5" ng-show="currentImage != null")>
   <img id="zomImage" ng-jet-zoom class="jetzoom" ng-src="{{currentImage.m.url}}"
      data-large-image="{{currentImage.o.url}}"
      height="{{currentImage.m.height}}" width="{{currentImage.m.width}}"
      style="border: 1px solid black; margin-right: 3em; margin-bottom: 2em; background-color: white"/>
  </div>
- <div class="col-md-7"> 
+ <div ng-class="titleClazz"> 
   <div class="row">
    <div class="col-md-12">
     <h1>{{doc.title}}
-  <div class="btn-group" style="float: right;">
-   <button type="button" ng-click="gotoFind()" class="btn">Back</button>
-   <button ng-click="gotoEdit()" ng-show="canEdit" class="btn btn-primary">Edit</button>
-  </div>
+    <div class="btn-group" style="float: right;">
+     <button type="button" ng-click="gotoFind()" class="btn">Back</button>
+     <button ng-click="gotoEdit()" ng-show="canEdit" class="btn btn-primary">Edit</button>
+    </div>
     </h1>
    </div>
   </div>
@@ -24,7 +24,7 @@
   <div class="row">
    <div id="gallery" class="col-md-12">
   	<ul class="images">
-  	 <li ng-repeat="image in images">
+  	 <li ng-repeat="image in doc.images">
       <img ng-src="{{image.details.t.url}}" ng-click="setCurrentImage($index)" 
         ng-class="{ 'selectedThumb': $index == currentImagePos }"
       />

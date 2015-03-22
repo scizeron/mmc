@@ -1,17 +1,25 @@
 'use strict';
 
-var appendToLine = function(line, value, formatFunction) {
+var appendToLine = function(line, value, formatFunction) { 
  if (value != null) {
-  if (line.length > 0) {
-   line += ', ';   
-  } 
+  var resValue = value;
   if (typeof(formatFunction) != 'undefined') {
-   line += formatFunction(value); 
-  } else {
-   line += value;
+   resValue = formatFunction(value); 
+  }
+  if (resValue.length > 0) {
+   if (line != null && line.length > 0) {
+    line += ', ' + resValue;   
+   } else {
+    line = resValue;	  
+   }
   }
  }
- return line;
+ 
+ if (line == null) {
+  return '';	 
+ } else {
+  return line;
+ }
 };
 
 angular.module('mmcApp')

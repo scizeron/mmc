@@ -19,11 +19,11 @@ angular.module('mmcApp', [
   }).		 
   when('/music_edit/:musicDocId', {
    templateUrl: 'views/music/edit.html',
-   controller: 'musicEditViewCtrl'
+   controller: 'musicEditCtrl'
   }).
   when('/music_view/:musicDocId', {
    templateUrl: 'views/music/view.html',
-   controller: 'musicEditViewCtrl'
+   controller: 'musicViewCtrl'
   }).
   when('/admin_img', {
    templateUrl: 'views/admin/img.html',

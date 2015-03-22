@@ -114,6 +114,9 @@ angular.module('mmcApp')
 	 }
    }).success(function(photo, status) {
 	var doc = getCachedDoc(id).doc;
+	if (doc.images == null) {
+	 doc.images = [];	
+	}
 	doc.images.push(photo);
 	putDocInCache(doc);
 	onSuccessCallback(photo);

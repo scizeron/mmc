@@ -8,7 +8,11 @@ angular.module('mmcApp').directive('ngJetZoom', function() {
         linkElevateZoom();
       })
 
-      function linkElevateZoom(){
+      function linkElevateZoom() {
+    	if (typeof(attrs.src ) == "undefined") {
+    	 return;
+    	}
+    	  
         var zoomInstance = scope.zoomInstance;
         if (typeof(zoomInstance) == "undefined") {
          var options = {};

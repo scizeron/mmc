@@ -10,6 +10,9 @@ function ($scope, musicService, userService) {
    $scope.$emit('authenticated.user', user); 
   });
  });
+ 
+ musicService.clearCachedDoc();
+ 
  $scope.doSearch = function (page) {
   $scope.action = { 'result' : -1};	 
   musicService.getDocs(page, true, function(response, selectedPage) {
@@ -22,7 +25,7 @@ function ($scope, musicService, userService) {
 	 var doc = response.docs[idxDoc];
 	 var lines = [];
 	 var docInfos = {'id' : doc.id, 'url' : doc.thumbImageUrl, 'title' : doc.title
-			 , 'line1' : '', 'line2' : '', 'line3' : '', 'line4' : ''};
+			 , 'line1' : '', 'line2' : '', 'line3' : ''};
 	 $scope.docsInfos.push(docInfos);
 	 
 	 docInfos.line1 = doc.artist;
@@ -43,16 +46,15 @@ function ($scope, musicService, userService) {
      });
   
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.promo, function(value) {
-	  return 'promo';   
+	  return value == true ? 'promo' : '';   
      });
    
 	 docInfos.line3 = appendToLine(docInfos.line3, doc.recordCompany);
 	 docInfos.line3 = appendToLine(docInfos.line3, doc.label);
-   
-	 docInfos.line4 = appendToLine(docInfos.line4, doc.serialNumber, function(value) {
-	  return 'N° ' + value;   
+   	 docInfos.line3 = appendToLine(docInfos.line3, doc.serialNumber, function(value) {
+	  return 'N°' + value;   
      });
-	 docInfos.line4 = appendToLine(docInfos.line4, doc.pubNum, function(value) {
+	 docInfos.line3 = appendToLine(docInfos.line3, doc.pubNum, function(value) {
 	  return 'Limited Edition : ' + value + '/' + doc.pubTotal;   
      });
    }

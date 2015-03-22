@@ -1,5 +1,5 @@
 <div class="row">
- <div class="col-md-offset-1 col-md-11" style="margin-bottom: 10px;">
+ <div class="col-md-offset-1 col-md-11" style="margin-bottom: 10px;" ng-show="{{doc.images.length > 0}}">
    <button type="button" ng-click="removePhotos()" class="btn btn-primary"><span class="glyphicon glyphicon-minus"></span> Remove</button>
   </div>
  </div>
@@ -7,7 +7,7 @@
 <div class="row">
  <div id="gallery" class="col-md-offset-1 col-md-11">
   <ul class="images">
-   <li ng-repeat="image in images"">
+   <li ng-repeat="image in doc.images"">
     <input type="checkbox" id="chk_{{$index}}" ng-click="selectImage($index)"/>
     <img id="img_0" ng-src="{{image.details.t.url}}" style="margin-right: 15px;"/>
    </li>
