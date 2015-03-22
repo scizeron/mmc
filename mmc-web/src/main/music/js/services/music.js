@@ -123,10 +123,23 @@ angular.module('mmcApp')
    });  
  };
  
- function remove(id, onSuccessCallback, onErrorCallack) {
-  var uri = env.get('api.url') + '/music/md/' + id + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id'))
+ function removePhotos(id, photoIds, onSuccessCallback, onErrorCallack) {
   $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
-  $http.delete(uri).success(function(status){onSuccessCallback();}).error(function(data, status, headers, config) { onErrorCallack();});
+  var removePhotosIn = { 'ids' : photoIds};
+  $http.delete(env.get('api.url') + '/music/md/' + id + '/photos?client_id=' + encodeURIComponent(env.get('oauth2.client_id')), {
+	  'data' : JSON.stringify(removePhotosIn)
+	, 'headers': {
+		'Content-Type': 'application/json'
+	}  
+  })
+  	.success(function(doc, status){ putDocInCache(doc); onSuccessCallback(doc);})
+  	.error(function(data, status, headers, config) { onErrorCallack();});
+ }
+ 
+ function remove(id, onSuccessCallback, onErrorCallack) {
+  var uri = env.get('api.url') + '/music/md/' + id + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id'));
+  $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
+  $http.delete(uri).success(function(status){clearCachedDoc(); onSuccessCallback();}).error(function(data, status, headers, config) { onErrorCallack();});
  }
  
  return { 
@@ -138,6 +151,7 @@ angular.module('mmcApp')
   addDoc: addDoc,
   updateDoc: updateDoc,
   uploadPhoto: uploadPhoto,
+  removePhotos : removePhotos,
   remove: remove
  }
  

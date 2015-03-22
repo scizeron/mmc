@@ -6,11 +6,20 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
  
  $scope.action = { 'result' : -1};
  $scope.images = [];
+ $scope.selectedImages = [];
+ 
+ $scope.setImagesInTheScope = function() {
+  if ($scope.doc.images != null && $scope.doc.images.length > 0) {
+   $scope.images = $scope.doc.images;
+   for (var i=0; i < $scope.images.length; i++) {
+	$scope.selectedImages.push(false);
+   }
+  }
+ };
  
  if ($location.path().indexOf('/music_edit/') > -1) {
   $scope.fileItems = [];
-  $scope.selectedImages = [];
-  
+ 
   refValues.getCountriesPromise().then(function(data){
    $scope.countries = data;
   });
@@ -21,12 +30,19 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   $scope.years = refValues.getYears();
   $scope.defaultMusicCountry = settings.music.defaultCountry;
   $scope.types = settings.music.types;
+  
+  $scope.selectImage = function(index) {
+   $scope.selectedImages[index] = !$scope.selectedImages[index];
+   utils.debug(JSON.stringify($scope.selectedImages));
+  };
  
  } else {
-   $scope.currentImage = null;
    $scope.currentImagePos = 0;
    
    $scope.setCurrentImage = function(index) {
+	if ($scope.images.length == 0) {
+	 return;
+	}
     utils.debug("currentImage: " + index);
     $scope.currentImagePos = index;
     var size = $scope.images[index].details.m;
@@ -51,10 +67,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
  musicService.getDoc($routeParams.musicDocId, function(response) {
   $scope.action.resut = 0;
   $scope.doc = response;
-
-  if (response.images != null && response.images.length > 0) {
-   $scope.images = response.images;
-  }
+  $scope.setImagesInTheScope();
   
   utils.debug($scope.images.length + " photo(s)");
   
@@ -119,7 +132,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
  $scope.update = function() {
   utils.debug('update "' + JSON.stringify($scope.doc));
   musicService.updateDoc($scope.doc, function() {
-	$scope.action.resut = 0;
+   $scope.action.resut = 0;
     utils.debug($scope.doc.id + ' is updated ok');
    }, function() {
 	$scope.action.resut = 1;
@@ -150,6 +163,28 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
    fileItem.status='e';
   });
  };
+  
+ $scope.removePhotos = function() {
+  var photoIds = []; 
+  for (var i=0; i <$scope.selectedImages.length; i++) {
+   if ($scope.selectedImages[i]) {
+	photoIds.push($scope.images[i].id);
+   }
+  }
+  
+  if (photoIds.length > 0) {
+   musicService.removePhotos($scope.doc.id, photoIds, function(doc) {
+	utils.debug("ok"); 
+	$scope.doc = doc;
+	$scope.setImagesInTheScope();
+   }, function() {
+	utils.error("false");
+	$scope.setImagesInTheScope();
+   });   
+  } else {
+   utils.debug("nothing to remove");
+  }
+ }
  
  $scope.gotoView = function() {
   $location.path('/music_view/' + $scope.doc.id);

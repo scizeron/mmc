@@ -55,6 +55,7 @@ public class InMemoryAuthStore implements AuthStore {
         this.authents.put(auth.getPermission().toString(),auth); 
       }
       requestContext.setAuth(auth);
+      LOGGER.debug("The current auth is set to \"{}\".", ToStringBuilder.reflectionToString(auth));
     } else {
       LOGGER.debug("The \"{}\" permission is already present in the current thread.", permission);
     }

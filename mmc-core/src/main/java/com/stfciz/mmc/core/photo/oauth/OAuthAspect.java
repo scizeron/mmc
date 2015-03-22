@@ -21,8 +21,6 @@ public class OAuthAspect {
   @Around("@annotation(oauthContext)")
   public Object around(ProceedingJoinPoint pjp, OAuthContext oauthContext) throws Throwable {
     this.authStore.setTheRequestContext(PermissionUtils.from(oauthContext.value()));
-    Object proceed = pjp.proceed();
-    this.authStore.releaseTheRequestContext();
-    return proceed;
+    return pjp.proceed();
   }
 }

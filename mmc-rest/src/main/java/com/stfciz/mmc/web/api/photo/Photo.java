@@ -22,6 +22,7 @@ public class Photo {
    *
    */
   public static class PhotoDetails {
+    
     private String type; 
     
     private String url;

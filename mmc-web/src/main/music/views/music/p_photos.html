@@ -1,16 +1,22 @@
 <div class="row">
+ <div class="col-md-offset-1 col-md-11" style="margin-bottom: 10px;">
+   <button type="button" ng-click="removePhotos()" class="btn btn-primary"><span class="glyphicon glyphicon-minus"></span> Remove</button>
+  </div>
+ </div>
+</div>
+<div class="row">
  <div id="gallery" class="col-md-offset-1 col-md-11">
   <ul class="images">
-   <li ng-repeat="image in images">
-    <img ng-src="{{image.details.t.url}}" ng-click="selectImage($index)"/>
+   <li ng-repeat="image in images"">
+    <input type="checkbox" id="chk_{{$index}}" ng-click="selectImage($index)"/>
+    <img id="img_0" ng-src="{{image.details.t.url}}" style="margin-right: 15px;"/>
    </li>
   </ul>
  </div>
 </div>
 <div class="row">
- <div class="col-md-offset-1 col-md-11">
-   <!--  <div style="float: left; margin: 15px 15px 15px 15px;"> -->
-   <span class="btn btn-primary btn-file"><span class="glyphicon glyphicon-plus"></span> Add photo
+ <div class="col-md-offset-1 col-md-11" style="margin-top: 15px;">
+   <span class="btn btn-primary btn-file"><span class="glyphicon glyphicon-plus"></span> Add
    <input type="file" upload-file files="fileItems" accept="image/jpeg" ng-click="error=-1">
    </span>  
   </div>

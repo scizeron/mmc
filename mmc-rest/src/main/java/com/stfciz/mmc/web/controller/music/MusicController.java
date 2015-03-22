@@ -33,6 +33,7 @@ import com.stfciz.mmc.web.api.music.FindResponse;
 import com.stfciz.mmc.web.api.music.GetResponse;
 import com.stfciz.mmc.web.api.music.MusicApiConverter;
 import com.stfciz.mmc.web.api.music.NewRequest;
+import com.stfciz.mmc.web.api.music.RemovePhotosIn;
 import com.stfciz.mmc.web.api.music.UpdateRequest;
 import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
@@ -134,7 +135,7 @@ public class MusicController {
   
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   @Permission(scopes = { OAuth2ScopeApi.DELETE}, roles= { UserRole.ADMIN})
-  public ResponseEntity<String> delete(@PathVariable String id) {
+  public ResponseEntity<String> remove(@PathVariable String id) {
     MusicDocument result = this.repository.findOne(id);
     if (result == null) {
       return new ResponseEntity<String>(HttpStatus.OK);
@@ -154,6 +155,46 @@ public class MusicController {
     return new ResponseEntity<String>((HttpStatus.OK));
   }
 
+  @RequestMapping(value = "/{id}/photos", method = RequestMethod.DELETE)
+  @Permission(scopes = { OAuth2ScopeApi.DELETE })
+  public ResponseEntity<GetResponse> removePhotos(@PathVariable String id, @RequestBody(required=true) RemovePhotosIn in) throws Exception {
+    MusicDocument doc = this.repository.findOne(id);
+    if (doc == null) {
+      LOGGER.error("\"{}\" not found");
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }  
+    
+    List<PhotoMusicDocument> photos = doc.getPhotos();
+    if (photos == null || photos.isEmpty()) {
+      LOGGER.debug("No photo to remove");
+      return new ResponseEntity<>(this.apiConverter.convertMusicDocumentToGetResponse(doc), HttpStatus.OK);
+    }
+    
+    int initialSize = photos.size();
+    
+    for (int i = initialSize - 1; i >=0; i--) {
+      for (String photoId : in.getIds()) {
+        if (photos.get(i).getId().equals(photoId)) {
+          photos.remove(i);
+          break;
+        }
+      }
+    }
+    
+    doc = this.repository.save(doc);
+    
+    for (String photoId : in.getIds()) {
+      try {
+        this.flickrApi.deletePhoto(photoId);
+        LOGGER.error("The photo \"{}\" has been deleted infrom flickr", photoId);
+      } catch (FlickrException flickrException) {
+        LOGGER.error("delete error, the \"{}\" could not be removed", photoId, flickrException);
+      }
+    }
+    
+    return new ResponseEntity<>(this.apiConverter.convertMusicDocumentToGetResponse(doc), HttpStatus.OK);
+  }
+  
   @RequestMapping(value = "/{id}/photos", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
   @Permission(scopes = { OAuth2ScopeApi.WRITE })
   public ResponseEntity<com.stfciz.mmc.web.api.photo.Photo> uploadImage(@PathVariable String id, @RequestParam("file") MultipartFile file) throws Exception {
@@ -168,7 +209,7 @@ public class MusicController {
       return new ResponseEntity<com.stfciz.mmc.web.api.photo.Photo>(HttpStatus.BAD_REQUEST);
     }
 
-     Photo photo = null;
+    Photo photo = null;
     try {
       UploadPhoto uploadPhoto = new UploadPhoto();
       uploadPhoto.setAsync(false);
@@ -183,7 +224,7 @@ public class MusicController {
       int order = doc.getPhotos().size();
       PhotoMusicDocument photoMusicDocument = this.photoApiConverter.convertToPhotoMusicDocument(photo, order);
       doc.getPhotos().add(photoMusicDocument);
-      this.repository.save(doc);
+      doc = this.repository.save(doc);
       
       LOGGER.debug("The photo \"{}\" is added to \"{}\"", photoId, doc.getId());
       
