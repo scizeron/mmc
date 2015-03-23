@@ -25,7 +25,7 @@
    <div class="col-md-12">{{docInfos.line1}}</div>
   </div>
   <div class="row">
-   <div class="col-md-12">{{docInfos.line2}}</div>
+   <div class="col-md-12"><img ng-src="images/country/24/{{docInfos.origin}}.png"/> {{docInfos.line2}}</div>
   </div>
   <div class="row">
    <div class="col-md-12">{{docInfos.line3}}</div>
@@ -33,10 +33,10 @@
  </div>
  <div class="col-md-3" style="margin-top: 10px;">
   <div ng-show="docInfos.sleeveGrade">
-   <img src="images/sleeve.png" title="{{docInfos.sleeveGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating{{docInfos.sleeveGrade}}.png" title="{{docInfos.sleeveGradeTip}}"/>
+   <img src="images/rating/sleeve.png" title="{{docInfos.sleeveGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating/rating{{docInfos.sleeveGrade}}.png" title="{{docInfos.sleeveGradeTip}}"/>
   </div>
   <div ng-show="docInfos.recordGrade" style="border-top: 5px;">
-   <img src="images/record.png" title="{{docInfos.recordGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating{{docInfos.recordGrade}}.png" title="{{docInfos.recordGradeTip}}"/>
+   <img src="images/rating/record.png" title="{{docInfos.recordGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating/rating{{docInfos.recordGrade}}.png" title="{{docInfos.recordGradeTip}}"/>
   </div>
  </div> 
 </div>

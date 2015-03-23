@@ -24,13 +24,13 @@ function ($scope, musicService, userService, refValues) {
 	 docInfos.recordGrade = doc.recordGrade;
 	 docInfos.sleeveGradeTip = refValues.getGradeToString(doc.sleeveGrade);
 	 docInfos.recordGradeTip = refValues.getGradeToString(doc.recordGrade);
+	 docInfos.origin = (doc.origin == null) ? 'null': doc.origin;
 	 
 	 docInfos.line1 = doc.artist;
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.issue);
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.edition, function(value) {
 	  return 'ed. ' + value;   
      });
-	 docInfos.line2 = appendToLine(docInfos.line2, doc.origin);
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.mainType, function(value) {
       if (doc.nbType != null && doc.nbType > 1) {
        return doc.nbType + ' ' + value;

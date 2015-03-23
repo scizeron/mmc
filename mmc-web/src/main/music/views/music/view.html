@@ -19,15 +19,16 @@
   <div class="row">
    <div class="col-md-9">
     <div class="row"  ng-repeat="info in infos">
-     <div class="col-md-12">{{info}}</div>
+     <div class="col-md-12" ng-if="$index == 1"><img ng-src="images/country/24/{{doc.origin}}.png"/> {{info}}</div>
+     <div class="col-md-12" ng-if="$index != 1"> {{info}}</div>
     </div>
    </div>
    <div class="col-md-3">
 	<div ng-show="doc.sleeveGrade">
-   	 <img src="images/sleeve.png" title="{{doc.sleeveGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating{{doc.sleeveGrade}}.png" title="{{doc.sleeveGradeTip}}"/>
+   	 <img src="images/rating/sleeve.png" title="{{doc.sleeveGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating/rating{{doc.sleeveGrade}}.png" title="{{doc.sleeveGradeTip}}"/>
     </div>
     <div ng-show="doc.recordGrade" style="border-top: 5px;">
-     <img src="images/record.png" title="{{doc.recordGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating{{doc.recordGrade}}.png" title="{{doc.recordGradeTip}}"/>
+     <img src="images/rating/record.png" title="{{doc.recordGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating/rating{{doc.recordGrade}}.png" title="{{doc.recordGradeTip}}"/>
     </div>
    </div>
   </div>

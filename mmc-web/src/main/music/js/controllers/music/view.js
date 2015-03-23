@@ -55,11 +55,15 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   $scope.infos.push('');
   $scope.infos.push('');
    
+  $scope.doc.origin = (response.origin == null) ? 'null': response.origin;
+  
   $scope.infos[1] = appendToLine($scope.infos[1], response.issue);
   $scope.infos[1] = appendToLine($scope.infos[1], response.edition, function(value) {
    return 'ed. ' + value;   
   });
-  $scope.infos[1] = appendToLine($scope.infos[1], response.origin);
+  
+  
+  
   $scope.infos[1] = appendToLine($scope.infos[1], response.mainType, function(value) {
    if (response.nbType != null && response.nbType > 1) {
     return response.nbType + ' ' + value;
