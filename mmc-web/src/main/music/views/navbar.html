@@ -4,7 +4,7 @@
    <a class="navbar-brand" href="#/home"><span class="glyphicon glyphicon-home"></span></a>
   </div>
   <div>
-   <ul class="nav navbar-nav">
+   <ul class="nav navbar-nav" ng-show="app.loggedInUser">
     <li class="dropdown">
      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-music"></span> Music<b class="caret"></b></a>
      <ul class="dropdown-menu">
@@ -15,12 +15,19 @@
     </li>
     <li ng-class="{ active: navIsActive('/book')}"><a href="#/book"><span class="glyphicon glyphicon-book"></span> Book</a></li>
     <li ng-class="{ active: navIsActive('/merchandising')}"><a href="#/merchandising"><span class="glyphicon glyphicon-th-list"></span> Merchandising</a></li>
-    <li class="dropdown" ng-show="navbarMenuAdmin">
+    <li class="dropdown" ng-show="app.loggedInAdminUser">
      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-star"></span> Admin<b class="caret"></b></a>
      <ul class="dropdown-menu">
       <li><a href="#/admin_img">Images</a></li>
      </ul>     
     </li>
+   </ul>
+   <ul class="nav navbar-nav" ng-show="app.loggedInUser" style="float: right">
+    <li ng-class="{ active: navIsActive('/logout')}"><a href="#/logout"><span class="glyphicon glyphicon-off"></span> Sign-out</a></li>
+   </ul>   
+   <ul class="nav navbar-nav" ng-hide="app.loggedInUser">
+    <li ng-class="{ active: navIsActive('/login')}"><a href="#/login"><span class="glyphicon glyphicon-user"></span> Sign-in</a></li>
+   </ul>
   </div>
  </div>
 </nav>

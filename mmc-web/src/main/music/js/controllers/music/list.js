@@ -3,14 +3,6 @@
 angular.module('mmcApp')
 .controller('musicListCtrl', ['$scope', 'musicService', 'userService', 
 function ($scope, musicService, userService) {
- $scope.$emit('jumbotron.show', false);   
- oauth2.start(window.location.href, settings.scopes, false, function(expiresIn) {
-	  userService.setUserInfosIfAbsent(expiresIn, function(user) {
-	   webUtils.debug('emit "authenticated.user" : ' + user);	  
-   $scope.$emit('authenticated.user', user); 
-  });
- });
- 
  musicService.clearCachedDoc();
  
  $scope.doSearch = function (page) {

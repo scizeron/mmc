@@ -2,7 +2,6 @@
 
 angular.module('mmcApp')
 .controller('adminImgCtrl',['$scope', 'utils', 'imgService', function($scope, utils, imgService) {
- $scope.$emit('jumbotron.show', false);   
  $scope.imgPerPage = 16;
  $scope.nbImgPerRow = 4;
  $scope.getPhotos = function (page) {

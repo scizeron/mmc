@@ -22,15 +22,6 @@ angular.module('mmcApp').controller('musicAddResultCtrl', function($scope, $moda
 angular.module('mmcApp')
 .controller('musicAddCtrl', ['$scope', '$http', '$location', 'musicService','userService', 'utils', 'refValues', '$modal',
 function($scope, $http, $location, musicService, userService, utils, refValues, $modal) {
- oauth2.start(window.location.href, settings.scopes, false, function(expiresIn) {
-  userService.setUserInfosIfAbsent(expiresIn, function(user) {
-   utils.debug('emit "authenticated.user" : ' + user);	  
-   $scope.$emit('authenticated.user', user); 
-  });
- });
- 
- $scope.$emit('jumbotron.show', false);
-  
  $scope.doc = { 'mainType' : 'LP', 'origin' : settings.music.defaultCountry, 'obiPos':'V'};
  
  utils.debug('Initial doc: ' + JSON.stringify($scope.doc));  

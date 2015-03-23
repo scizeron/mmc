@@ -16,8 +16,7 @@
 <body ng-controller="appCtrl">
 <div class="container-fluid">
  <ng-include src="'views/navbar.html'"></ng-include>
- <ng-include src="'views/jumbotron.html'" ng-show="app.jumbotron.show"></ng-include>
- <!-- la vue courante -->
+ <ng-include src="'views/jumbotron.html'" ng-show="app.jumbotron"></ng-include>
  <ng-view></ng-view>
 </div>
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
@@ -60,7 +59,6 @@
 <script type="text/javascript" src="js/directives/zoom.js"></script>
 <!-- controllers -->
 <script type="text/javascript" src="js/controllers/app.js"></script>
-<script type="text/javascript" src="js/controllers/home.js"></script>
 <script type="text/javascript" src="js/controllers/music/add.js"></script>
 <script type="text/javascript" src="js/controllers/music/view.js"></script>
 <script type="text/javascript" src="js/controllers/music/edit.js"></script>
