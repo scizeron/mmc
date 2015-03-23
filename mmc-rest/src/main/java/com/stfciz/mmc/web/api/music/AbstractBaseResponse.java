@@ -22,7 +22,7 @@ public class AbstractBaseResponse {
   private Integer edition;
   private Integer issue;
   private String mainType;
-  private String nbType;
+  private Integer nbType;
   private Integer pubNum;
   private Integer pubTotal;
   private String recordCompany;
@@ -75,11 +75,11 @@ public class AbstractBaseResponse {
     this.mainType = mainType;
   }
 
-  public String getNbType() {
+  public Integer getNbType() {
     return this.nbType;
   }
 
-  public void setNbType(String nbType) {
+  public void setNbType(Integer nbType) {
     this.nbType = nbType;
   }
 

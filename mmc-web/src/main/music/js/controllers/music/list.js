@@ -22,16 +22,8 @@ function ($scope, musicService, userService, refValues) {
 	 
 	 docInfos.sleeveGrade = doc.sleeveGrade;
 	 docInfos.recordGrade = doc.recordGrade;
-	 
-	 if (doc.sleeveGrade != null) {
-	  var grade = refValues.getGrade(doc.sleeveGrade);
-	  docInfos.sleeveGradeTip = grade.code + ' - ' + grade.name;
-	 }
-	 
-	 if (doc.recordGrade != null) {
-	  var grade = refValues.getGrade(doc.recordGrade);
-	  docInfos.recordGradeTip = grade.code + ' - ' + grade.name;
-	 }
+	 docInfos.sleeveGradeTip = refValues.getGradeToString(doc.sleeveGrade);
+	 docInfos.recordGradeTip = refValues.getGradeToString(doc.recordGrade);
 	 
 	 docInfos.line1 = doc.artist;
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.issue);
@@ -40,14 +32,10 @@ function ($scope, musicService, userService, refValues) {
      });
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.origin);
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.mainType, function(value) {
-	  if (doc.nbType != null && doc.nbType > 1) {
-       if (doc.nbType.indexOf('0') == 0) {
-        return doc.nbType.substring(1) + ' ' + value; 	 
-       }
-       return doc.nbType + ' ' + value;      
-      } else {
-       return value;	
-      }
+      if (doc.nbType != null && doc.nbType > 1) {
+       return doc.nbType + ' ' + value;
+	  }
+      return value;	
      });
   
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.promo, function(value) {

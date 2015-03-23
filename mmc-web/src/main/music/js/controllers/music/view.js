@@ -46,58 +46,47 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
 	$scope.titleClazz =  'col-md-12';
   }
 
-  if ($scope.doc.sleeveGrade != null) {
-   var grade = refValues.getGrade($scope.doc.sleeveGrade);
-   $scope.doc.sleeveGradeTip = grade.code + ' - ' + grade.name;
-  }
-	 
-  if ($scope.doc.recordGrade != null) {
-   var grade = refValues.getGrade($scope.doc.recordGrade);
-   $scope.doc.recordGradeTip = grade.code + ' - ' + grade.name;
-  }
+  $scope.doc.sleeveGradeTip = refValues.getGradeToString($scope.doc.sleeveGrade);
+  $scope.doc.recordGradeTip = refValues.getGradeToString($scope.doc.recordGrade);
   
-  $scope.lines = []
-  $scope.lines.push(response.artist);
-  $scope.lines.push('');
-  $scope.lines.push('');
-  $scope.lines.push('');
+  $scope.infos = []
+  $scope.infos.push(response.artist);
+  $scope.infos.push('');
+  $scope.infos.push('');
+  $scope.infos.push('');
    
-  $scope.lines[1] = appendToLine($scope.lines[1], response.issue);
-  $scope.lines[1] = appendToLine($scope.lines[1], response.edition, function(value) {
+  $scope.infos[1] = appendToLine($scope.infos[1], response.issue);
+  $scope.infos[1] = appendToLine($scope.infos[1], response.edition, function(value) {
    return 'ed. ' + value;   
   });
-  $scope.lines[1] = appendToLine($scope.lines[1], response.origin);
-  $scope.lines[1] = appendToLine($scope.lines[1], response.mainType, function(value) {
+  $scope.infos[1] = appendToLine($scope.infos[1], response.origin);
+  $scope.infos[1] = appendToLine($scope.infos[1], response.mainType, function(value) {
    if (response.nbType != null && response.nbType > 1) {
-    if (response.nbType.indexOf('0') == 0) {
-     return response.nbType.substring(1) + ' ' + value; 	 
-    }
-    return response.nbType + ' ' + value;      
-   } else {
-    return value;	
+    return response.nbType + ' ' + value;
    }
+   return value;	
   });
   
-  $scope.lines[1] = appendToLine($scope.lines[1], response.promo, function(value) {
+  $scope.infos[1] = appendToLine($scope.infos[1], response.promo, function(value) {
    return value == true ? 'promo' : '';   
   });
    
-  $scope.lines[2] = appendToLine($scope.lines[2], response.recordCompany);
-  $scope.lines[2] = appendToLine($scope.lines[2], response.label);
+  $scope.infos[2] = appendToLine($scope.infos[2], response.recordCompany);
+  $scope.infos[2] = appendToLine($scope.infos[2], response.label);
    
-  $scope.lines[3] = appendToLine($scope.lines[3], response.serialNumber, function(value) {
+  $scope.infos[3] = appendToLine($scope.infos[3], response.serialNumber, function(value) {
    return 'N° ' + value;   
   });
-  $scope.lines[3] = appendToLine($scope.lines[3], response.pubNum, function(value) {
+  $scope.infos[3] = appendToLine($scope.infos[3], response.pubNum, function(value) {
    return 'Limited Edition : ' + value + '/' + response.pubTotal;   
   });
   
-  for (var j= $scope.lines.length-1; j>=0; j--) {
-   if ($scope.lines[j] == '') {
-	$scope.lines.splice(j, 1);   
+  for (var j= $scope.infos.length-1; j>=0; j--) {
+   if ($scope.infos[j] == '') {
+	$scope.infos.splice(j, 1);   
    }  
   }
-  utils.debug($scope.lines.length + ' lines: ' + $scope.lines);
+  utils.debug($scope.infos.length + ' lines: ' + $scope.infos);
 
  }, function() {
   $scope.action.resut = 1;	 

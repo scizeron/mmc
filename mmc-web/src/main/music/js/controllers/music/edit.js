@@ -107,6 +107,12 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   }
  }
  
+ $scope.getGrade = function(value) {
+  var grade = refValues.getGradeToString(value);
+  utils.debug(grade);
+  return grade;	 
+ }; 
+ 
  $scope.gotoView = function() {
   $location.path('/music_view/' + $scope.doc.id);
  }

@@ -41,8 +41,8 @@ public class MusicDocument {
   /** code : LP, EP, CD ... **/
   private String            mainType;
 
-  /** 2 CD**/
-  private String            nbType;
+  /** 2, 3 CD**/
+  private Integer           nbType;
     
   private Obi               obi;
 
@@ -193,7 +193,7 @@ public class MusicDocument {
   /**
    * @return the nbType
    */
-  public String getNbType() {
+  public Integer getNbType() {
     return this.nbType;
   }
 
@@ -201,7 +201,7 @@ public class MusicDocument {
    * @param nbType
    *          the nbType to set
    */
-  public void setNbType(String nbType) {
+  public void setNbType(Integer nbType) {
     this.nbType = nbType;
   }
 

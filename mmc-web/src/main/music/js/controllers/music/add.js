@@ -26,12 +26,8 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
  
  utils.debug('Initial doc: ' + JSON.stringify($scope.doc));  
  
- refValues.getCountriesPromise().then(function(data){
-  $scope.countries = data;
- });
- refValues.getGradesPromise().then(function(data){
-  $scope.grades = data;
- });
+ $scope.countries = refValues.getCountries();
+ $scope.grades = refValues.getGrades();
  $scope.nbTypeRange = refValues.getNbTypeRange();
  $scope.years = refValues.getYears();
  $scope.types = settings.music.types;
@@ -60,6 +56,12 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   }, function () {
    utils.debug('Modal dismissed at: ' + new Date());
   });
+ };
+ 
+ $scope.getGrade = function(value) {
+  var grade = refValues.getGradeToString(value);
+  utils.debug(grade);
+  return grade;	 
  };
  
  $scope.submit = function() {

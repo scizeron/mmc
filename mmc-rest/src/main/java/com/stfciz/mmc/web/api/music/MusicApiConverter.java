@@ -52,8 +52,12 @@ public class MusicApiConverter {
     target.setSerialNumber(request.getSerialNumber());
     target.setPubNum(request.getPubNum());
     target.setPubTotal(request.getPubTotal());
-    target.setSleeveRating(request.getSleeveGrade());
-    target.setRecordRating(request.getRecordGrade());
+    if (request.getSleeveGrade() != null && request.getSleeveGrade() > 0) {
+     target.setSleeveRating(request.getSleeveGrade());
+    }
+    if (request.getRecordGrade() != null && request.getRecordGrade() > 0) {
+      target.setRecordRating(request.getRecordGrade());
+    }
     target.setOrigin(request.getOrigin());
     
     if (StringUtils.isNotBlank(request.getRecordCompany())) {

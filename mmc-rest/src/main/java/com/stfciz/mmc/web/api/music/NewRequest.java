@@ -29,7 +29,7 @@ public class NewRequest {
 
   private String            obiPos;
   
-  private String            nbType;
+  private Integer           nbType;
 
   private Integer           pubNum;
 
@@ -133,11 +133,11 @@ public class NewRequest {
     this.obiPos = obiPos;
   }
 
-  public String getNbType() {
+  public Integer getNbType() {
     return this.nbType;
   }
 
-  public void setNbType(String nbType) {
+  public void setNbType(Integer nbType) {
     this.nbType = nbType;
   }
 
