@@ -27,8 +27,8 @@ public class AbstractBaseResponse {
   private Integer pubTotal;
   private String recordCompany;
   private String label;
-  private String sleeveGrade;
-  private String recordGrade;
+  private Integer sleeveGrade;
+  private Integer recordGrade;
   private Date lastModified;
 
   public AbstractBaseResponse() {
@@ -139,19 +139,19 @@ public class AbstractBaseResponse {
     this.label = label;
   }
 
-  public String getSleeveGrade() {
+  public Integer getSleeveGrade() {
     return this.sleeveGrade;
   }
 
-  public void setSleeveGrade(String sleeveGrade) {
+  public void setSleeveGrade(Integer sleeveGrade) {
     this.sleeveGrade = sleeveGrade;
   }
 
-  public String getRecordGrade() {
+  public Integer getRecordGrade() {
     return this.recordGrade;
   }
 
-  public void setRecordGrade(String recordGrade) {
+  public void setRecordGrade(Integer recordGrade) {
     this.recordGrade = recordGrade;
   }
 

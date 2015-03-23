@@ -38,13 +38,24 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
  musicService.getDoc($routeParams.musicDocId, function(response) {
   $scope.action.resut = 0;
   $scope.doc = response;
+  
   if ($scope.doc.images != null && $scope.doc.images.length > 0) {
    utils.debug($scope.images.length + ' photo(s)');
    $scope.setCurrentImage(0);
   } else {
 	$scope.titleClazz =  'col-md-12';
   }
-   
+
+  if ($scope.doc.sleeveGrade != null) {
+   var grade = refValues.getGrade($scope.doc.sleeveGrade);
+   $scope.doc.sleeveGradeTip = grade.code + ' - ' + grade.name;
+  }
+	 
+  if ($scope.doc.recordGrade != null) {
+   var grade = refValues.getGrade($scope.doc.recordGrade);
+   $scope.doc.recordGradeTip = grade.code + ' - ' + grade.name;
+  }
+  
   $scope.lines = []
   $scope.lines.push(response.artist);
   $scope.lines.push('');

@@ -17,11 +17,21 @@
    </div>
   </div>
   <div class="row">
-   <div class="col-md-12" ng-repeat="line in lines">
-    <p>{{line}}</p>
-  	</div>
+   <div class="col-md-9">
+    <div class="row"  ng-repeat="line in lines">
+     <div class="col-md-12">{{line}}</div>
+    </div>
+   </div>
+   <div class="col-md-3">
+	<div ng-show="doc.sleeveGrade">
+   	 <img ng-src="images/sleeve.png" title="{{doc.sleeveGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating{{doc.sleeveGrade}}.png" title="{{doc.sleeveGradeTip}}"/>
+    </div>
+    <div ng-show="doc.recordGrade" style="border-top: 5px;">
+     <img ng-src="images/record.png" title="{{doc.recordGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating{{doc.recordGrade}}.png" title="{{doc.recordGradeTip}}"/>
+    </div>
+   </div>
   </div>
-  <div class="row">
+  <div class="row" style="margin-top: 15px;">
    <div id="gallery" class="col-md-12">
   	<ul class="images">
   	 <li ng-repeat="image in doc.images">

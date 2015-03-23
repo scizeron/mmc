@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('musicListCtrl', ['$scope', 'musicService', 'userService', 
-function ($scope, musicService, userService) {
+.controller('musicListCtrl', ['$scope', 'musicService', 'userService', 'refValues',
+function ($scope, musicService, userService, refValues) {
  musicService.clearCachedDoc();
  
  $scope.doSearch = function (page) {
@@ -19,6 +19,19 @@ function ($scope, musicService, userService) {
 	 var docInfos = {'id' : doc.id, 'url' : doc.thumbImageUrl, 'title' : doc.title
 			 , 'line1' : '', 'line2' : '', 'line3' : ''};
 	 $scope.docsInfos.push(docInfos);
+	 
+	 docInfos.sleeveGrade = doc.sleeveGrade;
+	 docInfos.recordGrade = doc.recordGrade;
+	 
+	 if (doc.sleeveGrade != null) {
+	  var grade = refValues.getGrade(doc.sleeveGrade);
+	  docInfos.sleeveGradeTip = grade.code + ' - ' + grade.name;
+	 }
+	 
+	 if (doc.recordGrade != null) {
+	  var grade = refValues.getGrade(doc.recordGrade);
+	  docInfos.recordGradeTip = grade.code + ' - ' + grade.name;
+	 }
 	 
 	 docInfos.line1 = doc.artist;
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.issue);

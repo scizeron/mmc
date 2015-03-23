@@ -39,9 +39,9 @@ public class NewRequest {
 
   private String            label;
   
-  private String            sleeveGrade;
+  private Integer           sleeveGrade;
   
-  private String            recordGrade;
+  private Integer           recordGrade;
 
   private String            comment;
   
@@ -172,20 +172,20 @@ public class NewRequest {
   public void setLabel(String label) {
     this.label = label;
   }
-
-  public String getSleeveGrade() {
+  
+  public Integer getSleeveGrade() {
     return this.sleeveGrade;
   }
 
-  public void setSleeveGrade(String sleeveGrade) {
+  public void setSleeveGrade(Integer sleeveGrade) {
     this.sleeveGrade = sleeveGrade;
   }
 
-  public String getRecordGrade() {
+  public Integer getRecordGrade() {
     return this.recordGrade;
   }
 
-  public void setRecordGrade(String recordGrade) {
+  public void setRecordGrade(Integer recordGrade) {
     this.recordGrade = recordGrade;
   }
 

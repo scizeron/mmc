@@ -59,11 +59,11 @@ angular.module('mmcApp', [
   
   var expectedRole = (typeof(next.$$route) != 'undefined' && typeof(next.$$route.role) != 'undefined') ? next.$$route.role : 'user';
   
-  $rootScope.$broadcast('user', userService.getUser());
-  
   if (nextPath == '' || nextPath == '/' || nextPath == '/home') {
    expectedRole = 'anonymous';
-   $rootScope.app.jumbotron = true;
+   $rootScope.$broadcast('context', {'user' : userService.getUser(), 'jumbotron': true});
+  } else {
+   $rootScope.$broadcast('context', {'user' : userService.getUser(), 'jumbotron': false});
   }
 
   utils.debug('expectedRole: ' + expectedRole + ' for "' + nextPath + '"');

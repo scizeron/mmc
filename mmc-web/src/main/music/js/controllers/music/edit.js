@@ -48,6 +48,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
  });
 
  $scope.update = function() {
+  utils.debug('"Update: ' + JSON.stringify($scope.doc));
   musicService.updateDoc($scope.doc, function() {
    $scope.action.resut = 0;
     utils.debug($scope.doc.id + ' is updated ok');

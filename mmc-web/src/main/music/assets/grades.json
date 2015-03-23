@@ -1,14 +1,12 @@
 [
-  {"name" : "Sealed"        , "code" : "S"}, 
-  {"name" : "Mint"          , "code" : "M"},
-  {"name" : "Near Mint"     , "code" : "NM"},
-  {"name" : "Excellent"     , "code" : "EX"},
-  {"name" : "Very Good ++"  , "code" : "VG++"},
-  {"name" : "Very Good +"   , "code" : "VG+"},
-  {"name" : "Very Good"     , "code" : "VG"},
-  {"name" : "Very Good -"   , "code" : "VG-"},
-  {"name" : "Good"          , "code" : "G"},
-  {"name" : "Bad"           , "code" : "B"},
-  {"name" : "Not Applicable", "code" : "NA"}
-]
-  
+  {"name" : "Sealed"        , "code" : "S"   , "value" : 10}, 
+  {"name" : "Mint"          , "code" : "M"   , "value" : 9}, 
+  {"name" : "Near Mint"     , "code" : "NM"  , "value" : 8}, 
+  {"name" : "Excellent"     , "code" : "EX"  , "value" : 7}, 
+  {"name" : "Very Good ++"  , "code" : "VG++", "value" : 6}, 
+  {"name" : "Very Good +"   , "code" : "VG+" , "value" : 5}, 
+  {"name" : "Very Good"     , "code" : "VG"  , "value" : 4}, 
+  {"name" : "Very Good -"   , "code" : "VG-" , "value" : 3}, 
+  {"name" : "Good"          , "code" : "G"   , "value" : 2}, 
+  {"name" : "Bad"           , "code" : "B"   , "value" : 1} 
+]  

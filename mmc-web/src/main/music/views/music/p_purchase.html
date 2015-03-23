@@ -17,16 +17,16 @@
  <label class="control-label col-md-2" for="comment">Grade</label>
  <label class="control-label col-md-1" for="quality">Sleeve</label>
  <div class="col-md-2">   
- 	<select class="form-control" id="sleeveQuality" name="sleeveQuality" ng-model="doc.sleeveGrade">
+  <select class="form-control" id="sleeveQuality" name="sleeveQuality" ng-model="doc.sleeveGrade">
    <option></option>
-   <option ng-repeat="grade in grades" value="{{grade.code}}">{{grade.code}} - {{grade.name}}</option>
- 	</select>   
+   <option ng-repeat="grade in grades" value="{{grade.value}}">{{grade.code}} - {{grade.name}}</option>
+  </select>   
  </div> 
  <label class="control-label col-md-1" for="quality">Record</label>
  <div class="col-md-2">   
   <select class="form-control" id="recordQuality" name="recordQuality" ng-model="doc.recordGrade">
-   <option></option>
-   <option ng-repeat="grade in grades" value="{{grade.code}}">{{grade.code}} - {{grade.name}}</option>
+   <option value="0"></option>
+   <option ng-repeat="grade in grades" value="{{grade.value}}">{{grade.code}} - {{grade.name}}</option>
   </select>   
  </div>
 </div>

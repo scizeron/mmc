@@ -55,10 +55,10 @@ public class MusicDocument {
   private RecordCompany     recordCompany;
 
   /** uses the Goldmine Standard code **/
-  private String            sleeveGrade;
-  
+  private Integer           sleeveRating;
+
   /** uses the Goldmine Standard code **/
-  private String            recordGrade;
+  private Integer           recordRating;
 
   private String            comment;
 
@@ -324,22 +324,6 @@ public class MusicDocument {
     this.promo = promo;
   }
 
-  public String getSleeveGrade() {
-    return this.sleeveGrade;
-  }
-
-  public void setSleeveGrade(String sleeveGrade) {
-    this.sleeveGrade = sleeveGrade;
-  }
-  
-  public String getRecordGrade() {
-    return this.recordGrade;
-  }
-
-  public void setRecordGrade(String recordGrade) {
-    this.recordGrade = recordGrade;
-  }
-
   public Obi getObi() {
     return this.obi;
   }
@@ -354,5 +338,21 @@ public class MusicDocument {
 
   public void setModified(Date modified) {
     this.modified = modified;
+  }
+  
+  public Integer getSleeveRating() {
+    return sleeveRating;
+  }
+
+  public void setSleeveRating(Integer sleeveRating) {
+    this.sleeveRating = sleeveRating;
+  }
+
+  public Integer getRecordRating() {
+    return recordRating;
+  }
+
+  public void setRecordRating(Integer recordRating) {
+    this.recordRating = recordRating;
   }
 }
