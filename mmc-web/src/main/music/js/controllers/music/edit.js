@@ -47,17 +47,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   $scope.action.resut = 1;	 
  });
 
- $scope.reset = function() {
-  musicService.getDoc($routeParams.musicDocId, function(response) {
-   $scope.action.resut = 0;
-   $scope.doc = response;
-  }, function() {
-   $scope.action.resut = 1;	  
-  });
- };
- 
  $scope.update = function() {
-  utils.debug('update "' + JSON.stringify($scope.doc));
   musicService.updateDoc($scope.doc, function() {
    $scope.action.resut = 0;
     utils.debug($scope.doc.id + ' is updated ok');

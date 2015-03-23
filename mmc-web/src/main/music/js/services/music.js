@@ -1,28 +1,18 @@
 'use strict';
 
-angular.module('mmcApp')
-.factory('musicService', ['$http', '$q', 'utils', function($http, $q, utils) {
- var docs = null;
- var selectedPage = -1;
+angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', function($http, $q, utils) {
   
  function getDocs(page, reload, onSuccessCallback, onErrorCallack) {
-  if( typeof(page) == 'undefined') {
-   if (selectedPage == -1) {
-    selectedPage = 0;
-   }
-  } else {
-   selectedPage = page;  
-  };	 
   
-  utils.debug('active page: ' + (selectedPage+1));
+  utils.debug('active page: ' + (page+1));
   
-  var uri = env.get('api.url') + '/music/md?p=' + selectedPage + '&s=' + settings.pageSize + '&client_id=' + encodeURIComponent(env.get('oauth2.client_id'));
+  var uri = env.get('api.url') + '/music/md?p=' + page + '&s=' + settings.pageSize + '&client_id=' + encodeURIComponent(env.get('oauth2.client_id'));
   $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
   $http.get(uri).
    success(function(response) {
-    docs = response;
-    utils.debug('musicService.getDocs('+selectedPage+','+reload+'): ' + JSON.stringify(docs));
-    onSuccessCallback(docs, selectedPage);
+    var docs = response;
+    utils.debug('musicService.getDocs('+page+','+reload+'): ' + JSON.stringify(docs));
+    onSuccessCallback(docs, page);
    }).error(function(data, status, headers, config) {
     utils.error('status: ' + status);
     onErrorCallack();

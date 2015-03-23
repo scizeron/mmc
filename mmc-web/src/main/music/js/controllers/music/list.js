@@ -75,5 +75,5 @@ function ($scope, musicService, userService) {
    $scope.action.result = 1;	  
   });
  };
- $scope.doSearch();
+ $scope.doSearch(0);
 }]);
