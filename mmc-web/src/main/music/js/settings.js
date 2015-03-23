@@ -5,7 +5,7 @@ var settings = {
  music : {
    types: ["LP","CD","EP","DVD","Blu-ray"]
  , nbMaxType : 20
- , defaultCountry: "US"
+ , defaultCountry: "null"
  , minYear : 1960
  }
 };

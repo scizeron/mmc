@@ -48,8 +48,17 @@
 <div class="form-group">
  <label class="control-label col-md-2" for="origin">Origin</label>
  <div class="col-md-2">          
-  <select class="form-control" id="origin" name="origin" ng-model="doc.origin" ng-options="country.code as country.name for country in countries">
-  </select>
+  <div class="row">
+   <div class="col-md-10">
+    <select class="form-control" id="origin" name="origin" ng-model="doc.origin">
+	 <option value="null"></option>
+	 <option ng-repeat="country in countries" value="{{country.code}}" ng-selected="country.code == doc.origin">{{country.name}}</option>
+    </select>
+   </div>
+   <div class="col-md-2">
+    <img ng-src="images/country/24/{{doc.origin}}.png"/>
+   </div>
+  </div>
  </div>
  <div ng-show="doc.origin == 'JP' && doc.mainType == 'LP'">
   <label class="control-label col-md-1" for="obiColor">Obi</label>
