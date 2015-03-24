@@ -3,12 +3,8 @@
 angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', function($http, $q, utils) {
   
  function getDocs(page, reload, onSuccessCallback, onErrorCallack) {
-  
   utils.debug('active page: ' + (page+1));
-  
-  var uri = env.get('api.url') + '/music/md?p=' + page + '&s=' + settings.pageSize + '&client_id=' + encodeURIComponent(env.get('oauth2.client_id'));
-  $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
-  $http.get(uri).
+  $http.get('/music/md').
    success(function(response) {
     var docs = response;
     utils.debug('musicService.getDocs('+page+','+reload+'): ' + JSON.stringify(docs));
@@ -25,8 +21,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
 	doc.obiPos = null;
 	doc.obiColor = null;
   }
-  $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
-  $http.post(env.get('api.url') + '/music/md'  + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id')),JSON.stringify(doc)).
+  $http.post('/music/md', JSON.stringify(doc)).
    success(function(data, status) {
 	utils.debug('A new doc is created : ' + JSON.stringify(data));
 	onSuccessCallback(data);
@@ -37,8 +32,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
  };
  
  function updateDoc(doc, onSuccessCallback, onErrorCallack) {
-  $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
-  $http.post(env.get('api.url') + '/music/md/' + doc.id  + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id')),JSON.stringify(doc)).
+  $http.post('/music/md/' + doc.id, JSON.stringify(doc)).
    success(function(data, status) {
 	utils.debug('update ' + JSON.stringify(doc));
 	clearCachedDoc();
@@ -77,9 +71,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
    clearCachedDoc();
   }
   
-  var uri = env.get('api.url') + '/music/md' + '/' + id + '?client_id=' + encodeURIComponent(env.get('oauth2.client_id'));
-  $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
-  $http.get(uri).
+  $http.get('/music/md/' + id).
    success(function(doc) {
 	utils.debug('get: '+ JSON.stringify(doc)); 
 	putDocInCache(doc);
@@ -92,15 +84,13 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
  };
  
  function uploadPhoto(id, file, onSuccessCallback, onErrorCallack) {
-  var uri = env.get('api.url') + '/music/md/' + id + '/photos';
-  utils.debug('upload uri: ' + uri + ', file:' + file.name);
+  utils.debug('upload ' + file.name);
   var fd = new FormData();
   fd.append('file', file); 
-  $http.post(uri + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id')), fd, {
+  $http.post('/music/md/' + id + '/photos', fd, {
 	transformRequest: angular.identity,
 	headers: {
 	  'Content-Type': undefined
-	 ,'Authorization': 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken')
 	 }
    }).success(function(photo, status) {
 	var doc = getCachedDoc(id).doc;
@@ -117,9 +107,8 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
  };
  
  function removePhotos(id, photoIds, onSuccessCallback, onErrorCallack) {
-  $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
   var removePhotosIn = { 'ids' : photoIds};
-  $http.delete(env.get('api.url') + '/music/md/' + id + '/photos?client_id=' + encodeURIComponent(env.get('oauth2.client_id')), {
+  $http.delete('/music/md/' + id + '/photos', {
 	  'data' : JSON.stringify(removePhotosIn)
 	, 'headers': {
 		'Content-Type': 'application/json'
@@ -130,9 +119,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
  }
  
  function remove(id, onSuccessCallback, onErrorCallack) {
-  var uri = env.get('api.url') + '/music/md/' + id + "?client_id=" + encodeURIComponent(env.get('oauth2.client_id'));
-  $http.defaults.headers.common.Authorization = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
-  $http.delete(uri).success(function(status){clearCachedDoc(); onSuccessCallback();}).error(function(data, status, headers, config) { onErrorCallack();});
+  $http.delete('/music/md/' + id).success(function(status){clearCachedDoc(); onSuccessCallback();}).error(function(data, status, headers, config) { onErrorCallack();});
  }
  
  return { 
