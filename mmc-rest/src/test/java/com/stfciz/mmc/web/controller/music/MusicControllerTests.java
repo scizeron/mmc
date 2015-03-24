@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tlrx.elasticsearch.test.EsSetup;
 import com.stfciz.mmc.web.AbstractWebApplicationTests;
+import com.stfciz.mmc.web.api.music.FindElementResponse;
 import com.stfciz.mmc.web.api.music.FindResponse;
 /**
  * 
@@ -50,23 +51,36 @@ public class MusicControllerTests extends AbstractWebApplicationTests {
       .andExpect(status().is2xxSuccessful()).andReturn();
     // then
     FindResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), FindResponse.class);
-    Assert.assertThat(response.getDocs().size(), CoreMatchers.is(3));
-    Assert.assertThat(response.getDocs().get(0).getLastModified().after(response.getDocs().get(1).getLastModified()), CoreMatchers.is(true));
-    Assert.assertThat(response.getDocs().get(1).getLastModified().after(response.getDocs().get(2).getLastModified()), CoreMatchers.is(true));
+    Assert.assertThat(response.getDocs().get(0).getLastModified().after(response.getDocs().get(1).getLastModified()) || response.getDocs().get(0).getLastModified().equals(response.getDocs().get(1).getLastModified()) , CoreMatchers.is(true));
   }
   
   /**
    * 
    * @throws Exception
    */
-  @Test public void search() throws Exception {
+  @Test public void searchByTitle() throws Exception {
     // when
-    MvcResult result = this.mockMvc.perform(get("/music/md").param("q", "fl"))
+    MvcResult result = this.mockMvc.perform(get("/music/md").param("q", "wall"))
       .andDo(print())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().is2xxSuccessful()).andReturn();
     // then
     FindResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), FindResponse.class);
-    Assert.assertThat(response.getDocs().size(), CoreMatchers.is(3));
+    for (FindElementResponse doc : response.getDocs()) {
+      Assert.assertThat(doc.getTitle().toLowerCase().contains("wall"), CoreMatchers.is(true));
+    }
+  }
+  
+  @Test public void searchByArtist() throws Exception {
+    // when
+    MvcResult result = this.mockMvc.perform(get("/music/md").param("q", "roger"))
+      .andDo(print())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is2xxSuccessful()).andReturn();
+    // then
+    FindResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), FindResponse.class);
+    for (FindElementResponse doc : response.getDocs()) {
+      Assert.assertThat(doc.getArtist().toLowerCase().contains("roger"), CoreMatchers.is(true));
+    }
   }
 }

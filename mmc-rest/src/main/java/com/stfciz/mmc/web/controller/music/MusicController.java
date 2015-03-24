@@ -3,6 +3,8 @@ package com.stfciz.mmc.web.controller.music;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,19 +72,23 @@ public class MusicController {
   @RequestMapping(method = RequestMethod.GET)
   @Permission(scopes = { OAuth2ScopeApi.READ })
   public FindResponse find(
-      @RequestParam(value = "q", required = false) String input,
+      @RequestParam(value = "q", required = false) String query,
       @RequestParam(value = "p", required = false, defaultValue = "0") int page,
       @RequestParam(value = "s", required = false, defaultValue = "50") int pageSize) {
 
     PageRequest pageable = null;
     Page<MusicDocument> result = null;
     
-    if (StringUtils.isBlank(input)) {
+    if (StringUtils.isBlank(query)) {
       pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.DESC, "modified")));
       result = this.repository.findAll(pageable);
     } else {
       pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.ASC, "title")));
-      result = this.repository.search(input, pageable);
+      QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(query);
+      queryBuilder.field("title");
+      queryBuilder.field("artist");
+      queryBuilder.defaultOperator(QueryStringQueryBuilder.Operator.OR);
+      result = this.repository.search(queryBuilder, pageable);
     }
     
     FindResponse response = new FindResponse();

@@ -2,7 +2,6 @@ package com.stfciz.mmc.web;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration;
@@ -40,10 +39,7 @@ public class AppTestSpringWebConfiguration {
         .put("path.config", "target/es/config")
         ;
     
-    Node node = new NodeBuilder().settings(settings)
-        .clusterName("test").node();
-    
-    return node.client();
+    return new NodeBuilder().settings(settings).clusterName("test").node().client();
   }
   
   @Bean
