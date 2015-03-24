@@ -2,12 +2,16 @@
 
 angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', function($http, $q, utils) {
   
- function getDocs(page, reload, onSuccessCallback, onErrorCallack) {
-  utils.debug('active page: ' + (page+1));
-  $http.get('/music/md').
+ function getDocs(query, page, onSuccessCallback, onErrorCallack) {
+  utils.debug('active page: ' + (page+1) + ', query: ' + query + ', size: ' + settings.pageSize);
+  var uri = '/music/md?p=' + page + '&s=' + settings.pageSize;
+  if (query != null) {
+   uri += '&q=' + encodeURIComponent(query);   
+  }
+  $http.get(uri).
    success(function(response) {
     var docs = response;
-    utils.debug('musicService.getDocs('+page+','+reload+'): ' + JSON.stringify(docs));
+    utils.debug('musicService.getDocs('+page+'): ' + JSON.stringify(docs));
     onSuccessCallback(docs, page);
    }).error(function(data, status, headers, config) {
     utils.error('status: ' + status);

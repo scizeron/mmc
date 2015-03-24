@@ -3,7 +3,6 @@ package com.stfciz.mmc.web.controller.music;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

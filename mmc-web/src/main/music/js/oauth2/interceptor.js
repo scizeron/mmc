@@ -3,10 +3,11 @@
 angular.module('mmcApp').factory('oauth2Interceptor', ['$q', '$injector', 'utils', function($q, $injector, utils) {  
  var myInterceptor = {
   request: function(config) {
-   utils.debug(config.method + ' '+  config.url);
-   if (config.url.indexOf('/') == 0) {
+   var apiCall = (config.url.indexOf('/music/md')  == 0)
+   if (apiCall) {
 	// REST api
-    config.url = env.get('api.url') + config.url;
+	utils.debug(config.method + ' '+  config.url);
+	config.url = env.get('api.url') + config.url;
 	config.headers['Authorization'] = 'Bearer ' + webUtils.getSessionItem('oauth2.accessToken');
 	if (config.url.indexOf('?') > 0) {
 	 config.url += '&'

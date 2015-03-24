@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('musicListCtrl', ['$scope', 'musicService', 'userService', 'refValues',
-function ($scope, musicService, userService, refValues) {
+.controller('musicListCtrl', ['$scope', 'musicService', 'userService', 'refValues', 'appService',
+function ($scope, musicService, userService, refValues, appService) {
  musicService.clearCachedDoc();
- 
  $scope.doSearch = function (page) {
   $scope.action = { 'result' : -1};	 
-  musicService.getDocs(page, true, function(response, selectedPage) {
+  musicService.getDocs(appService.getQuery(), page, function(response, selectedPage) {
+   $scope.totalPages = response.totalPages;
    $scope.action.result = 0; 
    $scope.docsInfos = [];
    var idxDoc;
@@ -51,8 +51,7 @@ function ($scope, musicService, userService, refValues) {
 	  return 'Limited Edition : ' + value + '/' + doc.pubTotal;   
      });
    }
-   
-   $scope.pageSelectedPage = selectedPage;
+
    if (response == null || response.totalPages < 2) {
     $scope.navigation='';   
    } else {
@@ -77,4 +76,8 @@ function ($scope, musicService, userService, refValues) {
   });
  };
  $scope.doSearch(0);
+ 
+ $scope.$on('music', function(event, args) {
+  $scope.doSearch(0);	 
+ });
 }]);

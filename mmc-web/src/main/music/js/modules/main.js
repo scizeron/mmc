@@ -13,7 +13,7 @@ angular.module('mmcApp', [
   when('/home', {
    templateUrl: 'views/home.html',
    controller: 'appCtrl',
-   role: 'anonymous',
+   role: 'anonymous'
   }).
   when('/login', {
    templateUrl: 'views/home.html',
@@ -53,7 +53,8 @@ angular.module('mmcApp', [
 .config(['$httpProvider', function($httpProvider) {  
  $httpProvider.interceptors.push('oauth2Interceptor');
 }])
-.run(function($rootScope, $location, userService, utils) {
+.run(function($rootScope, $location, userService, utils, appService) {
+ appService.initApp();
  $rootScope.$on( "$routeChangeStart", function(event, next, current) {
   utils.debug('$routeChangeStart, next: ' + JSON.stringify(next));
   var nextPath = (typeof(next.$$route) != 'undefined') ? next.$$route.originalPath : '/home';
@@ -62,14 +63,18 @@ angular.module('mmcApp', [
   }
   
   var expectedRole = (typeof(next.$$route) != 'undefined' && typeof(next.$$route.role) != 'undefined') ? next.$$route.role : 'user';
-  
+  var universe = 'music';
+  var jumbotron = false;
+
   if (nextPath == '' || nextPath == '/' || nextPath == '/home') {
    expectedRole = 'anonymous';
-   $rootScope.$broadcast('context', {'user' : userService.getUser(), 'jumbotron': true});
-  } else {
-   $rootScope.$broadcast('context', {'user' : userService.getUser(), 'jumbotron': false});
+   jumbotron = true;
   }
-
+  
+  appService.setUser(userService.getUser());
+  appService.setJumbotron(jumbotron);
+  appService.setUniverse(universe);
+  
   utils.debug('expectedRole: ' + expectedRole + ' for "' + nextPath + '"');
   
   if (expectedRole == 'anonymous') {
