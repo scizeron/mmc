@@ -49,7 +49,11 @@ angular.module('mmcApp', [
    redirectTo: '/home',
    role: 'anonymous',
   });
-}).run(function($rootScope, $location, userService, utils) {
+})
+.config(['$httpProvider', function($httpProvider) {  
+ $httpProvider.interceptors.push('oauth2Interceptor');
+}])
+.run(function($rootScope, $location, userService, utils) {
  $rootScope.$on( "$routeChangeStart", function(event, next, current) {
   utils.debug('$routeChangeStart, next: ' + JSON.stringify(next));
   var nextPath = (typeof(next.$$route) != 'undefined') ? next.$$route.originalPath : '/home';

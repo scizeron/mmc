@@ -20,5 +20,4 @@ var User = function(firstName, lastName, roles) {
  this.toString = function() {
   return this.firstName + ', ' + this.lastName + ', "' +  this.roles + '", admin: ' + this.isAdmin();
  }
- 
 };

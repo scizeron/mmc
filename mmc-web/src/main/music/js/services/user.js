@@ -28,10 +28,7 @@ angular.module('mmcApp').service('userService', ['$http', function($http) {
    return this.userHasRole('ADMIN');
   },
   logout:function() {
-   webUtils.debug('logout ...');
-   webUtils.removeSessionItem('oauth2.accessToken');
-   webUtils.removeSessionItem('oauth2.userInfos');
-   webUtils.removeSessionItem('user');
+   webUtils.clearSession();
   },
   setUserInfosIfAbsent: function(expiresIn, authenticatedUserCallback) {
    var user = this.getUser();	
