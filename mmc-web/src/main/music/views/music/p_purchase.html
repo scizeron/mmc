@@ -18,11 +18,11 @@
 <!--  <label class="control-label col-md-1" for="quality">Sleeve</label> -->
  <div class="col-md-offset-1 col-md-3">
   <img src="images/rating/sleeve.png" title="sleeve rating"/>
-  <rating ng-model="doc.sleeveGrade" max="10"></rating><p><i>{{doc.sleeveGrade}} : {{getGrade(doc.sleeveGrade)}}</i></p>   
+  <rating ng-model="doc.sleeveGrade" max="10"></rating><p ng-show="doc.sleeveGrade > 0"><i>{{doc.sleeveGrade}} : {{getGrade(doc.sleeveGrade)}}</i></p>   
  </div> 
  <div class="col-md-3">
   <img src="images/rating/record.png" title="sleeve record"/> 
-  <rating ng-model="doc.recordGrade" max="10"></rating><p><i>{{doc.recordGrade}} : {{getGrade(doc.recordGrade)}}</i></p>    
+  <rating ng-model="doc.recordGrade" max="10"></rating><p ng-show="doc.recordGrade > 0"><i>{{doc.recordGrade}} : {{getGrade(doc.recordGrade)}}</i></p>    
  </div>
 </div>
 <div class="form-group">
