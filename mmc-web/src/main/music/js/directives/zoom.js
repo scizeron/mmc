@@ -15,7 +15,7 @@ angular.module('mmcApp').directive('ngJetZoom', function() {
     	  
         var zoomInstance = scope.zoomInstance;
         if (typeof(zoomInstance) == "undefined") {
-         var options = {};
+         var options = { 'lensAutoCircle' : true };
          zoomInstance = new JetZoom($('#zomImage'),options);
          scope.zoomInstance = zoomInstance;
          console.log("Create a new zoomInstance");
