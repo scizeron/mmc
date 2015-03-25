@@ -45,7 +45,7 @@ public class MusicControllerTests extends AbstractWebApplicationTests {
    */
   @Test public void findLastModifiedDocuments() throws Exception {
     // when
-    MvcResult result = this.mockMvc.perform(get("/music/md"))
+    MvcResult result = this.mockMvc.perform(get("/music/md").accept(MediaType.ALL_VALUE))
       .andDo(print())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().is2xxSuccessful()).andReturn();
@@ -60,7 +60,7 @@ public class MusicControllerTests extends AbstractWebApplicationTests {
    */
   @Test public void searchByTitle() throws Exception {
     // when
-    MvcResult result = this.mockMvc.perform(get("/music/md").param("q", "wall"))
+    MvcResult result = this.mockMvc.perform(get("/music/md").param("q", "wall").accept(MediaType.ALL_VALUE))
       .andDo(print())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().is2xxSuccessful()).andReturn();
@@ -73,7 +73,7 @@ public class MusicControllerTests extends AbstractWebApplicationTests {
   
   @Test public void searchByArtist() throws Exception {
     // when
-    MvcResult result = this.mockMvc.perform(get("/music/md").param("q", "roger"))
+    MvcResult result = this.mockMvc.perform(get("/music/md").param("q", "roger").accept(MediaType.ALL_VALUE))
       .andDo(print())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().is2xxSuccessful()).andReturn();

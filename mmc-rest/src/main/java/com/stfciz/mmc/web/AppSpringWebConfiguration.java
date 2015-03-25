@@ -13,6 +13,7 @@ import org.springframework.boot.actuate.autoconfigure.TraceWebFilterAutoConfigur
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,6 +25,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
+import com.stfciz.mmc.web.api.music.PdfHttpMessageFindResponseConverter;
 import com.stfciz.mmc.web.controller.CorsFilter;
 import com.stfciz.mmc.web.oauth2.OAuth2Filter;
 import com.stfciz.mmc.web.oauth2.PermissionAspect;
@@ -78,6 +80,11 @@ public class AppSpringWebConfiguration {
   @Profile("!test")
   public PermissionAspect permissionAspect() {
     return new PermissionAspect();
+  }
+  
+  @Bean
+  public HttpMessageConverters customConverters() {
+    return new HttpMessageConverters(new PdfHttpMessageFindResponseConverter());
   }
 
 }

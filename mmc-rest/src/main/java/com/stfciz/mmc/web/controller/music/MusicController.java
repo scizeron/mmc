@@ -68,7 +68,9 @@ public class MusicController {
   @Autowired
   private CoreConfiguration configuration;
 
-  @RequestMapping(method = RequestMethod.GET)
+  @RequestMapping(method = RequestMethod.GET
+      , consumes = { MediaType.ALL_VALUE }
+      , produces = { MediaType.APPLICATION_JSON_VALUE, "application/pdf" })
   @Permission(scopes = { OAuth2ScopeApi.READ })
   public FindResponse find(
       @RequestParam(value = "q", required = false) String query,
@@ -77,32 +79,49 @@ public class MusicController {
 
     PageRequest pageable = null;
     Page<MusicDocument> result = null;
-    
-    if (StringUtils.isBlank(query)) {
-      pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.DESC, "modified")));
-      result = this.repository.findAll(pageable);
-    } else {
-      pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.ASC, "title")));
-      QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(query);
-      queryBuilder.field("title");
-      queryBuilder.field("artist");
-      queryBuilder.defaultOperator(QueryStringQueryBuilder.Operator.OR);
-      result = this.repository.search(queryBuilder, pageable);
-    }
+    boolean singlePage = (page == -1);
+    boolean hasNext = false;
     
     FindResponse response = new FindResponse();
-    response.setPageSize(result.getSize());
-    response.setNext(result.hasNext());
-    response.setPrevious(result.hasPrevious());
-    response.setPage(result.getNumber());
-    response.setTotalPages(result.getTotalPages());
-
-    if (result.hasContent()) {
-      for (MusicDocument doc : result.getContent()) {
-        response.getDocs().add(
-            this.apiConverter.convertMusicDocumentToFindDocument(doc));
+    response.setPageSize(0);
+    
+    do {
+      
+      if (singlePage) {
+        page++;
+        LOGGER.debug("\"single-page\" mode, page : {}", page);
       }
-    }
+      
+      if (StringUtils.isBlank(query)) {
+        pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.DESC, "modified")));
+        result = this.repository.findAll(pageable);
+      } else {
+        pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.ASC, "title")));
+        QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(query);
+        queryBuilder.field("title");
+        queryBuilder.field("artist");
+        queryBuilder.defaultOperator(QueryStringQueryBuilder.Operator.OR);
+        result = this.repository.search(queryBuilder, pageable);
+      }
+      
+      hasNext = result.hasNext();
+      response.setPageSize(response.getPageSize() + result.getSize());
+      
+      if (!singlePage) {
+        response.setPrevious(result.hasPrevious());
+        response.setPage(result.getNumber());
+        response.setTotalPages(result.getTotalPages());
+        response.setNext(hasNext);
+      }
+      
+      if (result.hasContent()) {
+        for (MusicDocument doc : result.getContent()) {
+          response.getDocs().add(this.apiConverter.convertMusicDocumentToFindDocument(doc));
+        }
+      }
+      
+    } while (singlePage && hasNext);
+
     return response;
   }
 
