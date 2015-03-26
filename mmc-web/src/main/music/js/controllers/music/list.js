@@ -12,7 +12,7 @@ function ($scope, musicService, userService, refValues, appService, utils) {
   appService.nav().currentIndex = index;
  };
 	
- $scope.doSearch = function (page) {
+ $scope.list = function (page) {
   $scope.action = { 'result' : -1};	 
   musicService.getDocs(appService.app().query, page, function(response, selectedPage) {
    $scope.totalPages = response.totalPages;
@@ -84,7 +84,7 @@ function ($scope, musicService, userService, refValues, appService, utils) {
      if (selectedPage == j) {
       navigHtml += ' class="active"';
      }
-     navigHtml += '><a href ng-click="doSearch('+j+')">' + i + '</a></li>';
+     navigHtml += '><a href ng-click="list('+j+')">' + i + '</a></li>';
     }
     navigHtml += '</ul>';
     $scope.navigation = navigHtml;	   
@@ -95,6 +95,6 @@ function ($scope, musicService, userService, refValues, appService, utils) {
  };
 
  musicService.clearCachedDoc();
- $scope.doSearch(0);
+ $scope.list(0);
  
 }]);
