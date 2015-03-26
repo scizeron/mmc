@@ -9,8 +9,10 @@
   <div class="row">
    <div class="col-md-12">
     <h1>{{doc.title}}
-    <div class="btn-group" style="float: right;">
-     <button type="button" ng-click="gotoFind()" class="btn">Back</button>
+    <div class="btn-group" role="group" style="float: right;">
+     <button class="btn btn-default" ng-click="previous()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+     <button class="btn btn-default" ng-click="next()" style="margin-right: 15px;"><span class="glyphicon glyphicon-chevron-right"></span></button>
+     <button type="button" ng-click="gotoFind()" class="btn btn-default">Back</button>
      <button ng-click="gotoEdit()" ng-show="canEdit" class="btn btn-primary">Edit</button>
     </div>
     </h1>

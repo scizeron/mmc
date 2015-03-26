@@ -128,4 +128,6 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   musicService.remove(id, callback, callback);
  };  
  
+ 
+ 
 }]);

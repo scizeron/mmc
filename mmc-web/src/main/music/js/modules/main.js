@@ -54,11 +54,24 @@ angular.module('mmcApp', [
  $httpProvider.interceptors.push('oauth2Interceptor');
 }])
 .run(function($rootScope, $location, userService, utils, appService) {
- appService.initApp();
- $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-  utils.debug('$routeChangeStart, next: ' + JSON.stringify(next));
+ 
+ appService.init();
+ 
+ $rootScope.$on( "$routeChangeStart", function(event, next, current) { 
+  var app = appService.app();
+  
+  utils.debug('********************************** NEXT **********************************');
+  utils.debug('- app  : ' + JSON.stringify(app));
+  utils.debug('- nav  : ' + JSON.stringify(appService.nav()));
+  utils.debug('- next : ' + JSON.stringify(next));
+  utils.debug('**************************************************************************');
+  
   var nextPath = (typeof(next.$$route) != 'undefined') ? next.$$route.originalPath : '/home';
+  
   if (nextPath == '/logout') {
+   app.setUser(null);
+   app.universe = null;
+   app.jumbotron = true;	  
    return;
   }
   
@@ -72,8 +85,8 @@ angular.module('mmcApp', [
   }
   
   appService.setUser(userService.getUser());
-  appService.setJumbotron(jumbotron);
-  appService.setUniverse(universe);
+  app.jumbotron = jumbotron;
+  app.universe = universe;
   
   utils.debug('expectedRole: ' + expectedRole + ' for "' + nextPath + '"');
   

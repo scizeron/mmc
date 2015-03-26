@@ -27,21 +27,21 @@ var Jwt = function(jwtValue, verboseValue) {
   if (this.jwtValue.match(/^([^.]+)\.([^.]+)\.([^.]+)$/) == null) {
    this.error("JWS signature is not a form of 'Head.Payload.SigValue'.");
    return false;
-  };   
+  }   
 
   try {	  
    this.jwsHeader = JSON.parse(b64utoutf8(RegExp.$1));
   } catch (ex) {
    this.error("b64utoutf8 error : " + ex.message);
    return false;
-  };
+  }
   
   this.debug("Public Key Modulus (N): " + this.jwsHeader.jwk.n + ", Public Exponent (E): " + this.jwsHeader.jwk.e + ".");
     
   try {
    verifyJWSByNE = jws.verifyJWSByNE(this.jwtValue, b64utohex(this.jwsHeader.jwk.n), b64utohex(this.jwsHeader.jwk.e));
    if (!verifyJWSByNE) {
-	  this.error("verifyJWSByNE: " + verifyJWSByNE);
+	this.error("verifyJWSByNE: " + verifyJWSByNE);
     return false;
    }
   } catch (ex) {

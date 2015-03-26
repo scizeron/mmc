@@ -1,17 +1,33 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('musicListCtrl', ['$scope', 'musicService', 'userService', 'refValues', 'appService',
-function ($scope, musicService, userService, refValues, appService) {
- musicService.clearCachedDoc();
+.controller('musicListCtrl', ['$scope', 'musicService', 'userService', 'refValues', 'appService', 'utils', 
+function ($scope, musicService, userService, refValues, appService, utils) {
+
+ $scope.$on('music', function(event, args) {
+  $scope.doSearch(0);	 
+ });
+ 
+ $scope.selectItem = function(index) {
+  appService.nav().currentIndex = index;
+ };
+	
  $scope.doSearch = function (page) {
   $scope.action = { 'result' : -1};	 
-  musicService.getDocs(appService.getQuery(), page, function(response, selectedPage) {
+  musicService.getDocs(appService.app().query, page, function(response, selectedPage) {
    $scope.totalPages = response.totalPages;
    $scope.action.result = 0; 
    $scope.docsInfos = [];
    var idxDoc;
    var doc;
+   var nav = appService.nav();
+   
+   nav.type = 'music';
+   nav.pageSize = (response.docs == null) ? 0 : response.docs.length;
+   nav.totalPages = response.totalPages;
+   nav.currentPage = page;
+   
+   utils.debug('nav: ' + JSON.stringify(nav));
    
    for (idxDoc in response.docs) {
 	 var doc = response.docs[idxDoc];
@@ -51,10 +67,12 @@ function ($scope, musicService, userService, refValues, appService) {
 	  return 'Limited Edition : ' + value + '/' + doc.pubTotal;   
      });
    }
-
-   if (response == null || response.totalPages < 2) {
-    $scope.navigation='';   
+   
+   if (response.totalPages < 2) {
+    $scope.navigation='';
+    
    } else {
+	   
     var currentPage = response.page + 1; // premiere page est 0
     var navigHtml = '';
     var i=1;
@@ -75,9 +93,8 @@ function ($scope, musicService, userService, refValues, appService) {
    $scope.action.result = 1;	  
   });
  };
+
+ musicService.clearCachedDoc();
  $scope.doSearch(0);
  
- $scope.$on('music', function(event, args) {
-  $scope.doSearch(0);	 
- });
 }]);

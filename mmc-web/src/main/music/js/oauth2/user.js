@@ -16,8 +16,8 @@ var User = function(firstName, lastName, roles) {
  };
  this.isAdmin = function() {
   return this.hasRole('ADMIN');	 
- },
+ };
  this.toString = function() {
   return this.firstName + ', ' + this.lastName + ', "' +  this.roles + '", admin: ' + this.isAdmin();
- }
+ };
 };
