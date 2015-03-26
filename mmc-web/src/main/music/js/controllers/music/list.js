@@ -9,25 +9,19 @@ function ($scope, musicService, userService, refValues, appService, utils) {
  });
  
  $scope.selectItem = function(index) {
-  appService.nav().currentIndex = index;
+  appService.nav().index = index;
  };
 	
  $scope.list = function (page) {
   $scope.action = { 'result' : -1};	 
-  musicService.getDocs(appService.app().query, page, function(response, selectedPage) {
+  musicService.getDocs(appService.app().query, page, false, function(response) {
    $scope.totalPages = response.totalPages;
    $scope.action.result = 0; 
    $scope.docsInfos = [];
    var idxDoc;
    var doc;
-   var nav = appService.nav();
    
-   nav.type = 'music';
-   nav.pageSize = (response.docs == null) ? 0 : response.docs.length;
-   nav.totalPages = response.totalPages;
-   nav.currentPage = page;
-   
-   utils.debug('nav: ' + JSON.stringify(nav));
+   appService.setNav(newNavFromMusicListResponse(response));
    
    for (idxDoc in response.docs) {
 	 var doc = response.docs[idxDoc];
@@ -68,33 +62,32 @@ function ($scope, musicService, userService, refValues, appService, utils) {
      });
    }
    
-   if (response.totalPages < 2) {
-    $scope.navigation='';
-    
-   } else {
-	   
+   var navigHtml = '';
+   
+   if (response.totalPages > 1) {
     var currentPage = response.page + 1; // premiere page est 0
-    var navigHtml = '';
     var i=1;
     var j=0;
     navigHtml = '<ul class="pagination">';
     for (i = 1; i <= response.totalPages; i++) {
      j=i-1; 
      navigHtml+= '<li';
-     if (selectedPage == j) {
+     if (response.page == j) {
       navigHtml += ' class="active"';
      }
      navigHtml += '><a href ng-click="list('+j+')">' + i + '</a></li>';
     }
     navigHtml += '</ul>';
-    $scope.navigation = navigHtml;	   
    }
+  
+   $scope.navigation = navigHtml;   
+
   }, function() {
    $scope.action.result = 1;	  
   });
  };
 
- musicService.clearCachedDoc();
+ musicService.clearCache();
  $scope.list(0);
  
 }]);

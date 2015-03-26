@@ -2,17 +2,48 @@
 
 angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', function($http, $q, utils) {
   
- function getDocs(query, page, onSuccessCallback, onErrorCallack) {
-  utils.debug('active page: ' + (page+1) + ', query: ' + query + ', size: ' + settings.pageSize);
+ /**
+  * 
+  * @param query
+  * @param page
+  * @param useCache
+  * @param onSuccessCallback
+  * @param onErrorCallack
+  * @returns
+  */
+ function getDocs(query, page, useCache, onSuccessCallback, onErrorCallack) {
+  utils.debug('page: ' + page + ', query: ' + query + ', size: ' + settings.pageSize + ', useCache : ' + useCache);
+  var cacheKey = 'music_list_page_' + page;
+  
+  if (useCache) {
+   var cachedResponse = sessionStorage.getItem(cacheKey);
+   if (cachedResponse != null) {
+	utils.debug('musicService.getDocs('+page+') found in cache with key "' + cacheKey + '"');
+	onSuccessCallback(JSON.parse(cachedResponse));
+	return;
+   } else {
+	utils.debug('musicService.getDocs('+page+') not found in cache with key "' + cacheKey + '"');  
+   }
+  }
+  
   var uri = '/music/md?p=' + page + '&s=' + settings.pageSize;
   if (query != null) {
    uri += '&q=' + encodeURIComponent(query);   
   }
   $http.get(uri).
    success(function(response) {
-    var docs = response;
-    utils.debug('musicService.getDocs('+page+'): ' + JSON.stringify(docs));
-    onSuccessCallback(docs, page);
+    utils.debug('musicService.getDocs('+page+'): ' + JSON.stringify(response));
+    if (useCache) {
+     utils.debug('musicService.getDocs('+page+') stored in cache with key "' + cacheKey + '"');
+     sessionStorage.setItem(cacheKey, JSON.stringify(response));
+     var pages = sessionStorage.getItem('music_list_pages');
+     if (pages == null) {
+      sessionStorage.setItem('music_list_pages', page); 	 
+     } else {
+      sessionStorage.setItem('music_list_pages', pages+','+page); 
+     }
+    }
+    onSuccessCallback(response);
    }).error(function(data, status, headers, config) {
     utils.error('status: ' + status);
     onErrorCallack();
@@ -20,6 +51,13 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
   );
  };
  
+ /**
+  * 
+  * @param doc
+  * @param onSuccessCallback
+  * @param onErrorCallack
+  * @returns
+  */
  function addDoc(doc, onSuccessCallback, onErrorCallack) {
   if (doc.origin != 'JP') {
 	doc.obiPos = null;
@@ -35,11 +73,18 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
    });  
  };
  
+ /**
+  * 
+  * @param doc
+  * @param onSuccessCallback
+  * @param onErrorCallack
+  * @returns
+  */
  function updateDoc(doc, onSuccessCallback, onErrorCallack) {
   $http.post('/music/md/' + doc.id, JSON.stringify(doc)).
    success(function(data, status) {
 	utils.debug('update ' + JSON.stringify(doc));
-	clearCachedDoc();
+	clearCache();
 	onSuccessCallback(data.id);
    }).error(function(data, status) {
 	utils.error('update error, status: ' + status);
@@ -47,10 +92,20 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
    });  
  }; 
  
+ /**
+  * 
+  * @param doc
+  * @returns
+  */
  function putDocInCache(doc) {
   sessionStorage.setItem('md', JSON.stringify(doc));
  }
  
+ /**
+  * 
+  * @param id
+  * @returns
+  */
  function getCachedDoc(id) {
   var jsonItem = sessionStorage.getItem('md');
   if (jsonItem != null) {
@@ -59,10 +114,30 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
   return null;
  }
  
- function clearCachedDoc() {
-  sessionStorage.removeItem('md');	 
+ /**
+  * 
+  * @returns
+  */
+ function clearCache() {
+  utils.debug('clearCache'); 
+  sessionStorage.removeItem('md');
+  var list = sessionStorage.getItem('music_list_pages');
+  if (list != null) {
+   var pages = list.split(',');  
+   for (var i=0; i < pages.length; i++) {
+	sessionStorage.removeItem('music_list_page_' + pages[i]);  
+   }	  
+   sessionStorage.removeItem('music_list_pages');
+  }
  }
  
+ /**
+  * 
+  * @param id
+  * @param onSuccessCallback
+  * @param onErrorCallack
+  * @returns
+  */
  function getDoc(id, onSuccessCallback, onErrorCallack) {
   var item = getCachedDoc(id);
    
@@ -72,7 +147,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
     onSuccessCallback(item.doc);
     return;
    }
-   clearCachedDoc();
+   sessionStorage.removeItem('md');
   }
   
   $http.get('/music/md/' + id).
@@ -87,6 +162,14 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
   );
  };
  
+ /**
+  * 
+  * @param id
+  * @param file
+  * @param onSuccessCallback
+  * @param onErrorCallack
+  * @returns
+  */
  function uploadPhoto(id, file, onSuccessCallback, onErrorCallack) {
   utils.debug('upload ' + file.name);
   var fd = new FormData();
@@ -110,6 +193,14 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
    });  
  };
  
+ /**
+  * 
+  * @param id
+  * @param photoIds
+  * @param onSuccessCallback
+  * @param onErrorCallack
+  * @returns
+  */
  function removePhotos(id, photoIds, onSuccessCallback, onErrorCallack) {
   var removePhotosIn = { 'ids' : photoIds};
   $http.delete('/music/md/' + id + '/photos', {
@@ -122,15 +213,22 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
   	.error(function(data, status, headers, config) { onErrorCallack();});
  }
  
+ /**
+  * 
+  * @param id
+  * @param onSuccessCallback
+  * @param onErrorCallack
+  * @returns
+  */
  function remove(id, onSuccessCallback, onErrorCallack) {
-  $http.delete('/music/md/' + id).success(function(status){clearCachedDoc(); onSuccessCallback();}).error(function(data, status, headers, config) { onErrorCallack();});
+  $http.delete('/music/md/' + id).success(function(status){clearCache(); onSuccessCallback();}).error(function(data, status, headers, config) { onErrorCallack();});
  }
  
  return { 
   getDocs: getDocs,
   getDoc: getDoc,
   getCachedDoc : getCachedDoc,
-  clearCachedDoc : clearCachedDoc,
+  clearCache : clearCache,
   putDocInCache : putDocInCache,
   addDoc: addDoc,
   updateDoc: updateDoc,

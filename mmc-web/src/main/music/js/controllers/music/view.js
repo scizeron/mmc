@@ -122,19 +122,20 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.next = function() {
-  alert('hasNext: ' + appService.nav().hasNext());	 
-  if (appService.nav().hasNext()) {
-	var index = appService.nav().currentIndex;
-	var page = appService.nav().currentPage;
-	//music.
-  }
+  appService.nextMusicDoc(function(nav) {
+   appService.setNav(nav);
+   $location.path('/music_view/' + nav.id); 
+  });
  };
  
  /**
   * 
   */
  $scope.previous = function() {
-  alert('hasPrevious: ' + appService.nav().hasPrevious());
+  appService.previousMusicDoc(function(nav) {
+   appService.setNav(nav);
+   $location.path('/music_view/' + nav.id); 
+  });
  };
  
  $scope.view($routeParams.musicDocId);
