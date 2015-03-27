@@ -59,7 +59,7 @@ public class MusicApiConverter {
       target.setRecordRating(request.getRecordGrade());
     }
     
-    if (StringUtils.isNotBlank(request.getOrigin()) && "null".equals(request.getOrigin())) {
+    if (StringUtils.isNotBlank(request.getOrigin()) && ! "null".equals(request.getOrigin())) {
      target.setOrigin(request.getOrigin());
     }
     
