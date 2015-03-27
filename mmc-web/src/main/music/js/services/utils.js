@@ -114,11 +114,13 @@ function newNavFromMusicListResponse(response, index, page) {
  return nav;
 };
 
-function LoggedUser() {
- this.loggedInUser = false;
- this.loggedInAdminUser = false;
-};
-
+/**
+ * 
+ * @param line
+ * @param value
+ * @param formatFunction
+ * @returns
+ */
 function appendToLine(line, value, formatFunction) { 
  if (value != null) {
   var resValue = value;
@@ -161,12 +163,15 @@ function() {
 
 angular.module('mmcApp').factory('appService', [ '$rootScope', 'musicService', 'utils', '$q', function($rootScope, musicService, utils,  $q) {
  return { 
+  newUser : function(loggedInUser, loggedInAdminUser) {
+   return { 'loggedInUser' : loggedInUser, 'loggedInAdminUser' : loggedInAdminUser};  
+  },
   init : function() {
    utils.debug('******************************** INIT APP ********************************');
    var app = $rootScope.app;
    $rootScope.app = new App();	
    $rootScope.nav = new Nav();
-   $rootScope.user = new LoggedUser();
+   $rootScope.user = this.newUser(false,false); 
    
    utils.debug('- app:' + JSON.stringify(this.app()));
    utils.debug('- nav:' + JSON.stringify(this.nav()));
@@ -177,10 +182,9 @@ angular.module('mmcApp').factory('appService', [ '$rootScope', 'musicService', '
   },
   setUser : function(user) {
    if (user != null) {
-	$rootScope.user.loggedInUser = true;
-	$rootScope.user.loggedInAdminUser = user.isAdmin();
+	$rootScope.user = this.newUser(true, user.isAdmin());
    } else {
-	$rootScope.user = new LoggedUser();    
+	$rootScope.user = this.newUser(false, false);    
    }
   },
   app : function() {

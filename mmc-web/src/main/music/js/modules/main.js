@@ -69,7 +69,7 @@ angular.module('mmcApp', [
   var nextPath = (typeof(next.$$route) != 'undefined') ? next.$$route.originalPath : '/home';
   
   if (nextPath == '/logout') {
-   app.setUser(null);
+   appService.setUser(null);
    app.universe = null;
    app.jumbotron = true;	  
    return;
