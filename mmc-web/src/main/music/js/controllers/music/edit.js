@@ -1,52 +1,56 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('musicEditCtrl', ['$document', '$scope', '$rootScope', '$http', '$location', '$routeParams','userService', 'musicService', 'refValues', 'utils', 
-function($document, $scope, $rootScope, $http, $location, $routeParams, userService, musicService, refValues, utils) {
+.controller('musicEditCtrl', ['$document', '$scope', '$rootScope', '$http', '$location', '$routeParams'
+                               ,'userService', 'musicService', 'refValues', 'utils', 'appService', 
+function($document, $scope, $rootScope, $http, $location, $routeParams
+		, userService, musicService, refValues, utils, appService) {
  
- $scope.action = { 'result' : -1};
- $scope.selectedImages = [];
- $scope.fileItems = [];
- 
- $scope.setImagesInTheScope = function() {
-  if ($scope.doc.images != null && $scope.doc.images.length > 0) {
-   for (var i=0; i < $scope.doc.images.length; i++) {
-	$scope.selectedImages.push(false);
-   }
-  }
- };
- 
- refValues.getCountriesPromise().then(function(data){
-  $scope.countries = data;
- });
-
- refValues.getGradesPromise().then(function(data){
-  $scope.grades = data;
- });
- 
- $scope.nbTypeRange = refValues.getNbTypeRange();
- $scope.years = refValues.getYears();
- $scope.defaultMusicCountry = settings.music.defaultCountry;
- $scope.types = settings.music.types;
-  
- $scope.selectImage = function(index) {
-  $scope.selectedImages[index] = !$scope.selectedImages[index];
-  utils.debug(JSON.stringify($scope.selectedImages));
- };
- 
- musicService.getDoc($routeParams.musicDocId, function(response) {
-  $scope.action.resut = 0;
-  $scope.doc = response;
+ /**
+  * 
+  */
+ $scope.initSelectedImages = function() {
   if ($scope.doc.images != null && $scope.doc.images.length > 0) {
    utils.debug($scope.doc.images.length + " photo(s)");
    for (var i=0; i < $scope.doc.images.length; i++) {
 	$scope.selectedImages.push(false);
    }
   }
- }, function() {
-  $scope.action.resut = 1;	 
- });
+ };
+	
+ /**
+  * 
+  */
+ $scope.edit = function(docId) {
+  $scope.action = { 'result' : -1};
+  $scope.countries = refValues.getCountries();
+  $scope.grades = refValues.getGrades();
+  $scope.nbTypeRange = refValues.getNbTypeRange();
+  $scope.years = refValues.getYears();
+  $scope.defaultMusicCountry = settings.music.defaultCountry;
+  $scope.types = settings.music.types;
+  $scope.selectedImages = [];
+  $scope.fileItems = [];
 
+  musicService.getDoc(docId, function(response) {
+   $scope.action.resut = 0;
+   $scope.doc = response;
+   $scope.initSelectedImages();
+  }, function() {
+   $scope.action.resut = 1;	 
+  });
+ };	
+
+ /**
+  * 
+  */
+ $scope.selectImage = function(index) {
+  $scope.selectedImages[index] = !$scope.selectedImages[index];
+ };
+ 
+ /**
+  * 
+  */
  $scope.update = function() {
   utils.debug('"Update: ' + JSON.stringify($scope.doc));
   musicService.updateDoc($scope.doc, function() {
@@ -57,6 +61,9 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
    });  
  };
  
+ /**
+  * 
+  */
  $scope.removeFile = function(fileItem) {
   utils.debug('remove "' + fileItem.file.name + '"'); 
   var i = $scope.fileItems.indexOf(fileItem);
@@ -66,6 +73,9 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   utils.debug('files :  ' + $scope.fileItems.length);
  };
  
+ /**
+  * 
+  */
  $scope.uploadFile = function(fileItem) { 
   // status 'i' : init, 'p' : progress, 'o' : ok, 'e' : error  
   var docId = $scope.doc.id;
@@ -85,42 +95,47 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   });
  };
   
+ /**
+  * 
+  */
  $scope.removePhotos = function() {
-  var photoIds = []; 
+  var selectedPhotoIds = []; 
   for (var i=0; i <$scope.selectedImages.length; i++) {
    if ($scope.selectedImages[i]) {
-	photoIds.push($scope.doc.images[i].id);
+	selectedPhotoIds.push($scope.doc.images[i].id);
    }
   }
   
-  if (photoIds.length > 0) {
-   musicService.removePhotos($scope.doc.id, photoIds, function(doc) {
-	utils.debug("removePhotos " + photoIds + " ok"); 
+  if (selectedPhotoIds.length > 0) {
+   musicService.removePhotos($scope.doc.id, selectedPhotoIds, function(doc) {
+	utils.debug("removePhotos " + selectedPhotoIds + " ok"); 
 	$scope.doc = doc;
-	$scope.setImagesInTheScope();
    }, function() {
-	utils.error("removePhotos " + photoIds + " ko");
-	$scope.setImagesInTheScope();
-   });   
+	utils.error("removePhotos " + selectedPhotoIds + " ko");
+   });
+   $scope.initSelectedImages();
   } else {
    utils.debug("nothing to remove");
   }
- }
+ };
  
+ /**
+  * 
+  */
  $scope.getGrade = function(value) {
-  var grade = refValues.getGradeToString(value);
-  utils.debug(grade);
-  return grade;	 
+  return refValues.getGradeToString(value);
  }; 
  
- $scope.gotoView = function() {
+ /**
+  * 
+  */
+ $scope.view = function() {
   $location.path('/music_view/' + $scope.doc.id);
- }
+ };
  
- $scope.gotoFind = function() {
-  $location.path('/music_list');
- }; 
- 
+ /**
+  * 
+  */
  $scope.remove = function(id) {
   var callback = function() {
    $location.path('/music_list');
@@ -128,6 +143,67 @@ function($document, $scope, $rootScope, $http, $location, $routeParams, userServ
   musicService.remove(id, callback, callback);
  };  
  
+ /**
+  * 
+  */
+ $scope.navigate = function(nav) {
+  $location.path('/music_edit/' + nav.id); 
+ };
  
+ /**
+  * 
+  */
+ $scope.nextPage = function() {
+  appService.nextMusicDocPage(function(nav) {
+   $scope.navigate(nav);
+  });
+ }; 
+
+ /**
+  * 
+  */
+ $scope.previousPage = function() {
+  appService.previousMusicDocPage(function(nav) {
+   $scope.navigate(nav);
+  });
+ }; 
+ 
+ /**
+  * 
+  */
+ $scope.first = function() {
+  appService.firstMusicDocPage(function(nav) {
+   $scope.navigate(nav);
+  });
+ }; 
+ 
+ /**
+  * 
+  */
+ $scope.last = function() {
+  appService.lastMusicDocPage(function(nav) {
+   $scope.navigate(nav);
+  });
+ }; 
+ 
+ /**
+  * 
+  */
+ $scope.next = function() {
+  appService.nextMusicDoc(function(nav) {
+   $scope.navigate(nav);
+  });
+ };
+ 
+ /**
+  * 
+  */
+ $scope.previous = function() {
+  appService.previousMusicDoc(function(nav) {
+   $scope.navigate(nav);
+  });
+ };
+ 
+ $scope.edit($routeParams.musicDocId);
  
 }]);

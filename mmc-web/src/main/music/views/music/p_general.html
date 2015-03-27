@@ -51,7 +51,6 @@
   <div class="row">
    <div class="col-md-10">
     <select class="form-control" id="origin" name="origin" ng-model="doc.origin">
-	 <option value="null"></option>
 	 <option ng-repeat="country in countries" value="{{country.code}}" ng-selected="country.code == doc.origin">{{country.name}}</option>
     </select>
    </div>

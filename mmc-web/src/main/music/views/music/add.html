@@ -15,32 +15,32 @@
    <button class="btn btn-primary" ng-click="newWithValues()">OK</button>
   </div>
  </script>
- <form class="form-horizontal" role="form" ng-submit="submit()">
-  <div class="row">
-   <div class="col-md-12">
-    <div ng-show="doc.title != null && doc.title != ''">
-     <h1>{{doc.title}}
-      <div class="btn-group" style="float: right;">
-       <input type="button" class="btn btn-default" ng-click="cancel()" value="Reset"/>
-       <input type="submit" class="btn btn-primary" value="Save"/>
-      </div>
-     </h1>
-    </div>
+ <div class="row">
+  <div class="col-md-12">
+   <div ng-show="doc.title != null && doc.title != ''">
+    <h1>{{doc.title}}
+     <div class="btn-group" style="float: right;">
+      <button class="btn btn-default" ng-click="cancel()" value="Reset"/>
+      <button class="btn btn-primary" ng-click="submit()" value="Save" />
+     </div>
+    </h1>
    </div>
   </div>
-  <div class="row">
-   <div class="col-md-12">
-  	<tabset>
-      <tab heading="General">
-       <div style="padding-top: 15px"></div>
-       <ng-include src="'views/music/p_general.html'"></ng-include>
-      </tab>
-      <tab heading="Purchase">
+ </div>
+ <div class="row">
+  <div class="col-md-12">
+   <form class="form-horizontal" role="form" ng-submit="submit()">
+    <tabset>
+     <tab heading="General">
+      <div style="padding-top: 15px"></div>
+      <ng-include src="'views/music/p_general.html'"></ng-include>
+     </tab>
+     <tab heading="Purchase">
       <div style="padding-top: 15px"></div>
       <ng-include src="'views/music/p_purchase.html'"></ng-include>
      </tab>
     </tabset>
-   </div>
+   </form>
   </div>
- </form>
+ </div>
 </div>
