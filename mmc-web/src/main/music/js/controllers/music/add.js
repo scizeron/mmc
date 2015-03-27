@@ -22,18 +22,26 @@ angular.module('mmcApp').controller('musicAddResultCtrl', function($scope, $moda
 angular.module('mmcApp')
 .controller('musicAddCtrl', ['$scope', '$http', '$location', 'musicService','userService', 'utils', 'refValues', '$modal',
 function($scope, $http, $location, musicService, userService, utils, refValues, $modal) {
- $scope.doc = { 'mainType' : 'LP', 'origin' : settings.music.defaultCountry, 'obiPos':'V'};
+
+ /**
+  * 
+  */
+ $scope.init = function() {
+  $scope.doc = { 'mainType' : 'LP', 'origin' : settings.music.defaultCountry, 'obiPos':'V'};
+  utils.debug('Initial doc: ' + JSON.stringify($scope.doc));  
+  
+  $scope.action = { 'result' : -1};
+  
+  $scope.countries = refValues.getCountries();
+  $scope.grades = refValues.getGrades();
+  $scope.nbTypeRange = refValues.getNbTypeRange();
+  $scope.years = refValues.getYears();
+  $scope.types = settings.music.types;
+ };
  
- utils.debug('Initial doc: ' + JSON.stringify($scope.doc));  
- 
- $scope.countries = refValues.getCountries();
- $scope.grades = refValues.getGrades();
- $scope.nbTypeRange = refValues.getNbTypeRange();
- $scope.years = refValues.getYears();
- $scope.types = settings.music.types;
- 
- $scope.action = { 'result' : -1};
- 
+ /**
+  * 
+  */
  $scope.submitCallback = function(response) {
   $scope.doc = response;
   var modalInstance = $modal.open({
@@ -58,12 +66,16 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   });
  };
  
+ /**
+  * 
+  */
  $scope.getGrade = function(value) {
-  var grade = refValues.getGradeToString(value);
-  utils.debug(grade);
-  return grade;	 
+  return refValues.getGradeToString(value);
  };
  
+ /**
+  * 
+  */
  $scope.submit = function() {
   musicService.addDoc($scope.doc, function(response) {
    $scope.doc = response; 
@@ -73,14 +85,22 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   });
  };
   
+ /**
+  * 
+  */
  $scope.cancel = function() {
   $scope.doc = {};
  };
  
+ /**
+  * 
+  */
  $scope.uploadImages = function() {
   utils.debug($scope.doc.id);
   var uri = '/music_edit/' + $scope.doc.id;	 
   $location.path(uri); 
  };
+ 
+ $scope.init();
  
 }]);
