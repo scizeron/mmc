@@ -29,7 +29,7 @@
      </li>
     </ul>
    </div> 
-   <div class="col-md-4">
+   <div class="col-md-3">
     <form class="navbar-form" role="search" ng-submit="search(q)">
      <div class="input-group">
       <input type="text" class="form-control" placeholder="Search" name="q" ng-model="q">
@@ -39,6 +39,32 @@
      </div>
     </form>
    </div>
+<!--    <div class="col-md-3"> -->
+<!--      <div class="row" id="control" > -->
+<!--       <div class="col-md-6" id="nav"> -->
+<!--        <div class="row"> -->
+<!--         <div class="col-md-12"> -->
+<!--          <div class="row"> -->
+<!--           <div class="col-md-6">record: {{nav.index + 1}}/{{nav.pageSize}}</div> -->
+<!--           <div class="col-md-6">page: {{nav.page + 1}}/{{nav.totalPages}}</div> -->
+<!--          </div> -->
+<!--         </div> -->
+<!--        </div> -->
+<!--        <div class="row"> -->
+<!--         <div class="col-md-12"> -->
+<!-- 	     <div class="btn-group btn-group-xs" role="group"> -->
+<!-- 		  <button class="btn btn-default" ng-click="first()" title="first"><span class="glyphicon glyphicon-fast-backward"></span></button> -->
+<!-- 		   <button class="btn btn-default" ng-click="previousPage()" title="previous page"><span class="glyphicon glyphicon-step-backward"></span></button> -->
+<!-- 		   <button class="btn btn-default" ng-click="previous()" title="previous"><span class="glyphicon glyphicon-chevron-left"></span></button> -->
+<!-- 		   <button class="btn btn-default" ng-click="next()" title="next"><span class="glyphicon glyphicon-chevron-right"></span></button> -->
+<!-- 		   <button class="btn btn-default" ng-click="nextPage()" title="next page"><span class="glyphicon glyphicon-step-forward"></span></button> -->
+<!-- 		   <button class="btn btn-default" ng-click="last()" title="last"><span class="glyphicon glyphicon-fast-forward"></span></button> -->
+<!-- 		 </div>         -->
+<!--         </div> -->
+<!--        </div> -->
+<!--       </div> -->
+<!--      </div>    -->
+<!--    </div> -->
    <div style="float: right">
     <ul class="nav navbar-nav">
      <li ng-class="{ active: navIsActive('/logout')}"><a href="#/logout"><span class="glyphicon glyphicon-off"></span> Sign-out</a></li>

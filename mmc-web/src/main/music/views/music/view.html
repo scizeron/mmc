@@ -1,30 +1,66 @@
 <div class="row" id="mainRow">
  <div class="col-md-12" id="mainRowCol">
-  <div class="col-md-5" ng-show="currentImage != null" id="mainLeftPart">
+  <div class="col-md-4" ng-show="currentImage != null" id="mainLeftPart">
    <img id="zomImage" ng-jet-zoom class="jetzoom" ng-src="{{currentImage.m.url}}"
         data-large-image="{{currentImage.o.url}}"
         height="{{currentImage.m.height}}" width="{{currentImage.m.width}}"
         style="border: 1px solid black; margin-right: 3em; margin-bottom: 2em; background-color: white"/>
    </div>
-  <div ng-class="titleClazz" id="mainRightPart">
+  <div ng-class="mainRightPartClazz" id="mainRightPart">
+<!--    <div class="row" id="titleBar"> -->
+<!--     <h1>{{doc.title}} -->
+<!--      <div style="float: right;">  -->
+<!--       <div class="btn-group btn-group-xs" role="group"> -->
+<!-- 	   <button class="btn btn-default" ng-click="first()" title="first"><span class="glyphicon glyphicon-fast-backward"></span></button> -->
+<!-- 	   <button class="btn btn-default" ng-click="previousPage()" title="previous page"><span class="glyphicon glyphicon-step-backward"></span></button> -->
+<!-- 	   <button class="btn btn-default" ng-click="previous()" title="previous"><span class="glyphicon glyphicon-chevron-left"></span></button> -->
+<!-- 	   <button class="btn btn-default" ng-click="next()" title="next"><span class="glyphicon glyphicon-chevron-right"></span></button> -->
+<!-- 	   <button class="btn btn-default" ng-click="nextPage()" title="next page"><span class="glyphicon glyphicon-step-forward"></span></button> -->
+<!-- 	   <button class="btn btn-default" ng-click="last()" title="last"><span class="glyphicon glyphicon-fast-forward"></span></button> -->
+<!-- 	  </div> -->
+<!-- 	  <div class="btn-group" role="group" style="float: right; margin-left: 15px;" > -->
+<!-- 	   <button type="button" ng-click="gotoFind()" class="btn btn-default">Back</button> -->
+<!-- 	   <button ng-click="gotoEdit()" ng-show="canEdit" class="btn btn-primary">Edit</button> -->
+<!-- 	  </div>     -->
+<!--      </div> -->
+<!--     </h1> -->
+<!--    </div> -->
    <div class="row" id="titleBar">
-    <h1>{{doc.title}}
-     <div style="float: right;"> 
-      <div class="btn-group btn-group-xs" role="group">
-	   <button class="btn btn-default" ng-click="first()" title="first"><span class="glyphicon glyphicon-fast-backward"></span></button>
-	   <button class="btn btn-default" ng-click="previousPage()" title="previous page"><span class="glyphicon glyphicon-step-backward"></span></button>
-	   <button class="btn btn-default" ng-click="previous()" title="previous"><span class="glyphicon glyphicon-chevron-left"></span></button>
-	   <button class="btn btn-default" ng-click="next()" title="next"><span class="glyphicon glyphicon-chevron-right"></span></button>
-	   <button class="btn btn-default" ng-click="nextPage()" title="next page"><span class="glyphicon glyphicon-step-forward"></span></button>
-	   <button class="btn btn-default" ng-click="last()" title="last"><span class="glyphicon glyphicon-fast-forward"></span></button>
-	  </div>
-	  <div class="btn-group" role="group" style="float: right; margin-left: 15px;" >
-	   <button type="button" ng-click="gotoFind()" class="btn btn-default">Back</button>
-	   <button ng-click="gotoEdit()" ng-show="canEdit" class="btn btn-primary">Edit</button>
-	  </div>    
+    <div class="col-md-6" style="padding-right: 0px;"><h1>{{doc.title}}</h1></div>
+    <div class="col-md-6" style="float: right; border-bottom: 1px solid gray; padding-top: 10px; padding-bottom: 7px;">
+     <div class="row" id="control" >
+      <div class="col-md-6" id="nav">
+       <div class="row">
+        <div class="col-md-12">
+         <div class="row">
+          <div class="col-md-6">record: {{nav.index + 1}}/{{nav.pageSize}}</div>
+          <div class="col-md-6">page: {{nav.page + 1}}/{{nav.totalPages}}</div>
+         </div>
+        </div>
+       </div>
+       <div class="row">
+        <div class="col-md-12">
+	      <div class="btn-group btn-group-xs" role="group">
+		   <button class="btn btn-default" ng-click="first()" title="first"><span class="glyphicon glyphicon-fast-backward"></span></button>
+		   <button class="btn btn-default" ng-click="previousPage()" title="previous page"><span class="glyphicon glyphicon-step-backward"></span></button>
+		   <button class="btn btn-default" ng-click="previous()" title="previous"><span class="glyphicon glyphicon-chevron-left"></span></button>
+		   <button class="btn btn-default" ng-click="next()" title="next"><span class="glyphicon glyphicon-chevron-right"></span></button>
+		   <button class="btn btn-default" ng-click="nextPage()" title="next page"><span class="glyphicon glyphicon-step-forward"></span></button>
+		   <button class="btn btn-default" ng-click="last()" title="last"><span class="glyphicon glyphicon-fast-forward"></span></button>
+		  </div>        
+        </div>
+       </div>
+      </div>
+      <div class="col-md-6" id="btn">
+       <div class="btn-group" role="group" style="float: right; margin-left: 15px; padding-top: 8px;" >
+	    <button type="button" ng-click="gotoFind()" class="btn btn-default">Back</button>
+	    <button ng-click="gotoEdit()" ng-show="canEdit" class="btn btn-primary">Edit</button>
+	   </div>    
+      </div>
      </div>
-    </h1>
+    </div>
    </div>
+   
    <div class="row" id="infos">
     <div class="col-md-7">
      <div class="row"  ng-repeat="info in infos">

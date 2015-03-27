@@ -14,7 +14,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.images = [];
   $scope.currentImagePos = 0;
   $scope.canEdit = userService.userHasRole('WRITE');
-  $scope.titleClazz = 'col-md-7';
+  $scope.mainRightPartClazz = 'col-md-8';
 
   musicService.getDoc(docId, function(response) {
    $scope.action.resut = 0;
@@ -24,7 +24,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
     utils.debug($scope.images.length + ' photo(s)');
     $scope.setCurrentImage(0);
    } else {
-	$scope.titleClazz =  'col-md-12';
+	$scope.mainRightPartClazz =  'col-md-12';
    }
 
    $scope.doc.sleeveGradeTip = refValues.getGradeToString($scope.doc.sleeveGrade);
