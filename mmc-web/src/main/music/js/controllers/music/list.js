@@ -5,7 +5,7 @@ angular.module('mmcApp')
 function ($scope, musicService, userService, refValues, appService, utils) {
 
  $scope.$on('music', function(event, args) {
-  $scope.doSearch(0);	 
+  $scope.list(0);	 
  });
  
  $scope.selectItem = function(index) {
