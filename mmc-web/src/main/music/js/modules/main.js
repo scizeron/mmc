@@ -36,6 +36,10 @@ angular.module('mmcApp', [
    templateUrl: 'views/music/edit.html',
    controller: 'musicEditCtrl'
   }).
+  when('/music_edit/:musicDocId/:tabId', {
+   templateUrl: 'views/music/edit.html',
+   controller: 'musicEditCtrl'
+  }).
   when('/music_view/:musicDocId', {
    templateUrl: 'views/music/view.html',
    controller: 'musicViewCtrl'

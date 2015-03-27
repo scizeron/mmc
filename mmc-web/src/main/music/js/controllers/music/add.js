@@ -10,12 +10,12 @@ angular.module('mmcApp').controller('musicAddResultCtrl', function($scope, $moda
   utils.debug('musicAddResultCtrl, result: ' + $scope.ok); 
  }
  
- $scope.newWithValues = function() {
-  $modalInstance.close('newWithValues');
+ $scope.addPhoto = function() {
+  $modalInstance.close('addPhoto#'+$scope.doc.id);
  }; 
  
  $scope.newDoc = function() {
-  $modalInstance.close('reset');
+  $modalInstance.close('newDoc');
  }; 
 });
 
@@ -50,22 +50,23 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
    resolve: {
     result: function () {
      var result = { 'doc' : $scope.doc}; 
-     utils.debug('result: ' + JSON.stringify(result));
-	 return result;  
+ 	 return result;  
     }
    }
   });
   
   modalInstance.result.then(function (mode) {
    utils.debug('Modal closing mode: ' + mode);  
-   if ('reset') {
+   if (mode == 'newDoc') {
     $scope.cancel();
+   } else if (mode.indexOf('addPhoto',0) == 0){
+	 $location.path('/music_edit/' + mode.split('#')[1] + '/photos');  
    }
   }, function () {
    utils.debug('Modal dismissed at: ' + new Date());
   });
  };
- 
+
  /**
   * 
   */
@@ -79,9 +80,10 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
  $scope.submit = function() {
   musicService.addDoc($scope.doc, function(response) {
    $scope.doc = response; 
+   //alert('"' + $scope.doc.id + '" is created.');
    $scope.submitCallback(response);
   }, function() {
-   $scope.submitCallback(null);
+   alert("Error");
   });
  };
   

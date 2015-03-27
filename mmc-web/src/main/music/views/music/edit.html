@@ -20,18 +20,18 @@
   </div>
   <form class="form-horizontal" role="form" ng-submit="update()">
    <tabset>
-    <tab heading="General">
+    <tab heading="General" active="tabs[0].active" select="selectTab('general')">
 	 <div style="padding-top: 15px"></div>
      <ng-include src="'views/music/p_general.html'"></ng-include>
      <div style="float: right;">
       <button type="button" class="btn btn-danger" ng-click="remove(doc.id)">Delete</button>
      </div>
     </tab>
-    <tab heading="Purchase">
+    <tab heading="Purchase" active="tabs[1].active" select="selectTab('purchase')">
      <div style="padding-top: 15px"></div>
      <ng-include src="'views/music/p_purchase.html'"></ng-include>
     </tab>
-    <tab heading="Photos">
+    <tab heading="Photos" active="tabs[2].active" select="selectTab('photos')">
      <div style="padding-top: 15px"></div>
 	 <ng-include src="'views/music/p_photos.html'"></ng-include>
     </tab>

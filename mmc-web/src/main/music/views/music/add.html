@@ -2,14 +2,14 @@
  <script type="text/ng-template" id="result">
   <div class="modal-header"></div>
   <div class="modal-body alert alert-success" ng-show="ok">
-   <strong>{{doc.id}}</strong> successfully created.
+   <p>{{doc.id}} is created.</p>
   </div>
   <div class="modal-body alert alert-warning" ng-show="!ok">
    <strong>Error! Please retry.</strong>
   </div>
   <div class="modal-footer" ng-show="ok">
-   <button class="btn btn-primary" ng-click="newWithValues()">New (with values)</button>
-   <button class="btn btn-success" ng-click="newDoc()">New</button>
+   <button class="btn btn-success" ng-click="addPhoto()">Add photo(s)</button>
+   <button class="btn btn-primary" ng-click="newDoc()">New</button>
   </div>
   <div class="modal-footer" ng-show="!ok">
    <button class="btn btn-primary" ng-click="newWithValues()">OK</button>
@@ -19,9 +19,9 @@
   <div class="col-md-12">
    <div ng-show="doc.title != null && doc.title != ''">
     <h1>{{doc.title}}
-     <div class="btn-group" style="float: right;">
-      <button class="btn btn-default" ng-click="cancel()" value="Reset"/>
-      <button class="btn btn-primary" ng-click="submit()" value="Save" />
+     <div class="btn-group" role="group" style="float: right;">
+      <button class="btn btn-default" ng-click="cancel()">Reset</button>
+      <button class="btn btn-primary" ng-click="submit()">Save</button>
      </div>
     </h1>
    </div>

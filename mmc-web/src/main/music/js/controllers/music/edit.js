@@ -17,12 +17,31 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
    }
   }
  };
-	
+
  /**
   * 
   */
- $scope.edit = function(docId) {
+ $scope.selectTab = function(tabId) {
+  if (typeof($scope.tabs) == 'undefined') {
+   $scope.tabs = [];
+   $scope.tabs.push({'name':'general','active':true});
+   $scope.tabs.push({'name':'purchase','active':false});
+   $scope.tabs.push({'name':'photos','active':false});
+  }
+  
+  $scope.tabId = (typeof(tabId) == 'undefined') ? 'general' : tabId; 	
+
+  for (var i = 0 ; i < $scope.tabs.length ; i++) {
+   $scope.tabs[i].active = ($scope.tabs[i].name == $scope.tabId) ? true : false;	  
+  }
+ };
+
+ /**
+  * 
+  */
+ $scope.edit = function(docId, tabId) {
   $scope.action = { 'result' : -1};
+  $scope.selectTab(tabId); 
   $scope.countries = refValues.getCountries();
   $scope.grades = refValues.getGrades();
   $scope.nbTypeRange = refValues.getNbTypeRange();
@@ -41,6 +60,8 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   });
  };	
 
+
+ 
  /**
   * 
   */
@@ -137,6 +158,9 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.remove = function(id) {
+  if (!confirm("Are you sure ?")) {
+   return;
+  }	 
   var callback = function() {
    $location.path('/music_list');
   }
@@ -204,6 +228,6 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   });
  };
  
- $scope.edit($routeParams.musicDocId);
+ $scope.edit($routeParams.musicDocId, $routeParams.tabId);
  
 }]);
