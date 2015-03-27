@@ -1,50 +1,58 @@
-<div class="row">
- <div class="col-md-offset-1 col-md-11" style="margin-bottom: 10px;" ng-show="{{doc.images.length > 0}}">
-   <button type="button" ng-click="removePhotos()" class="btn btn-primary"><span class="glyphicon glyphicon-minus"></span> Remove</button>
+<div class="row" id="addPart">
+ <div class="col-md_12">
+  <div class="row">
+   <div class="col-md-offset-1 col-md-11" style="margin-top: 15px;">
+    <span class="btn btn-primary btn-file"><span class="glyphicon glyphicon-plus"></span> Add
+    <input type="file" upload-file files="fileItems" accept="image/jpeg" ng-click="error=-1">
+    </span>  
+   </div>
+  </div> 
+  <div class="row"> 
+   <div class="col-md-offset-1 col-md-11">
+    <table class="table">
+	 <thead>
+	    <th width="50%">Name</th>
+	    <th>Size</th>
+	    <th>Status</th>
+	    <th>Actions</th>
+	 </thead>
+	 <tr ng-repeat="fileItem in fileItems">
+	  <td><strong>{{fileItem.file.name}}</strong></td>
+	  <td>{{fileItem.file.size/1024/1024|number:2 }} MB</td>
+	  <td>
+	     <span class="glyphicon glyphicon-question-sign" ng-show="fileItem.status == 'i'"></span>
+	     <span class="glyphicon glyphicon-adjust" ng-show="fileItem.status == 'p'"> in progress ...</span>
+	     <span class="glyphicon glyphicon-remove-sign" ng-show="fileItem.status == 'e'"></span>
+	     <span class="glyphicon glyphicon-ok-sign" ng-show="fileItem.status == 'o'"></span>
+	  </td>
+	  <td nowrap>
+	     <button type="button" class="btn btn-success btn-xs" ng-click="uploadFile(fileItem)" ng-show="fileItem.status != 'o'"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+	     <button type="button" class="btn btn-danger btn-xs" ng-click="removeFile(fileItem)" ng-show="fileItem.status != 'o'"><span class="glyphicon glyphicon-trash"></span> Remove</button>
+	  </td>
+	 </tr>
+	</table>
+   </div>
+  </div>    
+ </div>
+</div>
+<div class="row" id="removePart">
+ <div class="col-md_12">
+  <div class="row">
+   <div class="col-md-offset-1 col-md-11" style="margin-bottom: 10px;" ng-show="{{doc.images.length > 0}}">
+    <button type="button" ng-click="removePhotos()" class="btn btn-primary"><span class="glyphicon glyphicon-minus"></span> Remove</button>
+   </div>
+  </div>
+  <div class="row" id="gallery" >
+   <div class="col-md-offset-1 col-md-11">
+    <ul class="images">
+     <li ng-repeat="image in doc.images"">
+      <input type="checkbox" id="chk_{{$index}}" ng-click="selectImage($index)"/>
+      <img id="img_0" ng-src="{{image.details.t.url}}" style="margin-right: 15px;"/>
+     </li>
+    </ul>
+   </div>
   </div>
  </div>
 </div>
-<div class="row">
- <div id="gallery" class="col-md-offset-1 col-md-11">
-  <ul class="images">
-   <li ng-repeat="image in doc.images"">
-    <input type="checkbox" id="chk_{{$index}}" ng-click="selectImage($index)"/>
-    <img id="img_0" ng-src="{{image.details.t.url}}" style="margin-right: 15px;"/>
-   </li>
-  </ul>
- </div>
-</div>
-<div class="row">
- <div class="col-md-offset-1 col-md-11" style="margin-top: 15px;">
-   <span class="btn btn-primary btn-file"><span class="glyphicon glyphicon-plus"></span> Add
-   <input type="file" upload-file files="fileItems" accept="image/jpeg" ng-click="error=-1">
-   </span>  
-  </div>
- </div>
-</div>
-<div class="row"> 
- <div class="col-md-offset-1 col-md-11">
-  <table class="table">
-   <thead>
-    <th width="50%">Name</th>
-    <th>Size</th>
-    <th>Status</th>
-    <th>Actions</th>
-   </thead>
-   <tr ng-repeat="fileItem in fileItems">
-    <td><strong>{{fileItem.file.name}}</strong></td>
-    <td>{{fileItem.file.size/1024/1024|number:2 }} MB</td>
-    <td>
-     <span class="glyphicon glyphicon-question-sign" ng-show="fileItem.status == 'i'"></span>
-     <span class="glyphicon glyphicon-adjust" ng-show="fileItem.status == 'p'"> in progress ...</span>
-     <span class="glyphicon glyphicon-remove-sign" ng-show="fileItem.status == 'e'"></span>
-     <span class="glyphicon glyphicon-ok-sign" ng-show="fileItem.status == 'o'"></span>
-    </td>
-    <td nowrap>
-     <button type="button" class="btn btn-success btn-xs" ng-click="uploadFile(fileItem)" ng-show="fileItem.status != 'o'"><span class="glyphicon glyphicon-upload"></span> Upload</button>
-     <button type="button" class="btn btn-danger btn-xs" ng-click="removeFile(fileItem)" ng-show="fileItem.status != 'o'"><span class="glyphicon glyphicon-trash"></span> Remove</button>
-    </td>
-   </tr>
-  </table>
- </div>
-</div>
+
+
