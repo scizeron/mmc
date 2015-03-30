@@ -38,11 +38,13 @@ public class PdfHttpMessageFindResponseConverter extends
 
   private static final String NO_VALUE = "";
 
-  private static final int TITLE_FONT_SIZE = 10;
+  private static final int TITLE_FONT_SIZE = 12;
 
-  private static final int HEADER_FONT_SIZE = 9;
+  private static final int HEADER_FONT_SIZE = 10;
 
   private static final int ITEM_FONT_SIZE = 8;
+  
+  private static final int NB_COLS = 7;
 
   private static final ResourceBundle RATING = ResourceBundle.getBundle("rating");
 
@@ -79,22 +81,20 @@ public class PdfHttpMessageFindResponseConverter extends
       PdfWriter.getInstance(document, baos);
       document.open();
 
-      PdfPTable table = new PdfPTable(new float[] { 3, 5, 1, 2, 1, 3, 2, 2 });
+      PdfPTable table = new PdfPTable(new float[] { 3, 6, 2, 2, 2, 2, 2 });
       table.setWidthPercentage(100f);
       table.getDefaultCell().setUseAscender(true);
       table.getDefaultCell().setUseDescender(true);
       // Add the first header row
       Font titleFont = new Font();
-
       titleFont.setSize(TITLE_FONT_SIZE);
       titleFont.setColor(BaseColor.WHITE);
       PdfPCell cell = new PdfPCell(new Phrase(String.format("%s - %d item(s)",
           new SimpleDateFormat("yyyy/MM/dd").format(new Date()), findResponse
               .getDocs().size()), titleFont));
-
       cell.setBackgroundColor(BaseColor.BLACK);
       cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-      cell.setColspan(8);
+      cell.setColspan(NB_COLS);
       table.addCell(cell);
 
       // Add the second header row twice
@@ -103,25 +103,22 @@ public class PdfHttpMessageFindResponseConverter extends
       titleFont.setColor(BaseColor.BLACK);
 
       table.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);
-      for (int i = 0; i < 2; i++) {
+      for (int i = 0; i < 1; i++) {
         addHeaderCell(table, headerFooterFont, "Artist");
         addHeaderCell(table, headerFooterFont, "Title");
         addHeaderCell(table, headerFooterFont, "Type");
         addHeaderCell(table, headerFooterFont, "Origin");
         addHeaderCell(table, headerFooterFont, "Year");
-        addHeaderCell(table, headerFooterFont, "Re-edition");
+        //addHeaderCell(table, headerFooterFont, "Re-edition");
         addHeaderCell(table, headerFooterFont, "Sleeve");
         addHeaderCell(table, headerFooterFont, "Record");
       }
       table.getDefaultCell().setBackgroundColor(null);
       // There are three special rows
-      table.setHeaderRows(3);
+      table.setHeaderRows(2);
       // One of them is a footer
-      table.setFooterRows(1);
+      //table.setFooterRows(1);
       // Now let's loop over the elements
-
-      // new PdfPCell()
-
       Font itemFont = new Font();
       titleFont.setSize(ITEM_FONT_SIZE);
       titleFont.setColor(BaseColor.BLACK);
@@ -135,11 +132,10 @@ public class PdfHttpMessageFindResponseConverter extends
             .getMainType()));
         addHeaderCell(table, itemFont, doc.getOrigin());
         if (doc.getEdition() != null) {
-          table.addCell(formatIntegerValue(doc.getEdition()));
-          table.addCell(new PdfPCell(yesImg, false));
+          table.addCell(formatObjectValue(doc.getEdition() + " (new)"));
+          //table.addCell(new PdfPCell(yesImg, false));
         } else {
-          table.addCell(formatIntegerValue(doc.getIssue()));
-          table.addCell(NO_VALUE);
+          table.addCell(formatObjectValue(doc.getIssue()));
         }
         addHeaderCell(table, itemFont, formatRatingValue(doc.getSleeveGrade()));
         addHeaderCell(table, itemFont, formatRatingValue(doc.getRecordGrade()));
@@ -161,8 +157,7 @@ public class PdfHttpMessageFindResponseConverter extends
    * @param value
    */
   private void addHeaderCell(PdfPTable table, Font font, Object value) {
-    String valueStr = value == null ? NO_VALUE : String.valueOf(value);
-    table.addCell(new PdfPCell(new Phrase(valueStr, font)));
+    table.addCell(new PdfPCell(new Phrase(formatObjectValue(value), font)));
   }
   
   /**
@@ -170,11 +165,8 @@ public class PdfHttpMessageFindResponseConverter extends
    * @param value
    * @return
    */
-  private String formatRatingValue(Integer value) {
-   if (value != null) {
-     return RATING.getString(String.valueOf(value));
-   }
-   return NO_VALUE;
+  private String formatObjectValue(Object value) {
+    return (value != null) ? String.valueOf(value) : NO_VALUE;
   }
 
   /**
@@ -182,10 +174,7 @@ public class PdfHttpMessageFindResponseConverter extends
    * @param value
    * @return
    */
-  private String formatIntegerValue(Integer value) {
-    if (value != null) {
-      return String.format("%d", value);
-    }
-    return NO_VALUE;
+  private String formatRatingValue(Integer value) {
+    return (value != null) ? RATING.getString(String.valueOf(value)) : NO_VALUE;
   }
 }
