@@ -8,7 +8,7 @@ var User = function(firstName, lastName, roles) {
   }
   var result = false;
   this.roles.forEach(function(role) {
-   if (role == expectedRole && !result) {
+   if ((role == 'ADMIN' || role == expectedRole) && !result) {
     result = true;
    }
   });

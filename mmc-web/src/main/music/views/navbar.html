@@ -15,8 +15,9 @@
       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-music"></span> Music<b class="caret"></b></a>
       <ul class="dropdown-menu">
        <li><a href="#/music_list">Find</a></li>
-       <li class="divider"></li>
-       <li><a href="#/music_add">Add</a></li>        
+       <li><a href="#/music_add">Add</a></li>
+       <li class="divider" ng-show="user.loggedInAdminUser"></li>
+       <li><a href="#/music_listing"><span class="glyphicon glyphicon-star"></span> Listing</a></li>
       </ul>     
      </li>
      <li ng-class="{ active: navIsActive('/book')}"><a href="#/book"><span class="glyphicon glyphicon-book"></span> Book</a></li>

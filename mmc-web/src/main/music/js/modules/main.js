@@ -29,6 +29,11 @@ angular.module('mmcApp', [
    templateUrl: 'views/music/list.html',
    controller: 'musicListCtrl'
   }).
+  when('/music_listing', {
+   templateUrl: 'views/music/admin.html',
+   controller: 'musicListingCtrl',
+   role: 'admin'
+  }).  
   when('/music_add', {
    templateUrl: 'views/music/add.html',
    controller: 'musicAddCtrl'

@@ -34,6 +34,7 @@ import com.itextpdf.text.pdf.PdfWriter;
  */
 public class PdfHttpMessageFindResponseConverter extends AbstractHttpMessageConverter<FindResponse> {
 
+  private static final String NO_VALUE = "";
   private ResourceBundle rating = ResourceBundle.getBundle("rating");
   
   /**
@@ -68,6 +69,7 @@ public class PdfHttpMessageFindResponseConverter extends AbstractHttpMessageConv
       table.getDefaultCell().setUseDescender(true);
       // Add the first header row
       Font f = new Font();
+      f.setSize(8);
       f.setColor(BaseColor.WHITE);
       PdfPCell cell = new PdfPCell(new Phrase(String.format("%s - %d item(s)"
           , new SimpleDateFormat("yyyy/MM/dd").format(new Date())
@@ -99,31 +101,46 @@ public class PdfHttpMessageFindResponseConverter extends AbstractHttpMessageConv
       for (FindElementResponse doc : docs) {
         table.addCell(doc.getArtist());
         table.addCell(doc.getTitle());
-        table.addCell(String.format("%s %s", (doc.getNbType() != null && doc.getNbType() > 1 ) ? String.valueOf(doc.getNbType()) : "", doc.getMainType()));
-        table.addCell(doc.getOrigin());
+        table.addCell(String.format("%s %s", (doc.getNbType() != null && doc.getNbType() > 1 ) ? String.valueOf(doc.getNbType()) : NO_VALUE, doc.getMainType()));
+        table.addCell(formatStringValue(doc.getOrigin()));
         if (doc.getEdition() != null) {
-          table.addCell(String.format("%d", doc.getEdition()));
+          table.addCell(formatIntegerValue(doc.getEdition()));
           table.addCell(String.format("%s", "y"));
         } else {
-          table.addCell(String.format("%d", doc.getIssue()));
-          table.addCell("");
+          table.addCell(formatIntegerValue(doc.getIssue()));
+          table.addCell(NO_VALUE);
         }
-        table.addCell(doc.getArtist());
-        table.addCell(doc.getArtist());
-        if (doc.getSleeveGrade() != null) {
-          table.addCell(rating.getString(String.valueOf(doc.getSleeveGrade())));
-        }
-        if (doc.getRecordGrade() != null) {
-          table.addCell(rating.getString(String.valueOf(doc.getRecordGrade())));
-        }
+        table.addCell(formatRating(doc.getSleeveGrade()));
+        table.addCell(formatRating(doc.getRecordGrade()));
       }
       
       document.add(table);
-      
       document.close();
+      
       StreamUtils.copy(baos.toByteArray(), os);
     } catch (DocumentException e) {
       throw new HttpMessageNotWritableException("Write internal error", e);
     }
+  }
+  
+  private String formatRating(Integer value) {
+    if (value != null) {
+      return rating.getString(String.valueOf(value));
+    }
+    return NO_VALUE;
+  }
+  
+  private String formatIntegerValue(Integer value) {
+    if (value != null) {
+      return String.format("%d", value);
+    }
+    return NO_VALUE;
+  }
+  
+  private String formatStringValue(String value) {
+    if (value != null) {
+      return value;
+    }
+    return NO_VALUE;
   }
 }

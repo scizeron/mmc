@@ -7,11 +7,12 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
   * @param query
   * @param page
   * @param useCache
+  * @param content
   * @param onSuccessCallback
   * @param onErrorCallack
   * @returns
   */
- function getDocs(query, page, useCache, onSuccessCallback, onErrorCallack) {
+ function getDocs(query, page, useCache, content, onSuccessCallback, onErrorCallack) {
   utils.debug('page: ' + page + ', query: ' + query + ', size: ' + settings.pageSize + ', useCache : ' + useCache);
   var cacheKey = 'music_list_page_' + page;
   
@@ -30,9 +31,17 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
   if (query != null) {
    uri += '&q=' + encodeURIComponent(query);   
   }
-  $http.get(uri).
+  
+  var config = null;
+  if ('pdf' == content) {
+   config = {headers: {'Accept': 'application/pdf'}, responseType: 'arraybuffer'};
+  }
+  
+  $http.get(uri, config).
    success(function(response) {
-    utils.debug('musicService.getDocs('+page+'): ' + JSON.stringify(response));
+	if ('json' == content) {	   
+     utils.debug('musicService.getDocs('+page+'): ' + JSON.stringify(response));
+	}
     if (useCache) {
      utils.debug('musicService.getDocs('+page+') stored in cache with key "' + cacheKey + '"');
      sessionStorage.setItem(cacheKey, JSON.stringify(response));

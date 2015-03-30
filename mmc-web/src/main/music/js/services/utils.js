@@ -199,7 +199,7 @@ angular.module('mmcApp').factory('appService', [ '$rootScope', 'musicService', '
   navMusicDoc : function(navCallback) {
    var newIndex = this.nav().index;
    var newPage = this.nav().page;
-   musicService.getDocs(this.app().query, newPage, true, function(response) {
+   musicService.getDocs(this.app().query, newPage, true, 'json', function(response) {
 	var nav = newNavFromMusicListResponse(response, newIndex, newPage);
 	$rootScope.nav = nav;
 	navCallback(nav);

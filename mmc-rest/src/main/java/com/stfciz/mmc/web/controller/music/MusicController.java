@@ -122,6 +122,10 @@ public class MusicController {
       
     } while (singlePage && hasNext);
 
+    if (singlePage) {
+      LOGGER.debug("\"single-page\" mode, {} item(s)", response.getDocs().size());
+    }
+    
     return response;
   }
 

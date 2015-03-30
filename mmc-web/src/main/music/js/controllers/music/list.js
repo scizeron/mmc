@@ -14,7 +14,7 @@ function ($scope, musicService, userService, refValues, appService, utils) {
 	
  $scope.list = function (page) {
   $scope.action = { 'result' : -1};	 
-  musicService.getDocs(appService.app().query, page, false, function(response) {
+  musicService.getDocs(appService.app().query, page, false, 'json', function(response) {
    $scope.totalPages = response.totalPages;
    $scope.action.result = 0; 
    $scope.docsInfos = [];
@@ -90,4 +90,15 @@ function ($scope, musicService, userService, refValues, appService, utils) {
  musicService.clearCache();
  $scope.list(0);
  
+}]);
+
+
+angular.module('mmcApp').controller('musicListingCtrl', ['$scope', 'appService', 'musicService', '$sce', 
+function ($scope, appService, musicService, $sce) {
+ $scope.wating = true;
+ $scope.listing=true;
+ musicService.getDocs(appService.app().query, -1, false, 'pdf', function(response) {
+  $scope.listing = $sce.trustAsResourceUrl(URL.createObjectURL(new Blob([response], {type: 'application/pdf'})));
+  $scope.wating = false;
+ });
 }]);
