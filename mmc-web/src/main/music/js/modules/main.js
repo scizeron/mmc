@@ -1,7 +1,8 @@
 'use strict';
 angular.module('mmcApp', [
- 'ngRoute'
+  'ngRoute'
  ,'ui.bootstrap'
+ ,'pascalprecht.translate'
 ])
 .config(function($routeProvider) {
  $routeProvider.
@@ -54,8 +55,9 @@ angular.module('mmcApp', [
    role: 'anonymous',
   });
 })
-.config(['$httpProvider', function($httpProvider) {  
+.config(['$httpProvider', '$translateProvider', function($httpProvider, $translateProvider) {  
  $httpProvider.interceptors.push('oauth2Interceptor');
+ $translateProvider.preferredLanguage('en');
 }])
 .run(function($rootScope, $location, userService, utils, appService) {
  
@@ -112,5 +114,15 @@ angular.module('mmcApp', [
 	utils.debug('Go to "' + nextPath + '"');
    }
   } 
+  
+  if ($location.path().indexOf('/music_view') == 0 || $location.path().indexOf('/music_edit') == 0
+   || $location.path().indexOf('/book_view') == 0 || $location.path().indexOf('/book_edit') == 0
+   || $location.path().indexOf('/merchandising_view') == 0 || $location.path().indexOf('/merchandising_edit') == 0
+  ) {
+   $rootScope.$broadcast('showItemsNavBar', true);  
+  } else {
+   $rootScope.$broadcast('showItemsNavBar', false);
+  }
+  
  })
 });

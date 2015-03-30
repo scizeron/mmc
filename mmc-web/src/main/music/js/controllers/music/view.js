@@ -14,7 +14,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.images = [];
   $scope.currentImagePos = 0;
   $scope.canEdit = userService.userHasRole('WRITE');
-  $scope.mainRightPartClazz = 'col-md-8';
+  $scope.mainRightPartClazz = 'col-md-7';
 
   musicService.getDoc(docId, function(response) {
    $scope.action.resut = 0;
@@ -117,67 +117,6 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
  $scope.gotoFind = function() {
   $location.path('/music_list');
  }; 
- 
- /**
-  * 
-  */
- $scope.navigate = function(nav) {
-  $location.path('/music_view/' + nav.id); 
- };
- 
- /**
-  * 
-  */
- $scope.nextPage = function() {
-  appService.nextMusicDocPage(function(nav) {
-   $scope.navigate(nav);
-  });
- }; 
-
- /**
-  * 
-  */
- $scope.previousPage = function() {
-  appService.previousMusicDocPage(function(nav) {
-   $scope.navigate(nav);
-  });
- }; 
- 
- /**
-  * 
-  */
- $scope.first = function() {
-  appService.firstMusicDocPage(function(nav) {
-   $scope.navigate(nav);
-  });
- }; 
- 
- /**
-  * 
-  */
- $scope.last = function() {
-  appService.lastMusicDocPage(function(nav) {
-   $scope.navigate(nav);
-  });
- }; 
- 
- /**
-  * 
-  */
- $scope.next = function() {
-  appService.nextMusicDoc(function(nav) {
-   $scope.navigate(nav);
-  });
- };
- 
- /**
-  * 
-  */
- $scope.previous = function() {
-  appService.previousMusicDoc(function(nav) {
-   $scope.navigate(nav);
-  });
- };
  
  $scope.view($routeParams.musicDocId);
 
