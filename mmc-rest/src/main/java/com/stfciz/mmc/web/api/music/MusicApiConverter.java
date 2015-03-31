@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -142,7 +143,13 @@ public class MusicApiConverter {
     target.setId(request.getId());
     
     // + prices
-    
+    for (UpdatePrice updatePrice : request.getPrices()) {
+      if (updatePrice.getPrice() != null && updatePrice.getMonth()!= null && updatePrice.getYear() != null) {
+        com.stfciz.mmc.core.music.domain.UpdatePrice updatePriceTarget = new com.stfciz.mmc.core.music.domain.UpdatePrice();
+        BeanUtils.copyProperties(updatePrice, updatePriceTarget);
+        target.getPrices().add(updatePriceTarget);
+      }
+    }
     
     return target;
   }
@@ -172,7 +179,11 @@ public class MusicApiConverter {
     }
         
     if (src.getPrices() != null && ! src.getPrices().isEmpty()) {
-      // TODO
+      for (com.stfciz.mmc.core.music.domain.UpdatePrice updatePrice : src.getPrices()) {
+        com.stfciz.mmc.web.api.music.UpdatePrice up = new com.stfciz.mmc.web.api.music.UpdatePrice();
+        BeanUtils.copyProperties(updatePrice, up);
+        target.getPrices().add(up);
+      }
     }
     
     target.setImages(this.photoApiConverter.convertToApiPhotos(src.getPhotos()));

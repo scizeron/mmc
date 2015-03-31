@@ -1,0 +1,61 @@
+<div class="row" id="addPart">
+ <div class="form-group" style="margin-top: 5px;">
+  <label class="control-label col-md-offset-1 col-md-1" for="price">Price</label>
+  <div class="col-md-2">          
+  <input type="text" class="form-control" id="price" name="price" ng-model="newPrice.value" placeholder="price">
+ </div>
+ <label class="control-label col-md-1" for="newPriceMonth">Date</label>
+ <div class="col-md-1">      
+   <select class="form-control" id="newPriceMonth" name="newPriceMonth" ng-model="newPrice.month">
+    <option></option>
+    <option ng-repeat="month in months">{{month}}</option>
+   </select>
+ </div> 
+ <div class="col-md-2"> 
+  <select class="form-control" id="newPriceYear" name="newPriceYear" ng-model="newPrice.year">
+   <option></option>
+   <option ng-repeat="year in years">{{year}}</option>
+  </select>
+ </div>
+ <div class="col-md-2">
+  <button type="button" ng-click="addNewPrice()" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add</button>
+ </div>
+</div>
+<div class="row" id="tabPart">
+ <div class="col-md-offset-2 col-md-6">
+  <table class="table table-hover">
+   <thead>
+    <tr>
+     <th>Price</th>
+     <th>Date</th>
+     <th>Actions</th>
+    </tr>
+   </thead>
+   <tr ng-repeat="price in updatePrices">
+    <td>
+     <div ng-show="price.display == 'read'">{{price.value}} €</div>
+     <div ng-show="price.display == 'edit'"><input type="text" ng-model="updatePrice.value"></div>
+    </td>
+    <td>
+     <div ng-show="price.display == 'read'">{{price.month}} / {{price.year}}</div>
+     <div ng-show="price.display == 'edit'">
+      <select ng-model="updatePrice.month">
+       <option></option>
+       <option ng-repeat="month in months">{{month}}</option>
+      </select>
+      <select ng-model="updatePrice.year">
+       <option></option>
+       <option ng-repeat="year in years">{{year}}</option>
+      </select>
+     </div>
+    </td>
+    <td>
+     <button type="button" class="btn btn-success btn-xs" ng-click="editPrice($index)" ng-show="price.display == 'read'"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+     <button type="button" class="btn btn-success btn-xs" ng-click="doUpdatePrice($index)"  ng-show="price.display == 'edit'"><span class="glyphicon glyphicon-ok"></span> Update</button>
+     <button type="button" class="btn btn-cancel btn-xs" ng-click="undoEditPrice($index)"  ng-show="price.display == 'edit'"><span class="glyphicon"></span> Cancel</button>
+	 <button type="button" class="btn btn-danger btn-xs" ng-click="removePrice($index)" ng-show="price.display == 'read'"><span class="glyphicon glyphicon-trash"></span> Remove</button>
+    </td>
+   </tr>
+  </table>
+ </div>
+</div>

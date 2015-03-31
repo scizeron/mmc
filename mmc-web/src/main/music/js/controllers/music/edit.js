@@ -10,6 +10,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.initSelectedImages = function() {
+  $scope.selectedImages = [];
   if ($scope.doc.images != null && $scope.doc.images.length > 0) {
    utils.debug($scope.doc.images.length + " photo(s)");
    for (var i=0; i < $scope.doc.images.length; i++) {
@@ -21,12 +22,31 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
  /**
   * 
   */
+ $scope.initUpdatePrices = function() {
+  $scope.updatePrices = [];
+  // prices
+  if ($scope.doc.prices != null) {
+	  
+   for (var i = 0; i < $scope.doc.prices.length; i++) {
+	$scope.updatePrices.push({'value' : $scope.doc.prices[i].price
+	                        , 'month' : $scope.doc.prices[i].month
+		                    , 'year' : $scope.doc.prices[i].year
+		                    , 'display' : 'read'
+	                        });
+   }    
+  }
+ };
+ 
+ /**
+  * 
+  */
  $scope.selectTab = function(tabId) {
   if (typeof($scope.tabs) == 'undefined') {
    $scope.tabs = [];
    $scope.tabs.push({'name':'general','active':true});
    $scope.tabs.push({'name':'purchase','active':false});
    $scope.tabs.push({'name':'photos','active':false});
+   $scope.tabs.push({'name':'prices','active':false});   
   }
   
   $scope.tabId = (typeof(tabId) == 'undefined') ? 'general' : tabId; 	
@@ -51,17 +71,20 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.types = settings.music.types;
   $scope.selectedImages = [];
   $scope.fileItems = [];
-
+  $scope.newPrice = {};
+  $scope.updatePrice = {};
+  $scope.updatePrices = [];
+  
   musicService.getDoc(docId, function(response) {
    $scope.action.resut = 0;
    $scope.doc = response;
    $scope.initSelectedImages();
+   $scope.initUpdatePrices();
+   
   }, function() {
    $scope.action.resut = 1;	 
   });
  };	
-
-
  
  /**
   * 
@@ -78,6 +101,9 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   musicService.updateDoc($scope.doc, function() {
    $scope.action.resut = 0;
     utils.debug($scope.doc.id + ' is updated ok');
+    $scope.initUpdatePrices();
+    $scope.updatePrice = {};
+    $scope.newPrice = {};
    }, function() {
 	$scope.action.resut = 1;
    });  
@@ -168,6 +194,53 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   musicService.remove(id, callback, callback);
  };  
  
+ /**
+  * 
+  */
+ $scope.addNewPrice = function() {
+  utils.debug('newPrice:' + JSON.stringify($scope.newPrice));
+  $scope.doc.prices.push({'price': $scope.newPrice.value, 'month' : $scope.newPrice.month, 'year' : $scope.newPrice.year});
+  $scope.update();
+ };
+ 
+ /**
+  * 
+  */
+ $scope.editPrice = function($index) {
+  $scope.updatePrices[$index].display = 'edit';
+  $scope.updatePrice.value = $scope.updatePrices[$index].value;
+  $scope.updatePrice.month = $scope.updatePrices[$index].month;
+  $scope.updatePrice.year = $scope.updatePrices[$index].year;
+ }
+ 
+ /**
+  * 
+  */
+ $scope.undoEditPrice = function($index) {
+  $scope.updatePrices[$index].display = 'read';	 
+ }
+ 
+ /**
+  * 
+  */
+ $scope.doUpdatePrice = function($index) {
+  $scope.updatePrices[$index].display = 'read';
+  $scope.doc.prices[$index].price = $scope.updatePrice.value;
+  $scope.doc.prices[$index].month = $scope.updatePrice.month;
+  $scope.doc.prices[$index].year = $scope.updatePrice.year;
+  utils.debug('updatePrice:' + JSON.stringify($scope.doc.prices[$index]));
+  $scope.update();
+ }
+ 
+ /**
+  * 
+  */
+ $scope.removePrice = function($index) {
+  utils.debug('removePrice:' + JSON.stringify($scope.doc.prices[$index]));
+  $scope.doc.prices.splice($index, 1);
+  $scope.update();
+ }
+
  $scope.edit($routeParams.musicDocId, $routeParams.tabId);
  
 }]);

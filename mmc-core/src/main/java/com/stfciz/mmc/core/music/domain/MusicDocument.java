@@ -35,13 +35,7 @@ public class MusicDocument {
   /** year  **/
   private boolean           reEdition;
 
-  public boolean isReEdition() {
-    return reEdition;
-  }
 
-  public void setReEdition(boolean reEdition) {
-    this.reEdition = reEdition;
-  }
 
   /** year  **/
   private Integer           issue;
@@ -288,6 +282,9 @@ public class MusicDocument {
    * @return the prices
    */
   public List<UpdatePrice> getPrices() {
+    if (this.prices == null) {
+      this.prices = new ArrayList<>();
+    }
     return this.prices;
   }
 
@@ -309,43 +306,99 @@ public class MusicDocument {
     return this.photos;
   }
 
+  /**
+   * 
+   * @return
+   */
   public boolean isPromo() {
     return promo;
   }
 
+  /**
+   * 
+   * @param promo
+   */
   public void setPromo(boolean promo) {
     this.promo = promo;
   }
 
+  /**
+   * 
+   * @return
+   */
   public Obi getObi() {
     return this.obi;
   }
 
+  /**
+   * 
+   * @param obi
+   */
   public void setObi(Obi obi) {
     this.obi = obi;
   }
 
+  /**
+   * 
+   * @return
+   */
   public Date getModified() {
     return this.modified;
   }
 
+  /**
+   * 
+   * @param modified
+   */
   public void setModified(Date modified) {
     this.modified = modified;
   }
   
+  /**
+   * 
+   * @return
+   */
   public Integer getSleeveRating() {
     return sleeveRating;
   }
 
+  /**
+   * 
+   * @param sleeveRating
+   */
   public void setSleeveRating(Integer sleeveRating) {
     this.sleeveRating = sleeveRating;
   }
 
+  /**
+   * 
+   * @return
+   */
   public Integer getRecordRating() {
     return recordRating;
   }
 
+  /**
+   * 
+   * @param recordRating
+   */
   public void setRecordRating(Integer recordRating) {
     this.recordRating = recordRating;
+  }
+  
+  /**
+   * *
+   * @return
+   */
+  public boolean isReEdition() {
+    return reEdition;
+  }
+
+  /**
+   * 
+   * @param reEdition
+   */
+  public void setReEdition(boolean reEdition) {
+    this.reEdition = reEdition;
   }
 }

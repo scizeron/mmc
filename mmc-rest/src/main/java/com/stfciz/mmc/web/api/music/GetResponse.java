@@ -1,5 +1,6 @@
 package com.stfciz.mmc.web.api.music;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.stfciz.mmc.web.api.photo.Photo;
@@ -18,6 +19,8 @@ public class GetResponse extends AbstractBaseResponse {
   private String comment;
 
   private Integer purchaseMonth;
+  
+  private List<UpdatePrice> prices;
   
   public Integer getPurchaseMonth() {
     return purchaseMonth;
@@ -99,5 +102,16 @@ public class GetResponse extends AbstractBaseResponse {
 
   public void setImages(List<Photo> images) {
     this.images = images;
+  }
+
+  public List<UpdatePrice> getPrices() {
+    if (this.prices == null) {
+     this.prices = new ArrayList<>();
+    }
+    return prices;
+  }
+
+  public void setPrices(List<UpdatePrice> prices) {
+    this.prices = prices;
   }
 }

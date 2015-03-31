@@ -27,6 +27,11 @@
      <div style="padding-top: 15px"></div>
 	 <ng-include src="'views/music/p_photos.html'"></ng-include>
     </tab>
+    <tab active="tabs[3].active" select="selectTab('prices')" ng-show="user.loggedInAdminUser">
+     <tab-heading><span class="glyphicon glyphicon-star"></span> Prices</tab-heading>
+     <div style="padding-top: 15px"></div>
+	 <ng-include src="'views/music/p_prices.html'"></ng-include>
+    </tab>    
    </tabset>
   </form>
  </div>
