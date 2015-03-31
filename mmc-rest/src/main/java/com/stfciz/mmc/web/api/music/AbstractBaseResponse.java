@@ -19,7 +19,7 @@ public class AbstractBaseResponse {
   private boolean promo;
   private String origin;
   private String serialNumber;
-  private Integer edition;
+  private boolean reEdition;
   private Integer issue;
   private String mainType;
   private Integer nbType;
@@ -35,6 +35,14 @@ public class AbstractBaseResponse {
     super();
   }
 
+  public boolean isReEdition() {
+    return reEdition;
+  }
+
+  public void setReEdition(boolean reEdition) {
+    this.reEdition = reEdition;
+  }
+  
   public String getId() {
     return this.id;
   }
@@ -57,14 +65,6 @@ public class AbstractBaseResponse {
 
   public void setArtist(String artist) {
     this.artist = artist;
-  }
-
-  public Integer getEdition() {
-    return this.edition;
-  }
-
-  public void setEdition(Integer edition) {
-    this.edition = edition;
   }
 
   public String getMainType() {

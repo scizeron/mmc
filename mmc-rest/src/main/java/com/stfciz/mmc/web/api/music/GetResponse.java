@@ -1,6 +1,5 @@
 package com.stfciz.mmc.web.api.music;
 
-import java.util.Date;
 import java.util.List;
 
 import com.stfciz.mmc.web.api.photo.Photo;
@@ -18,7 +17,25 @@ public class GetResponse extends AbstractBaseResponse {
 
   private String comment;
 
-  private Date purchaseDate;
+  private Integer purchaseMonth;
+  
+  public Integer getPurchaseMonth() {
+    return purchaseMonth;
+  }
+
+  public void setPurchaseMonth(Integer purchaseMonth) {
+    this.purchaseMonth = purchaseMonth;
+  }
+
+  public Integer getPurchaseYear() {
+    return purchaseYear;
+  }
+
+  public void setPurchaseYear(Integer purchaseYear) {
+    this.purchaseYear = purchaseYear;
+  }
+
+  private Integer purchaseYear;
 
   private Integer purchasePrice;
 
@@ -50,14 +67,6 @@ public class GetResponse extends AbstractBaseResponse {
 
   public void setComment(String comment) {
     this.comment = comment;
-  }
-
-  public Date getPurchaseDate() {
-    return this.purchaseDate;
-  }
-
-  public void setPurchaseDate(Date purchaseDate) {
-    this.purchaseDate = purchaseDate;
   }
 
   public Integer getPurchasePrice() {

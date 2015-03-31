@@ -46,6 +46,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.grades = refValues.getGrades();
   $scope.nbTypeRange = refValues.getNbTypeRange();
   $scope.years = refValues.getYears();
+  $scope.months = refValues.getMonths();
   $scope.defaultMusicCountry = settings.music.defaultCountry;
   $scope.types = settings.music.types;
   $scope.selectedImages = [];

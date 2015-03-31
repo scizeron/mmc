@@ -1,6 +1,5 @@
 package com.stfciz.mmc.core.music.domain;
 
-import java.util.Date;
 
 /**
  * 
@@ -9,71 +8,95 @@ import java.util.Date;
  */
 public class Purchase {
   
-  /** euro */
-  private int    price;
+  private Integer price;
   
-  private Date   date;
+  private Integer month;
   
+  private Integer year;
+
   private String vendor;
   
   private String context;
 
   /**
-   * @return the price
+   * 
+   * @return
    */
-  public int getPrice() {
-    return this.price;
+  public Integer getPrice() {
+    return price;
   }
 
   /**
+   * 
    * @param price
-   *          the price to set
    */
-  public void setPrice(int price) {
+  public void setPrice(Integer price) {
     this.price = price;
   }
 
   /**
-   * @return the date
+   * 
+   * @return
    */
-  public Date getDate() {
-    return this.date;
+  public Integer getMonth() {
+    return month;
   }
 
   /**
-   * @param date
-   *          the date to set
+   * 
+   * @param month
    */
-  public void setDate(Date date) {
-    this.date = date;
+  public void setMonth(Integer month) {
+    this.month = month;
   }
 
   /**
-   * @return the vendor
+   * 
+   * @return
+   */
+  public Integer getYear() {
+    return year;
+  }
+
+  /**
+   * 
+   * @param year
+   */
+  public void setYear(Integer year) {
+    this.year = year;
+  }
+
+  /**
+   * 
+   * @return
    */
   public String getVendor() {
-    return this.vendor;
+    return vendor;
   }
 
   /**
+   * 
    * @param vendor
-   *          the vendor to set
    */
   public void setVendor(String vendor) {
     this.vendor = vendor;
   }
+  
 
   /**
-   * @return the context
+   * 
+   * @return
    */
   public String getContext() {
-    return this.context;
+    return context;
   }
 
   /**
-   * @param context the context to set
+   * 
+   * @param context
    */
   public void setContext(String context) {
     this.context = context;
   }
+
 }

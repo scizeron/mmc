@@ -1,6 +1,5 @@
 package com.stfciz.mmc.web.api.music;
 
-import java.util.Date;
 
 /**
  * 
@@ -19,7 +18,7 @@ public class NewRequest {
 
   private String            serialNumber;
 
-  private Integer           edition;
+  private Boolean           reEdition;
 
   private Integer           issue;
 
@@ -45,13 +44,39 @@ public class NewRequest {
 
   private String            comment;
   
-  private Date              purchaseDate;
+  private Integer           purchaseMonth;
   
+  private Integer           purchaseYear;
+ 
   private Integer           purchasePrice;
   
   private String            purchaseVendor;
   
   private String            purchaseContext;
+  
+  public Boolean getReEdition() {
+    return reEdition;
+  }
+
+  public void setReEdition(Boolean reEdition) {
+    this.reEdition = reEdition;
+  }
+
+  public Integer getPurchaseMonth() {
+    return purchaseMonth;
+  }
+
+  public void setPurchaseMonth(Integer purchaseMonth) {
+    this.purchaseMonth = purchaseMonth;
+  }
+
+  public Integer getPurchaseYear() {
+    return purchaseYear;
+  }
+
+  public void setPurchaseYear(Integer purchaseYear) {
+    this.purchaseYear = purchaseYear;
+  }
 
   public String getTitle() {
     return this.title;
@@ -92,15 +117,7 @@ public class NewRequest {
   public void setSerialNumber(String serialNumber) {
     this.serialNumber = serialNumber;
   }
-
-  public Integer getEdition() {
-    return this.edition;
-  }
-
-  public void setEdition(Integer edition) {
-    this.edition = edition;
-  }
-
+ 
   public Integer getIssue() {
     return this.issue;
   }
@@ -195,14 +212,6 @@ public class NewRequest {
 
   public void setComment(String comment) {
     this.comment = comment;
-  }
-
-  public Date getPurchaseDate() {
-    return this.purchaseDate;
-  }
-
-  public void setPurchaseDate(Date purchaseDate) {
-    this.purchaseDate = purchaseDate;
   }
 
   public Integer getPurchasePrice() {

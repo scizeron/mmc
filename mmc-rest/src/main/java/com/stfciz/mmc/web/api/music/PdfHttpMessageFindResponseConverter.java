@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -21,7 +22,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -44,7 +44,7 @@ public class PdfHttpMessageFindResponseConverter extends
 
   private static final int ITEM_FONT_SIZE = 8;
   
-  private static final int NB_COLS = 7;
+  private static final int NB_COLS = 8;
 
   private static final ResourceBundle RATING = ResourceBundle.getBundle("rating");
 
@@ -74,14 +74,11 @@ public class PdfHttpMessageFindResponseConverter extends
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     OutputStream os = outputMessage.getBody();
     try {
-      Image yesImg = Image
-          .getInstance(this.getClass().getResource("/tick.png"));
-
       Document document = new Document();
       PdfWriter.getInstance(document, baos);
       document.open();
 
-      PdfPTable table = new PdfPTable(new float[] { 3, 6, 2, 2, 2, 2, 2 });
+      PdfPTable table = new PdfPTable(new float[] { 3, 6, 2, 2, 2, 3, 2, 2 });
       table.setWidthPercentage(100f);
       table.getDefaultCell().setUseAscender(true);
       table.getDefaultCell().setUseDescender(true);
@@ -104,14 +101,14 @@ public class PdfHttpMessageFindResponseConverter extends
 
       table.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);
       for (int i = 0; i < 1; i++) {
-        addHeaderCell(table, headerFooterFont, "Artist");
-        addHeaderCell(table, headerFooterFont, "Title");
-        addHeaderCell(table, headerFooterFont, "Type");
-        addHeaderCell(table, headerFooterFont, "Origin");
-        addHeaderCell(table, headerFooterFont, "Year");
-        //addHeaderCell(table, headerFooterFont, "Re-edition");
-        addHeaderCell(table, headerFooterFont, "Sleeve");
-        addHeaderCell(table, headerFooterFont, "Record");
+        addCell(table, headerFooterFont, "Artist");
+        addCell(table, headerFooterFont, "Title");
+        addCell(table, headerFooterFont, "Type");
+        addCell(table, headerFooterFont, "Origin");
+        addCell(table, headerFooterFont, "Year");
+        addCell(table, headerFooterFont, "Edition");
+        addCell(table, headerFooterFont, "Sleeve");
+        addCell(table, headerFooterFont, "Record");
       }
       table.getDefaultCell().setBackgroundColor(null);
       // There are three special rows
@@ -125,20 +122,42 @@ public class PdfHttpMessageFindResponseConverter extends
 
       List<FindElementResponse> docs = findResponse.getDocs();
       for (FindElementResponse doc : docs) {
-        addHeaderCell(table, itemFont, doc.getArtist());
-        addHeaderCell(table, itemFont, doc.getTitle());
+        addCell(table, itemFont, doc.getArtist());
+        addCell(table, itemFont, doc.getTitle());
         table.addCell(String.format("%s %s", (doc.getNbType() != null && doc
             .getNbType() > 1) ? String.valueOf(doc.getNbType()) : NO_VALUE, doc
             .getMainType()));
-        addHeaderCell(table, itemFont, doc.getOrigin());
-        if (doc.getEdition() != null) {
-          table.addCell(formatObjectValue(doc.getEdition() + " (new)"));
-          //table.addCell(new PdfPCell(yesImg, false));
+        addCell(table, itemFont, doc.getOrigin());
+        addCell(table, itemFont, doc.getIssue());
+        if (doc.isReEdition() || StringUtils.isNotBlank(doc.getSerialNumber()) || (doc.getPubNum() != null && doc.getPubTotal() != null) || doc.isPromo()) {
+          StringBuilder edition = new StringBuilder();
+          if (doc.isReEdition()) {
+            edition.append("re");
+          }
+          if (StringUtils.isNotBlank(doc.getSerialNumber())) {
+            if (edition.length() > 0) {
+              edition.append(", ");
+            }
+            edition.append("N° ").append(doc.getSerialNumber());
+          }
+          if (doc.getPubNum() != null) {
+            if (edition.length() > 0) {
+              edition.append(", ");
+            }
+            edition.append(doc.getPubNum()).append("/").append(doc.getPubTotal());
+          }
+          if (doc.isPromo()) {
+            if (edition.length() > 0) {
+              edition.append(", ");
+            }
+            edition.append("promo");
+          }
         } else {
-          table.addCell(formatObjectValue(doc.getIssue()));
+          addCell(table, itemFont, NO_VALUE); 
         }
-        addHeaderCell(table, itemFont, formatRatingValue(doc.getSleeveGrade()));
-        addHeaderCell(table, itemFont, formatRatingValue(doc.getRecordGrade()));
+        
+        addCell(table, itemFont, formatRatingValue(doc.getSleeveGrade()));
+        addCell(table, itemFont, formatRatingValue(doc.getRecordGrade()));
       }
 
       document.add(table);
@@ -156,7 +175,7 @@ public class PdfHttpMessageFindResponseConverter extends
    * @param font
    * @param value
    */
-  private void addHeaderCell(PdfPTable table, Font font, Object value) {
+  private void addCell(PdfPTable table, Font font, Object value) {
     table.addCell(new PdfPCell(new Phrase(formatObjectValue(value), font)));
   }
   

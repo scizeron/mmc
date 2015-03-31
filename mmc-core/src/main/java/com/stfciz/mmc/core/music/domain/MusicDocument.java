@@ -33,7 +33,15 @@ public class MusicDocument {
   private String            serialNumber;
 
   /** year  **/
-  private Integer           edition;
+  private boolean           reEdition;
+
+  public boolean isReEdition() {
+    return reEdition;
+  }
+
+  public void setReEdition(boolean reEdition) {
+    this.reEdition = reEdition;
+  }
 
   /** year  **/
   private Integer           issue;
@@ -143,21 +151,6 @@ public class MusicDocument {
    */
   public void setSerialNumber(String serialNumber) {
     this.serialNumber = serialNumber;
-  }
-
-  /**
-   * @return the edition
-   */
-  public Integer getEdition() {
-    return this.edition;
-  }
-
-  /**
-   * @param edition
-   *          the edition to set
-   */
-  public void setEdition(Integer edition) {
-    this.edition = edition;
   }
 
   /**

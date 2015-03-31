@@ -1,5 +1,11 @@
 package com.stfciz.mmc.core.music.domain;
 
+import java.util.Arrays;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+
+
 /**
  * 
  * @author stfciz
@@ -19,6 +25,14 @@ public class Obi {
     }
     public String getValue() {
       return this.value;
+    }
+    public static Orientation fromValue(final String value) {
+      return value == null ? null : Iterables.find(Arrays.asList(Orientation.values()), new Predicate<Orientation>() {
+        @Override
+        public boolean apply(Orientation input) {
+          return input.getValue().equals(value);
+        }
+      });
     }
   }
 

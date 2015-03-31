@@ -45,7 +45,7 @@ public class MusicApiConverter {
     target.setArtist(request.getArtist());
     target.setComment(request.getComment());
     target.setPromo(request.isPromo());
-    target.setEdition(request.getEdition());
+    target.setReEdition(request.getReEdition() != null ? request.getReEdition().booleanValue() : false);
     target.setIssue(request.getIssue());
     target.setMainType(request.getMainType());
     target.setNbType(request.getNbType());
@@ -71,7 +71,7 @@ public class MusicApiConverter {
     }
     
     if ("JP".equals(request.getOrigin()) && StringUtils.isNotBlank(request.getObiColor()) && StringUtils.isNotBlank(request.getObiPos())) {
-      target.setObi(new Obi(request.getObiColor(), Obi.Orientation.valueOf(request.getObiPos())));
+      target.setObi(new Obi(request.getObiColor(), Obi.Orientation.fromValue(request.getObiPos())));
     }
     
     if (request.getPurchasePrice() != null) {
@@ -79,7 +79,8 @@ public class MusicApiConverter {
       target.setPurchase(purchase);
       purchase.setPrice(request.getPurchasePrice());
       purchase.setContext(request.getPurchaseContext());
-      purchase.setDate(request.getPurchaseDate());
+      purchase.setMonth(request.getPurchaseMonth());
+      purchase.setYear(request.getPurchaseYear());
       purchase.setVendor(request.getPurchaseVendor());
     }
     
@@ -97,7 +98,7 @@ public class MusicApiConverter {
     target.setTitle(src.getTitle());
     target.setArtist(src.getArtist());
     target.setPromo(src.isPromo());
-    target.setEdition(src.getEdition());
+    target.setReEdition(src.isReEdition());
     target.setIssue(src.getIssue());
     target.setSerialNumber(src.getSerialNumber());
     target.setMainType(src.getMainType());
@@ -139,6 +140,10 @@ public class MusicApiConverter {
   public MusicDocument convertUpdateMusicRequestIn(UpdateRequest request) {
     MusicDocument target = convertNewMusicRequestIn(request);
     target.setId(request.getId());
+    
+    // + prices
+    
+    
     return target;
   }
   
@@ -156,8 +161,12 @@ public class MusicApiConverter {
       target.setObiPos(src.getObi().getOrientation().getValue());
     }
     
+    target.setComment(src.getComment());
+    
     if (src.getPurchase() != null) {
-      target.setPurchaseDate(src.getPurchase().getDate());
+      target.setPurchasePrice(src.getPurchase().getPrice());
+      target.setPurchaseMonth(src.getPurchase().getMonth());
+      target.setPurchaseYear(src.getPurchase().getYear());
       target.setPurchaseContext(src.getPurchase().getContext());
       target.setPurchaseVendor(src.getPurchase().getVendor());     
     }

@@ -1,6 +1,5 @@
 package com.stfciz.mmc.core.music.domain;
 
-import java.util.Date;
 
 /**
  * 
@@ -9,37 +8,57 @@ import java.util.Date;
  */
 public class UpdatePrice {
 
-  private int  euroPrice;
-
-  private Date date;
-
+  private Integer price;
+  
+  private Integer month;
+  
+  private Integer year;
+  
   /**
-   * @return the euroPrice
+   * 
+   * @return
    */
-  public int getEuroPrice() {
-    return this.euroPrice;
+  public Integer getPrice() {
+    return price;
   }
 
   /**
-   * @param euroPrice
-   *          the euroPrice to set
+   * 
+   * @param price
    */
-  public void setEuroPrice(int euroPrice) {
-    this.euroPrice = euroPrice;
+  public void setPrice(Integer price) {
+    this.price = price;
   }
 
   /**
-   * @return the date
+   * 
+   * @return
    */
-  public Date getDate() {
-    return this.date;
+  public Integer getMonth() {
+    return month;
   }
 
   /**
-   * @param date
-   *          the date to set
+   * 
+   * @param month
    */
-  public void setDate(Date date) {
-    this.date = date;
+  public void setMonth(Integer month) {
+    this.month = month;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public Integer getYear() {
+    return year;
+  }
+
+  /**
+   * 
+   * @param year
+   */
+  public void setYear(Integer year) {
+    this.year = year;
   }
 }

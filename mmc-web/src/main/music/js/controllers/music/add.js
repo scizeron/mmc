@@ -36,6 +36,7 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   $scope.grades = refValues.getGrades();
   $scope.nbTypeRange = refValues.getNbTypeRange();
   $scope.years = refValues.getYears();
+  $scope.months = refValues.getMonths();
   $scope.types = settings.music.types;
  };
  

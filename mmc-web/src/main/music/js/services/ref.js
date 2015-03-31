@@ -7,6 +7,7 @@ angular.module('mmcApp').service('refValues', function(utils, $q, $http) {
  var grades = null;
  var gradesValues = null;
  var years = null;
+ var months = null;
  
  return {
   getCountriesPromise: function() {
@@ -75,10 +76,20 @@ angular.module('mmcApp').service('refValues', function(utils, $q, $http) {
    var minYear = settings.music.minYear; 
    var maxYear = new Date().getFullYear();
    years = [];
-   for (var j=minYear; j <= maxYear; j++) {
+   for (var j=maxYear; j >= minYear; j--) {
     years.push(j);	 
    }
    return years;
+  }, 
+  getMonths: function() {
+   if (months != null) {
+	return months;  
+   }
+   months = [];
+   for (var j=1; j <= 12; j++) {
+	months.push(j);	 
+   }
+   return months;
   }
  };
 });
