@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Iterables;
 import com.stfciz.mmc.core.music.domain.MusicDocument;
 import com.stfciz.mmc.core.music.domain.Obi;
 import com.stfciz.mmc.core.music.domain.Purchase;
@@ -33,6 +34,26 @@ public class MusicApiConverter {
   
   /**
    * 
+   * @param str
+   * @return
+   */
+  private String capitalizeWords(String str) {
+    if (StringUtils.isBlank(str)) {
+      return str;
+    }
+    StringBuilder result = new StringBuilder();
+    String [] words = StringUtils.split(str);
+    for (String word : words) {
+      if (result.length() > 0) {
+        result.append(" ");
+      }
+      result.append(StringUtils.capitalize(word.toLowerCase()));
+    }
+    return result.toString();
+  }
+  
+  /**
+   * 
    * @param request
    * @return
    */
@@ -42,8 +63,8 @@ public class MusicApiConverter {
     target.setId(UUID.randomUUID().toString());
     target.setModified(new Date());
     
-    target.setTitle(request.getTitle());
-    target.setArtist(request.getArtist());
+    target.setTitle(capitalizeWords(request.getTitle()));
+    target.setArtist(capitalizeWords(request.getArtist()));
     target.setComment(request.getComment());
     target.setPromo(request.isPromo());
     target.setReEdition(request.getReEdition() != null ? request.getReEdition().booleanValue() : false);
@@ -66,8 +87,8 @@ public class MusicApiConverter {
     
     if (StringUtils.isNotBlank(request.getRecordCompany())) {
       RecordCompany rc = new RecordCompany();
-      rc.setName(request.getRecordCompany());
-      rc.setLabel(request.getLabel());
+      rc.setName(request.getRecordCompany().toUpperCase());
+      rc.setLabel(request.getLabel() != null ? request.getLabel().toUpperCase() : null);
       target.setRecordCompany(rc);
     }
     

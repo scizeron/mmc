@@ -96,7 +96,10 @@ public class MusicController {
         pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.DESC, "modified")));
         result = this.repository.findAll(pageable);
       } else {
-        pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.ASC, "title")));
+        pageable = new PageRequest(page, pageSize
+            , new Sort(new  Sort.Order(Sort.Direction.ASC, "artist")
+            , new  Sort.Order(Sort.Direction.ASC, "title")
+        ));
         QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(query);
         queryBuilder.field("title");
         queryBuilder.field("artist");

@@ -147,9 +147,10 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   */
  $scope.update = function() {
   utils.debug('"Update: ' + JSON.stringify($scope.doc));
-  musicService.updateDoc($scope.doc, function() {
+  musicService.updateDoc($scope.doc, function(response) {
 	$scope.displayPopup(true, $scope.doc.id, 'save');
-    $scope.initUpdatePrices();
+	$scope.doc = response;
+	$scope.initUpdatePrices();
     $scope.updatePrice = {};
     $scope.newPrice = {};
    }, function() {

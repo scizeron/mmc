@@ -94,7 +94,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
    success(function(data, status) {
 	utils.debug('update ' + JSON.stringify(doc));
 	clearCache();
-	onSuccessCallback(data.id);
+	onSuccessCallback(data);
    }).error(function(data, status) {
 	utils.error('update error, status: ' + status);
 	onErrorCallack();
