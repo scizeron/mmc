@@ -55,7 +55,7 @@
  <div ng-show="doc.origin == 'JP' && doc.mainType == 'LP'">
   <label class="control-label col-md-1" for="obiColor">Obi</label>
   <div class="col-md-1">          
-   <input id="obiColor" type="color" name="obiColor" class="form-control col-md-1" ng-model="doc.obiColor"> 
+   <ng-color-picker selected="doc.obiColor" colors="obiColors"></ng-color-picker>
   </div>
   <div class="col-md-1">
    <select class="form-control" id="obiPos" name="obiPos" ng-model="doc.obiPos">

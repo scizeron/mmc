@@ -1,18 +1,18 @@
 <div class="container-fluid">
  <script type="text/ng-template" id="result">
   <div class="modal-header"></div>
-  <div class="modal-body alert alert-success" ng-show="ok">
-   <p>{{doc.id}} is created.</p>
+  <div class="modal-body alert alert-success" ng-show="result.ok">
+   <span class="glyphicon glyphicon-ok-sign"></span> <strong>{{result.id}}</strong> is created.
   </div>
-  <div class="modal-body alert alert-warning" ng-show="!ok">
-   <strong>Error! Please retry.</strong>
+  <div class="modal-body alert alert-danger" ng-show="!result.ok">
+   <span class="glyphicon glyphicon-remove-sign"></span><strong> Error</strong>
   </div>
-  <div class="modal-footer" ng-show="ok">
-   <button class="btn btn-success" ng-click="addPhoto()">Add photo(s)</button>
+  <div class="modal-footer" ng-show="result.ok">
+   <button class="btn btn-success" ng-click="addPhotos()">Add photo(s)</button>
    <button class="btn btn-primary" ng-click="newDoc()">New</button>
   </div>
-  <div class="modal-footer" ng-show="!ok">
-   <button class="btn btn-primary" ng-click="newWithValues()">OK</button>
+  <div class="modal-footer" ng-show="!result.ok">
+   <button class="btn btn-danger" ng-click="newDoc()">Close</button>
   </div>
  </script>
  <div class="row">

@@ -1,3 +1,37 @@
+<script type="text/ng-template" id="result">
+ <div class="modal-header"></div>
+ <div ng-show="'save' == result.action">
+  <div class="modal-body alert alert-info" ng-show="result.ok">
+   <span class="glyphicon glyphicon-ok-sign"></span> <strong>{{result.id}}</strong> is saved.
+  </div>
+  <div class="modal-body alert alert-danger" ng-show="!result.ok">
+   <span class="glyphicon glyphicon-remove-sign"></span><strong> Error</strong>
+  </div>
+  <div class="modal-footer" ng-show="result.ok">
+   <button class="btn btn-primary" ng-click="closePopup()">Close</button>
+  </div>
+  <div class="modal-footer" ng-show="!result.ok">
+   <button class="btn btn-danger" ng-click="closePopup()">Close</button>
+  </div>
+</div>
+<div ng-show="'edit' == result.action">
+ <div class="modal-body alert alert-danger" ng-show="!result.ok">
+  <span class="glyphicon glyphicon-remove-sign"></span><strong> Error when loading {{result.id}}</strong>
+ </div>
+ <div class="modal-footer">
+  <button class="btn btn-danger" ng-click="closePopup('back')">Close</button>
+ </div>
+</div>
+<div ng-show="'delete' == result.action">
+ <div class="modal-body alert alert-danger">
+  <span class="glyphicon glyphicon-trash"></span><strong> Continue ?</strong>
+ </div>
+ <div class="modal-footer">
+  <button class="btn btn-danger" ng-click="closePopup('yesdelete')">Yes</button>
+  <button class="btn btn-primary" ng-click="closePopup('nodelete')">No</button>
+ </div>
+</div>
+</script>
 <div class="row">
  <div class="col-md-12">
   <div ng-show="doc.title != null && doc.title != ''">

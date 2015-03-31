@@ -1,10 +1,34 @@
 'use strict';
 
+angular.module('mmcApp').controller('musicEditResultCtrl', function($scope, $modalInstance, utils, result) {
+ $scope.result = result;
+ utils.debug('musicEditResultCtrl doc: ' + JSON.stringify(result));
+
+ /**
+  * 
+  */
+ $scope.closePopup = function(event) {
+  if ('back' == event) {
+   $modalInstance.close('back');
+
+  } else if ('yesdelete' == event) {
+   $modalInstance.close('performDelete');  
+  
+  } else if ('nodelete' == event) {
+	utils.debug('delete cancelled'); 
+  }
+  
+  $modalInstance.close('close');
+ };
+ 
+});
+
 angular.module('mmcApp')
 .controller('musicEditCtrl', ['$document', '$scope', '$rootScope', '$http', '$location', '$routeParams'
-                               ,'userService', 'musicService', 'refValues', 'utils', 'appService', 
+                               ,'userService', 'musicService', 'refValues', 'utils'
+                               , 'appService', '$modal', 
 function($document, $scope, $rootScope, $http, $location, $routeParams
-		, userService, musicService, refValues, utils, appService) {
+		, userService, musicService, refValues, utils, appService, $modal) {
  
  /**
   * 
@@ -19,6 +43,33 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   }
  };
 
+ /**
+  * 
+  */
+ $scope.displayPopup = function(booleanResult, docId, action) {
+  var modalInstance = $modal.open({
+   templateUrl : 'result',
+   controller : 'musicEditResultCtrl',
+   resolve: {
+    result: function () {
+ 	 return {'ok' : booleanResult, 'id' : docId, 'action' : action};  
+    }
+   }
+  });
+  
+  modalInstance.result.then(function (event) {
+   if ('performDelete' == event) {
+	var callback = function() {
+	 $location.path('/music_list');
+	};
+	musicService.remove($scope.doc.id, callback, callback);	   
+   } else if ('back' == event) {
+    $location.path('/music_view/' + $scope.result.id);  
+   }
+   utils.debug(event);	  
+  });
+ };
+ 
  /**
   * 
   */
@@ -60,7 +111,6 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.edit = function(docId, tabId) {
-  $scope.action = { 'result' : -1};
   $scope.selectTab(tabId); 
   $scope.countries = refValues.getCountries();
   $scope.grades = refValues.getGrades();
@@ -74,15 +124,14 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.newPrice = {};
   $scope.updatePrice = {};
   $scope.updatePrices = [];
-  
+  $scope.obiColors = refValues.getColors(); 
+  utils.debug("$scope.obiColors:"+$scope.obiColors);
   musicService.getDoc(docId, function(response) {
-   $scope.action.resut = 0;
    $scope.doc = response;
    $scope.initSelectedImages();
    $scope.initUpdatePrices();
-   
   }, function() {
-   $scope.action.resut = 1;	 
+	$scope.displayPopup(false, docId, 'edit');	 
   });
  };	
  
@@ -99,13 +148,12 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
  $scope.update = function() {
   utils.debug('"Update: ' + JSON.stringify($scope.doc));
   musicService.updateDoc($scope.doc, function() {
-   $scope.action.resut = 0;
-    utils.debug($scope.doc.id + ' is updated ok');
+	$scope.displayPopup(true, $scope.doc.id, 'save');
     $scope.initUpdatePrices();
     $scope.updatePrice = {};
     $scope.newPrice = {};
    }, function() {
-	$scope.action.resut = 1;
+	$scope.displayPopup(false, $scope.doc.id, 'save');	 
    });  
  };
  
@@ -185,13 +233,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.remove = function(id) {
-  if (!confirm("Are you sure ?")) {
-   return;
-  }	 
-  var callback = function() {
-   $location.path('/music_list');
-  }
-  musicService.remove(id, callback, callback);
+  $scope.displayPopup(false, $scope.doc.id, 'delete');
  };  
  
  /**

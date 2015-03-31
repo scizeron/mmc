@@ -10,13 +10,16 @@ angular.module('mmcApp').service('refValues', function(utils, $q, $http) {
  var months = null;
  
  return {
+  getColors: function() {
+   return settings.music.colors;  
+  },
   getCountriesPromise: function() {
    if (countries != null) {
 	utils.debug('The countries ref is already loaded');
     return countries.promise;	  
    }
    countries = $q.defer();
-   $http.get("assets/country.json").success(function(response) {	
+   $http.get("settings/country.json").success(function(response) {	
 	utils.debug('The countries ref is loaded once.');   
 	countriesValues = response;
 	countries.resolve(response);   
@@ -32,7 +35,7 @@ angular.module('mmcApp').service('refValues', function(utils, $q, $http) {
     return grades.promise;	  
    }
    grades = $q.defer();
-   $http.get("assets/rating.json").success(function(response) {
+   $http.get("settings/rating.json").success(function(response) {
 	utils.debug('The grades ref is loaded once.');   	   
 	gradesValues = response;    
     grades.resolve(response); 
