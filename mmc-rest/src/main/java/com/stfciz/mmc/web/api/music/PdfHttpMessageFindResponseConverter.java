@@ -132,7 +132,7 @@ public class PdfHttpMessageFindResponseConverter extends
         if (doc.isReEdition() || StringUtils.isNotBlank(doc.getSerialNumber()) || (doc.getPubNum() != null && doc.getPubTotal() != null) || doc.isPromo()) {
           StringBuilder edition = new StringBuilder();
           if (doc.isReEdition()) {
-            edition.append("re");
+            edition.append("reedition");
           }
           if (StringUtils.isNotBlank(doc.getSerialNumber())) {
             if (edition.length() > 0) {
@@ -152,6 +152,7 @@ public class PdfHttpMessageFindResponseConverter extends
             }
             edition.append("promo");
           }
+          addCell(table, itemFont, edition.toString());
         } else {
           addCell(table, itemFont, NO_VALUE); 
         }
