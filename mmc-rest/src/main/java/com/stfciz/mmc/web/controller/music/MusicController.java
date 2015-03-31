@@ -93,8 +93,13 @@ public class MusicController {
       }
       
       if (StringUtils.isBlank(query)) {
-        pageable = new PageRequest(page, pageSize, new Sort(new  Sort.Order(Sort.Direction.DESC, "modified")));
-        result = this.repository.findAll(pageable);
+        Sort sort = new Sort(new  Sort.Order(Sort.Direction.DESC, "modified"));
+        if (singlePage) {
+          sort = new Sort(new  Sort.Order(Sort.Direction.ASC, "artist")
+              , new  Sort.Order(Sort.Direction.ASC, "title"));
+        }
+        
+        result = this.repository.findAll(new PageRequest(page, pageSize, sort));
       } else {
         pageable = new PageRequest(page, pageSize
             , new Sort(new  Sort.Order(Sort.Direction.ASC, "artist")
