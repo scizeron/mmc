@@ -98,7 +98,7 @@ angular.module('mmcApp', [
   appService.setUser(userService.getUser());
   app.jumbotron = jumbotron;
   app.universe = universe;
-  
+
   utils.debug('expectedRole: ' + expectedRole + ' for "' + nextPath + '"');
   
   if (expectedRole == 'anonymous') {

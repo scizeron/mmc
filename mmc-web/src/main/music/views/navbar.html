@@ -66,6 +66,13 @@
      </div>
     </div>
    </div>
+   <div class="col-md-1" id="session" ng-show="user.loggedInUser">
+    <div class="row" id="user" style="padding-top: 15px; padding-bottom: 15px;">
+     <div class="col-md-12">
+      <span style="color: white; font-size: small;" ><strong>{{user.usr.firstName}}</strong></span>
+     </div>
+    </div>
+   </div>
    <div class="col-md-1" style="float: right">
     <ul class="nav navbar-nav" style="float: right;">
      <li ng-class="{ active: navIsActive('/logout')}"><a href="#/logout" style="padding-right: 0px; padding-left: 0px;"><span class="glyphicon glyphicon-off"></span> Out</a></li>

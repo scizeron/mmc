@@ -163,8 +163,12 @@ function() {
 
 angular.module('mmcApp').factory('appService', [ '$rootScope', 'musicService', 'utils', '$q', function($rootScope, musicService, utils,  $q) {
  return { 
-  newUser : function(loggedInUser, loggedInAdminUser) {
-   return { 'loggedInUser' : loggedInUser, 'loggedInAdminUser' : loggedInAdminUser};  
+  newUser : function(loggedInUser, loggedInAdminUser, user) {
+   if (typeof(user) != 'undefined') { 
+    return { 'loggedInUser' : loggedInUser, 'loggedInAdminUser' : loggedInAdminUser, 'usr' : user};
+   } else {
+	return { 'loggedInUser' : loggedInUser, 'loggedInAdminUser' : loggedInAdminUser, 'usr' : null};
+   }
   },
   init : function() {
    utils.debug('******************************** INIT APP ********************************');
@@ -182,7 +186,7 @@ angular.module('mmcApp').factory('appService', [ '$rootScope', 'musicService', '
   },
   setUser : function(user) {
    if (user != null) {
-	$rootScope.user = this.newUser(true, user.isAdmin());
+	$rootScope.user = this.newUser(true, user.isAdmin(), user);
    } else {
 	$rootScope.user = this.newUser(false, false);    
    }
