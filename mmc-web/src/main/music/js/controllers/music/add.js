@@ -30,7 +30,7 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   * 
   */
  $scope.init = function() {
-  $scope.doc = { 'mainType' : 'LP', 'origin' : settings.music.defaultCountry, 'obiPos':'V'};
+  $scope.doc = { 'mainType' : 'LP', 'nbType' : 1, 'origin' : settings.music.defaultCountry, 'obiPos':'V'};
   utils.debug('Initial doc: ' + JSON.stringify($scope.doc));  
 
   $scope.countries = refValues.getCountries();

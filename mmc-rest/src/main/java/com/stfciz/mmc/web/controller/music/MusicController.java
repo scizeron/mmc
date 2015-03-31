@@ -96,14 +96,14 @@ public class MusicController {
         Sort sort = new Sort(new  Sort.Order(Sort.Direction.DESC, "modified"));
         if (singlePage) {
           sort = new Sort(new  Sort.Order(Sort.Direction.ASC, "artist")
-              , new  Sort.Order(Sort.Direction.ASC, "title"));
+                        , new  Sort.Order(Sort.Direction.ASC, "title"));
         }
         
         result = this.repository.findAll(new PageRequest(page, pageSize, sort));
       } else {
         pageable = new PageRequest(page, pageSize
             , new Sort(new  Sort.Order(Sort.Direction.ASC, "artist")
-            , new  Sort.Order(Sort.Direction.ASC, "title")
+                     , new  Sort.Order(Sort.Direction.ASC, "title")
         ));
         QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(query);
         queryBuilder.field("title");
