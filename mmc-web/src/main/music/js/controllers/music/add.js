@@ -8,7 +8,7 @@ angular.module('mmcApp').controller('musicAddResultCtrl', function($scope, $moda
   * 
   */
  $scope.addPhotos = function() {
-  $modalInstance.close('addPhoto#'+$scope.doc.id);
+  $modalInstance.close('addPhoto#'+$scope.result.id);
  }; 
  
  /**
