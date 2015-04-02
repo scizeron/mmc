@@ -7,8 +7,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * @author stfciz
  *
  */
-public class App {
+public class MMCRestApiApplication {
 
+  /**
+   * 
+   * @param args
+   */
   public static void main(String[] args) {
     final SpringApplicationBuilder springApplicationBuilder = new SpringApplicationBuilder();
     springApplicationBuilder.sources(AppSpringWebConfiguration.class);

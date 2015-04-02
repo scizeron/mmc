@@ -13,15 +13,28 @@ public class OAuth2Context {
   
   private String clientId;
   
+  /**
+   * 
+   * @param accessToken
+   * @param clientId
+   */
   public OAuth2Context(String accessToken, String clientId) {
     this.accessToken = accessToken;
     this.clientId = clientId;
   }
   
+  /**
+   * 
+   * @return
+   */
   public static OAuth2Context get() {
     return context.get();
   }
   
+  /**
+   * 
+   * @param auth2Context
+   */
   public static void set(OAuth2Context auth2Context) {
     context.set(auth2Context);
   }
