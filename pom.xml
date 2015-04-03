@@ -9,5 +9,6 @@
 		<module>mmc-parent</module>
 		<module>mmc-core</module>
 		<module>mmc-rest</module>
+		<module>mmc-web</module>
 	</modules>
 </project>
