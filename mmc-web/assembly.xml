@@ -13,13 +13,18 @@
 	<fileSets>
 		<fileSet>
 			<directory>${basedir}/src/main/music</directory>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory></outputDirectory>
 			<lineEnding>unix</lineEnding>
 			<excludes>
 				<exclude>libs/angular/**</exclude>
 				<exclude>images/country/32/**</exclude>
+				<exclude>js/services-env.js</exclude>
 			</excludes>
 		</fileSet>
+		<fileSet>
+			<directory>${basedir}/src/main/resources</directory>
+			<outputDirectory></outputDirectory>
+			<lineEnding>unix</lineEnding>
+		</fileSet>
 	</fileSets>
-
 </assembly>
