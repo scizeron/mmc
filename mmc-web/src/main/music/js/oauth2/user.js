@@ -8,14 +8,14 @@ var User = function(firstName, lastName, roles) {
   }
   var result = false;
   this.roles.forEach(function(role) {
-   if ((role == 'ADMIN' || role == expectedRole) && !result) {
+   if ((role.toLowerCase() == 'admin' || role.toLowerCase() == expectedRole.toLowerCase()) && !result) {
     result = true;
    }
   });
   return result;  
  };
  this.isAdmin = function() {
-  return this.hasRole('ADMIN');	 
+  return this.hasRole('admin');	 
  };
  this.toString = function() {
   return this.firstName + ', ' + this.lastName + ', "' +  this.roles + '", admin: ' + this.isAdmin();

@@ -25,7 +25,7 @@ angular.module('mmcApp').service('userService', ['$http', function($http) {
    return user.hasRole(expectedRole);
   },
   loggedInAdminUser: function() {
-   return this.userHasRole('ADMIN');
+   return this.userHasRole('admin');
   },
   logout:function() {
    webUtils.clearSession();

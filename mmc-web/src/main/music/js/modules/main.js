@@ -41,11 +41,13 @@ angular.module('mmcApp', [
   }).		 
   when('/music_edit/:musicDocId', {
    templateUrl: 'views/music/edit.html',
-   controller: 'musicEditCtrl'
+   controller: 'musicEditCtrl',
+   role: 'write'
   }).
   when('/music_edit/:musicDocId/:tabId', {
    templateUrl: 'views/music/edit.html',
-   controller: 'musicEditCtrl'
+   controller: 'musicEditCtrl',
+   role: 'write'
   }).
   when('/music_view/:musicDocId', {
    templateUrl: 'views/music/view.html',
@@ -87,7 +89,7 @@ angular.module('mmcApp', [
    return;
   }
   
-  var expectedRole = (typeof(next.$$route) != 'undefined' && typeof(next.$$route.role) != 'undefined') ? next.$$route.role : 'user';
+  var expectedRole = (typeof(next.$$route) != 'undefined' && typeof(next.$$route.role) != 'undefined') ? next.$$route.role : 'read';
   var universe = 'music';
   var jumbotron = false;
 
@@ -112,9 +114,8 @@ angular.module('mmcApp', [
    $location.path('/login');
   
   } else {
-
-   if (expectedRole == 'admin' && !userService.loggedInAdminUser()) {
-	utils.debug('Access denied, need to be ADMIN to access to "' + nextPath + '"');
+   if (!userService.userHasRole(expectedRole)) {
+	utils.debug('***** Access denied, insuffisant role to access to "' + nextPath + '" *****');
 	$location.path('/home');
    } else {
 	utils.debug('Go to "' + nextPath + '"');
