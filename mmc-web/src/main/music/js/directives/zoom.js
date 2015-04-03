@@ -9,9 +9,11 @@ angular.module('mmcApp').directive('ngJetZoom', function() {
       })
 
       function linkElevateZoom() {
-    	if (typeof(attrs.src ) == "undefined") {
-    	 return;
-    	}
+    	// probleme avec Firefox
+//    	if (typeof(attrs.src ) == "undefined") {
+//    	 console.log("attrs.src is undefined");
+//    	 return;
+//    	}
     	  
         var zoomInstance = scope.zoomInstance;
         if (typeof(zoomInstance) == "undefined") {

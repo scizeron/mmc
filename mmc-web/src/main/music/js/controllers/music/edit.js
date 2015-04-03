@@ -146,7 +146,11 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   var previousSelected = appService.app().selectedTab;
   utils.debug('tabId: ' + tabId + ', previous: ' + previousSelected);
   $scope.tabId = (typeof(tabId) != 'undefined' && tabId != null) ? tabId : (previousSelected != null) ? previousSelected : 'general'; 
-  appService.app().selectedTab = $scope.tabId;
+  //appService.app().selectedTab = $scope.tabId;
+  /**
+   * problme quand on retourne sur Find, selectTab est invoque ???
+   */
+  
   utils.debug('Selected tab : ' + $scope.tabId);
 
   for (var i = 0 ; i < $scope.tabs.length ; i++) {
@@ -158,6 +162,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.edit = function(docId, tabId) {
+  utils.debug('Init edit : set the selected tab with ' + tabId);
   $scope.selectTab(tabId); 
   $scope.countries = refValues.getCountries();
   $scope.grades = refValues.getGrades();
