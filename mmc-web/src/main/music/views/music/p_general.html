@@ -1,10 +1,10 @@
 <div class="form-group">
  <label class="control-label col-md-2" for="title">Title</label>
- <div class="col-md-2">          
+ <div class="col-md-4">          
   <input type="text" class="form-control" id="title" name="title" ng-model="doc.title" placeholder="title" required>
  </div>
  <label class="control-label col-md-1" for="artist">Artist</label>
- <div class="col-md-2">          
+ <div class="col-md-4">          
   <input type="text" class="form-control" id="artist" name="artist" ng-model="doc.artist" placeholder="artist" required>
  </div>
 </div>
@@ -17,30 +17,40 @@
   </select>
  </div>
  <label class="control-label col-md-1" for="nbType">Nb</label>
- <div class="col-md-2">          
+ <div class="col-md-1">          
   <select class="form-control" id="nbType" name="nbType" ng-model="doc.nbType">
    <option ng-repeat="nbType in nbTypeRange">{{nbType}}</option>
   </select>
  </div>
+ <div ng-show="doc.mainType.indexOf('LP') > -1 || doc.mainType.indexOf('EP') > -1">
+  <label class="control-label col-md-1" for="colorVinyl">Color {{doc.mainType.replace('Box','')}}</label>
+  <ng-color-picker selected="doc.vinylColor" colors="colors" class="col-md-4" style="margin-top: 5px;"></ng-color-picker>
+ </div>
 </div>
 <div class="form-group">
  <label class="control-label col-md-2" for="issue">Issue</label>
- <div class="col-md-2">   
-  <select class="form-control" id="issue" name="issue" ng-model="doc.issue">
-   <option></option>
-   <option ng-repeat="year in years">{{year}}</option>
-  </select>   
- </div>
- <div class="col-md-offset-1 col-md-2"">
-  <label class="control-label" for="reEdition">Re-edition&nbsp;</label>
-  <input type="checkbox" id="reEdition" name="reEdition" ng-model="doc.reEdition">
-  <label class="control-label" for="promo">&nbsp;&nbsp;&nbsp;Promo&nbsp;</label>
-  <input type="checkbox" id="promo" name="promo" ng-model="doc.promo">
+ <div class="col-md-6"">
+  <div class="row">
+   <div class="col-md-3">
+    <select class="form-control" id="issue" name="issue" ng-model="doc.issue">
+     <option></option>
+     <option ng-repeat="year in years">{{year}}</option>
+    </select>   
+   </div>
+   <div class="col-md-3">
+    <label class="control-label" for="reEdition">Re-edition&nbsp;</label>
+    <input type="checkbox" id="reEdition" name="reEdition" ng-model="doc.reEdition">
+   </div>
+   <div class="col-md-3">
+    <label class="control-label" for="promo">&nbsp;&nbsp;&nbsp;Promo&nbsp;</label>
+	<input type="checkbox" id="promo" name="promo" ng-model="doc.promo">
+   </div>
+  </div>
  </div>
 </div>
 <div class="form-group">
  <label class="control-label col-md-2" for="origin">Origin</label>
- <div class="col-md-2">          
+ <div class="col-md-3">          
   <div class="row">
    <div class="col-md-10">
     <select class="form-control" id="origin" name="origin" ng-model="doc.origin">
@@ -52,16 +62,20 @@
    </div>
   </div>
  </div>
- <div ng-show="doc.origin == 'JP' && doc.mainType == 'LP'">
-  <label class="control-label col-md-1" for="obiColor">Obi</label>
-  <div class="col-md-1">          
-   <ng-color-picker selected="doc.obiColor" colors="obiColors"></ng-color-picker>
-  </div>
-  <div class="col-md-1">
-   <select class="form-control" id="obiPos" name="obiPos" ng-model="doc.obiPos">
-    <option value="V">Vertical</option>
-    <option value="H">Horizontal</option>
-   </select>
+ <div ng-show="doc.origin == 'JP' && (doc.mainType.indexOf('LP') > -1 || doc.mainType.indexOf('EP') > -1)" class="col-md-7">  
+  <div class="row">
+   <div class="col-md-offset-1 col-md-1">    
+    <label class="control-label" for="obiColor">Obi</label>
+   </div>
+   <div class="col-md-4">          
+    <ng-color-picker selected="doc.obiColor" colors="colors"></ng-color-picker>
+   </div>
+   <div class="col-md-3">
+    <select class="form-control" id="obiPos" name="obiPos" ng-model="doc.obiPos">
+     <option value="V">Vertical</option>
+     <option value="H">Horizontal</option>
+    </select>
+   </div>
   </div>
  </div>
 </div>

@@ -27,6 +27,7 @@ function App() {
  this.jumbotron = false;
  this.query = null;
  this.universe = null;
+ this.selectedTab = null;
 };
 
 /**
@@ -122,25 +123,21 @@ function newNavFromMusicListResponse(response, index, page) {
  * @returns
  */
 function appendToLine(line, value, formatFunction) { 
+ var resultLine = (line == null) ? '' : line;
+ var resValue= '' + value;
  if (value != null) {
-  var resValue = value;
   if (typeof(formatFunction) != 'undefined') {
    resValue = formatFunction(value); 
   }
-  if (resValue.length > 0) {
-   if (line != null && line.length > 0) {
-    line += ', ' + resValue;   
+  if (resValue != null && resValue.length > 0) {
+   if (resultLine.length > 0) {
+	resultLine += ', ' + resValue;   
    } else {
-    line = resValue;	  
+	resultLine = resValue;	  
    }
   }
  }
- 
- if (line == null) {
-  return '';	 
- } else {
-  return line;
- }
+ return resultLine;
 };
 
 /**

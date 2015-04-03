@@ -30,7 +30,7 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   * 
   */
  $scope.init = function() {
-  $scope.doc = { 'mainType' : 'LP', 'nbType' : 1, 'origin' : settings.music.defaultCountry, 'obiPos':'V'};
+  $scope.doc = { 'mainType' : 'LP', 'nbType' : 1, 'origin' : settings.music.defaultCountry, 'obiPos':'V', 'vinylColor' : '#000000'};
   utils.debug('Initial doc: ' + JSON.stringify($scope.doc));  
 
   $scope.countries = refValues.getCountries();
@@ -39,7 +39,7 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   $scope.years = refValues.getYears();
   $scope.months = refValues.getMonths();
   $scope.types = settings.music.types;
-  $scope.obiColors = refValues.getColors();
+  $scope.colors = refValues.getColors();
  };
  
  /**

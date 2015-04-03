@@ -3,6 +3,7 @@ angular.module('mmcApp', [
   'ngRoute'
  ,'ui.bootstrap'
  ,'pascalprecht.translate'
+ ,'n3-line-chart' 
 ])
 .config(function($routeProvider) {
  $routeProvider.

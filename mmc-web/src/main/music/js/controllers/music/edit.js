@@ -75,6 +75,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   */
  $scope.initUpdatePrices = function() {
   $scope.updatePrices = [];
+  $scope.data = [];
   // prices
   if ($scope.doc.prices != null) {
 	  
@@ -84,8 +85,50 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
 		                    , 'year' : $scope.doc.prices[i].year
 		                    , 'display' : 'read'
 	                        });
-   }    
+	// trie par ordre de date
+	
+	$scope.data.push({ x: new Date($scope.doc.prices[i].year, $scope.doc.prices[i].month,1,0,0,0,0), price: $scope.doc.prices[i].price});
+   }   
+   
+   
+   $scope.data.sort(function(p1,p2) {
+	return p1.x - p2.x;
+   });
+   
+   $scope.updatePrices.sort(function(p1,p2) {
+	return (p2.year  - p1.year == 0) ? p2.month - p1.month : p2.year  - p1.year;
+   });
   }
+  
+  $scope.options = {
+   lineMode: "basis",
+   tension: 1,
+   axes: {x: {type: "date", key: "x"}, y: {type: "linear"}},
+   tooltipMode: "dots",
+   drawLegend: true,
+   drawDots: true,
+   stacks: [],
+   series: [
+    { y: "price",
+      label: "Prices",
+      color: "#9467bd",
+      axis: "y",
+      type: "line",
+      thickness: "1px",
+      visible: true,
+      dotSize: 2,
+      id: "prices",
+      drawDots: true}
+   ],
+   tooltip: {
+	mode: "scrubber",
+	formatter: function (x, y, series) {
+	 return moment(x).fromNow() + ' : ' + y + ' €';
+	}
+   },
+   columnsHGap: 5
+  };
+  
  };
  
  /**
@@ -99,8 +142,12 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
    $scope.tabs.push({'name':'photos','active':false});
    $scope.tabs.push({'name':'prices','active':false});   
   }
-  
-  $scope.tabId = (typeof(tabId) == 'undefined') ? 'general' : tabId; 	
+
+  var previousSelected = appService.app().selectedTab;
+  utils.debug('tabId: ' + tabId + ', previous: ' + previousSelected);
+  $scope.tabId = (typeof(tabId) != 'undefined' && tabId != null) ? tabId : (previousSelected != null) ? previousSelected : 'general'; 
+  appService.app().selectedTab = $scope.tabId;
+  utils.debug('Selected tab : ' + $scope.tabId);
 
   for (var i = 0 ; i < $scope.tabs.length ; i++) {
    $scope.tabs[i].active = ($scope.tabs[i].name == $scope.tabId) ? true : false;	  
@@ -124,8 +171,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.newPrice = {};
   $scope.updatePrice = {};
   $scope.updatePrices = [];
-  $scope.obiColors = refValues.getColors(); 
-  utils.debug("$scope.obiColors:"+$scope.obiColors);
+  $scope.colors = refValues.getColors(); 
   musicService.getDoc(docId, function(response) {
    $scope.doc = response;
    $scope.initSelectedImages();

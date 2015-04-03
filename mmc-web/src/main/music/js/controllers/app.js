@@ -59,7 +59,11 @@ function ($rootScope, $scope, $location, userService, utils, refValues, appServi
   * 
   */
  $scope.navigate = function(nav) {
-  $location.path($scope.getPath() + '/' + nav.id); 
+  var newPath = $scope.getPath() + '/' + nav.id;
+  if (appService.app().selectedTab != null &&  $scope.getPath().indexOf('/music_edit') == 0) {
+   newPath = newPath + '/' + appService.app().selectedTab;  
+  }
+  $location.path(newPath); 
  };
  
  /**

@@ -1,28 +1,29 @@
 <div class="row" id="addPart">
- <div class="form-group" style="margin-top: 5px;">
-  <label class="control-label col-md-offset-1 col-md-1" for="price">Price</label>
+ <div class="form-group col-md-12" style="margin-top: 5px;">
+  <label class="control-label col-md-offset-2 col-md-1" for="price">Price</label>
   <div class="col-md-2">          
-  <input type="text" class="form-control" id="price" name="price" ng-model="newPrice.value" placeholder="price">
- </div>
- <label class="control-label col-md-1" for="newPriceMonth">Date</label>
- <div class="col-md-1">      
+   <input type="text" class="form-control" id="price" name="price" ng-model="newPrice.value" placeholder="price">
+  </div>
+  <label class="control-label col-md-1" for="newPriceMonth">Date</label>
+  <div class="col-md-1">      
    <select class="form-control" id="newPriceMonth" name="newPriceMonth" ng-model="newPrice.month">
     <option></option>
     <option ng-repeat="month in months">{{month}}</option>
    </select>
- </div> 
- <div class="col-md-2"> 
-  <select class="form-control" id="newPriceYear" name="newPriceYear" ng-model="newPrice.year">
-   <option></option>
-   <option ng-repeat="year in years">{{year}}</option>
-  </select>
- </div>
- <div class="col-md-2">
-  <button type="button" ng-click="addNewPrice()" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add</button>
+  </div>
+  <div class="col-md-2"> 
+   <select class="form-control" id="newPriceYear" name="newPriceYear" ng-model="newPrice.year">
+    <option></option>
+    <option ng-repeat="year in years">{{year}}</option>
+   </select>
+  </div>
+  <div class="col-md-2">
+   <button type="button" ng-click="addNewPrice()" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add</button>
+  </div>
  </div>
 </div>
 <div class="row" id="tabPart">
- <div class="col-md-offset-2 col-md-6">
+ <div class="col-md-offset-1 col-md-3">
   <table class="table table-hover">
    <thead>
     <tr>
@@ -57,5 +58,8 @@
     </td>
    </tr>
   </table>
+ </div>
+ <div class="col-md-6" ng-show="data.length > 0">
+  <linechart data="data" options="options"></linechart>
  </div>
 </div>
