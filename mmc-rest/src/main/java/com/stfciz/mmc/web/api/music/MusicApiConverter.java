@@ -136,7 +136,11 @@ public class MusicApiConverter {
     if (src.getRecordCompany() != null) {
       target.setLabel(src.getRecordCompany().getLabel());
       target.setRecordCompany(src.getRecordCompany().getName());
-    } 
+    }
+    if ("JP".equals(src.getOrigin()) && src.getObi() != null && src.getObi().getOrientation() != null) {
+      target.setObiColor(src.getObi().getColor());
+      target.setObiPos(src.getObi().getOrientation().getValue());
+    }
   }
   
   /**
@@ -147,7 +151,7 @@ public class MusicApiConverter {
   public FindElementResponse convertMusicDocumentToFindDocument(MusicDocument src) {
     FindElementResponse target = new FindElementResponse();
     populateAbstractBaseResponseFromMusicDocument(target, src);
-    
+
     List<Photo> photos = this.photoApiConverter.convertToApiPhotos(src.getPhotos());
     
     if (photos != null && photos.size() >= 1) {
@@ -186,11 +190,6 @@ public class MusicApiConverter {
   public GetResponse convertMusicDocumentToGetResponse(MusicDocument src) {
     GetResponse target = new GetResponse();
     populateAbstractBaseResponseFromMusicDocument(target, src);
-    
-    if ("JP".equals(src.getOrigin()) && src.getObi() != null && src.getObi().getOrientation() != null) {
-      target.setObiColor(src.getObi().getColor());
-      target.setObiPos(src.getObi().getOrientation().getValue());
-    }
     
     target.setComment(src.getComment());
     

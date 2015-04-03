@@ -23,6 +23,8 @@ public class AbstractBaseResponse {
   private Integer issue;
   private String mainType;
   private String vinylColor;
+  private String obiColor;
+  private String obiPos; 
   private Integer nbType;
   private Integer pubNum;
   private Integer pubTotal;
@@ -178,6 +180,22 @@ public class AbstractBaseResponse {
 
   public void setVinylColor(String vinylColor) {
     this.vinylColor = vinylColor;
+  }
+
+  public String getObiColor() {
+    return obiColor;
+  }
+
+  public void setObiColor(String obiColor) {
+    this.obiColor = obiColor;
+  }
+
+  public String getObiPos() {
+    return obiPos;
+  }
+
+  public void setObiPos(String obiPos) {
+    this.obiPos = obiPos;
   }
 
 }

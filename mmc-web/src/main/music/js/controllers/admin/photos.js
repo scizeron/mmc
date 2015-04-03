@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('adminImgCtrl',['$scope', 'utils', 'imgService', function($scope, utils, imgService) {
+.controller('adminPhotosCtrl',['$scope', 'utils', 'photoService', function($scope, utils, imgService) {
  $scope.imgPerPage = 16;
  $scope.nbImgPerRow = 4;
  $scope.getPhotos = function (page) {
@@ -25,7 +25,7 @@ angular.module('mmcApp')
 	  }
 	  imgHtml += '<div class="row">'; 
      }
-     imgHtml += '<div class="col-sm-3"><img src="' + response[x].urls.t + '"/></div>';
+     imgHtml += '<div class="col-sm-3 style="margin-bottom: 5px;"><img src="' + response[x].details.t.url + '"/></div>';
     } // end of for (var x in response) 
    
     if (count % nbImgPerRow != 0) {

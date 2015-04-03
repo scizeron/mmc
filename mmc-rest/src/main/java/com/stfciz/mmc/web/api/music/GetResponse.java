@@ -12,31 +12,10 @@ import com.stfciz.mmc.web.api.photo.Photo;
  */
 public class GetResponse extends AbstractBaseResponse {
 
-  private String obiColor;
-
-  private String obiPos;
 
   private String comment;
 
   private Integer purchaseMonth;
-  
-  private List<UpdatePrice> prices;
-  
-  public Integer getPurchaseMonth() {
-    return purchaseMonth;
-  }
-
-  public void setPurchaseMonth(Integer purchaseMonth) {
-    this.purchaseMonth = purchaseMonth;
-  }
-
-  public Integer getPurchaseYear() {
-    return purchaseYear;
-  }
-
-  public void setPurchaseYear(Integer purchaseYear) {
-    this.purchaseYear = purchaseYear;
-  }
 
   private Integer purchaseYear;
 
@@ -48,62 +27,125 @@ public class GetResponse extends AbstractBaseResponse {
 
   private List<Photo> images;
 
-  public String getObiColor() {
-    return this.obiColor;
+  private List<UpdatePrice> prices;
+
+  /**
+   * 
+   * @return
+   */
+  public Integer getPurchaseMonth() {
+    return purchaseMonth;
   }
 
-  public void setObiColor(String obiColor) {
-    this.obiColor = obiColor;
+  /**
+   * 
+   * @param purchaseMonth
+   */
+  public void setPurchaseMonth(Integer purchaseMonth) {
+    this.purchaseMonth = purchaseMonth;
   }
 
-  public String getObiPos() {
-    return this.obiPos;
+  
+  /**
+   * 
+   * @return
+   */
+  public Integer getPurchaseYear() {
+    return purchaseYear;
   }
 
-  public void setObiPos(String obiPos) {
-    this.obiPos = obiPos;
+  /**
+   * 
+   * @param purchaseYear
+   */
+  public void setPurchaseYear(Integer purchaseYear) {
+    this.purchaseYear = purchaseYear;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getComment() {
     return this.comment;
   }
 
+  /**
+   * 
+   * @param comment
+   */
   public void setComment(String comment) {
     this.comment = comment;
   }
 
+  /**
+   * 
+   * @return
+   */
   public Integer getPurchasePrice() {
     return this.purchasePrice;
   }
 
+  /**
+   * 
+   * @param purchasePrice
+   */
   public void setPurchasePrice(Integer purchasePrice) {
     this.purchasePrice = purchasePrice;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getPurchaseVendor() {
     return this.purchaseVendor;
   }
 
+  /**
+   * 
+   * @param purchaseVendor
+   */
   public void setPurchaseVendor(String purchaseVendor) {
     this.purchaseVendor = purchaseVendor;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getPurchaseContext() {
     return this.purchaseContext;
   }
 
+  /**
+   * 
+   * @param purchaseContext
+   */
   public void setPurchaseContext(String purchaseContext) {
     this.purchaseContext = purchaseContext;
   }
 
+  /**
+   * 
+   * @return
+   */
   public List<Photo> getImages() {
     return this.images;
   }
 
+  /**
+   * 
+   * @param images
+   */
   public void setImages(List<Photo> images) {
     this.images = images;
   }
 
+  /**
+   * 
+   * @return
+   */
   public List<UpdatePrice> getPrices() {
     if (this.prices == null) {
      this.prices = new ArrayList<>();
@@ -111,6 +153,10 @@ public class GetResponse extends AbstractBaseResponse {
     return prices;
   }
 
+  /**
+   * 
+   * @param prices
+   */
   public void setPrices(List<UpdatePrice> prices) {
     this.prices = prices;
   }

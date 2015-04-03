@@ -62,7 +62,7 @@ public class PhotoController {
       @RequestParam(value = "perPage", required = false) Integer perPage, @RequestParam(value = "page", required = false) Integer page) throws FlickrException {
     try {
       PhotoList<Photo> photos = null;
-      if ("appgallery".equals(id)) {
+      if ("mmc".equals(id)) {
         photos = this.flickrApi.getPhotos(this.coreConfiguration.getFlickr().getAppGalleryId(), perPage, page);
       } else {
         photos = this.flickrApi.getPhotos(id, perPage, page);

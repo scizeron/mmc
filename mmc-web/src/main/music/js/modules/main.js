@@ -51,9 +51,9 @@ angular.module('mmcApp', [
    templateUrl: 'views/music/view.html',
    controller: 'musicViewCtrl'
   }).
-  when('/admin_img', {
-   templateUrl: 'views/admin/img.html',
-   controller: 'adminImgCtrl',
+  when('/music_admin_photos', {
+   templateUrl: 'views/admin/photos.html',
+   controller: 'adminPhotosCtrl',
    role: 'admin'
   }).
   otherwise({
