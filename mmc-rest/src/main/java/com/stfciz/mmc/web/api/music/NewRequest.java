@@ -24,6 +24,8 @@ public class NewRequest {
 
   private String            mainType;
   
+  private String            vinylColor;
+  
   private String            obiColor;
 
   private String            obiPos;
@@ -236,5 +238,13 @@ public class NewRequest {
 
   public void setPurchaseContext(String purchaseContext) {
     this.purchaseContext = purchaseContext;
+  }
+
+  public String getVinylColor() {
+    return vinylColor;
+  }
+
+  public void setVinylColor(String vinylColor) {
+    this.vinylColor = vinylColor;
   }
 }

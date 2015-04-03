@@ -46,6 +46,8 @@ public class MusicDocument {
   /** 2, 3 CD**/
   private Integer           nbType;
     
+  private String            vinylColor;
+  
   private Obi               obi;
 
   /** limited edition number **/
@@ -400,5 +402,13 @@ public class MusicDocument {
    */
   public void setReEdition(boolean reEdition) {
     this.reEdition = reEdition;
+  }
+
+  public String getVinylColor() {
+    return vinylColor;
+  }
+
+  public void setVinylColor(String vinylColor) {
+    this.vinylColor = vinylColor;
   }
 }

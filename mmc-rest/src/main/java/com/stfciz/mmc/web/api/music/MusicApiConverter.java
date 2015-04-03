@@ -9,7 +9,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Iterables;
 import com.stfciz.mmc.core.music.domain.MusicDocument;
 import com.stfciz.mmc.core.music.domain.Obi;
 import com.stfciz.mmc.core.music.domain.Purchase;
@@ -71,6 +70,9 @@ public class MusicApiConverter {
     target.setIssue(request.getIssue());
     target.setMainType(request.getMainType());
     target.setNbType(request.getNbType());
+    if (request.getMainType() != null && (request.getMainType().contains("LP") || request.getMainType().contains("EP"))) {
+     target.setVinylColor(request.getVinylColor());
+    }
     target.setSerialNumber(request.getSerialNumber());
     target.setPubNum(request.getPubNum());
     target.setPubTotal(request.getPubTotal());
@@ -124,6 +126,7 @@ public class MusicApiConverter {
     target.setIssue(src.getIssue());
     target.setSerialNumber(src.getSerialNumber());
     target.setMainType(src.getMainType());
+    target.setVinylColor(src.getVinylColor());
     target.setNbType(src.getNbType());
     target.setPubNum(src.getPubNum());
     target.setPubTotal(src.getPubTotal());

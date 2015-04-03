@@ -22,6 +22,7 @@ public class AbstractBaseResponse {
   private boolean reEdition;
   private Integer issue;
   private String mainType;
+  private String vinylColor;
   private Integer nbType;
   private Integer pubNum;
   private Integer pubTotal;
@@ -169,6 +170,14 @@ public class AbstractBaseResponse {
 
   public void setLastModified(Date lastModified) {
     this.lastModified = lastModified;
+  }
+
+  public String getVinylColor() {
+    return vinylColor;
+  }
+
+  public void setVinylColor(String vinylColor) {
+    this.vinylColor = vinylColor;
   }
 
 }
