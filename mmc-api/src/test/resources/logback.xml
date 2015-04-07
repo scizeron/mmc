@@ -19,13 +19,17 @@
   <appender-ref ref="CONSOLE"/>
  </logger>
  <logger name="org.springframework.boot" additivity="false">
-  <level value="INFO"/>
+  <level value="DEBUG"/>
   <appender-ref ref="CONSOLE"/>
  </logger>
  <logger name="org.springframework" additivity="false">
   <level value="INFO"/>
   <appender-ref ref="CONSOLE"/>
- </logger>       
+ </logger>
+  <logger name="org.springframework.web" additivity="false">
+  <level value="DEBUG"/>
+  <appender-ref ref="CONSOLE"/>
+ </logger>        
  <logger name="org.elasticsearch" additivity="false">
   <level value="DEBUG"/>
   <appender-ref ref="CONSOLE"/>
