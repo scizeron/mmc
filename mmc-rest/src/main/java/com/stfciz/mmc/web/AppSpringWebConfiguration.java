@@ -1,5 +1,6 @@
 package com.stfciz.mmc.web;
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.elasticsearch.client.Client;
@@ -74,6 +75,12 @@ public class AppSpringWebConfiguration {
   @Bean
   @Profile("!test")
   public Client elasticSearchClient(AppConfiguration appConfiguration) {
+    if (!new File(appConfiguration.getEsDirectory()).exists()) {
+      new File(appConfiguration.getEsDirectory() + "/data").mkdirs();
+      new File(appConfiguration.getEsDirectory() + "/work").mkdirs();
+      new File(appConfiguration.getEsDirectory() + "/log").mkdirs();
+    }
+    
     ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder()
         .put("cluster.name", "elastic-mmc")
         .put("node.name", "rest-mmc")
