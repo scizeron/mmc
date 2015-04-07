@@ -108,7 +108,7 @@
 						<artifactId>spring-boot-maven-plugin</artifactId>
 					</plugin>
 					<plugin>
-						<groupId>com.stfciz</groupId>
+						<groupId>com.stfciz.jidr</groupId>
 						<artifactId>app-runner-maven-plugin</artifactId>
 						<version>${app.runner.version}</version>
 						<executions>
