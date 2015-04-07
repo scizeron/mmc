@@ -9,6 +9,6 @@ var servicesEnv = {
   }    
  }, 
  api : {
-  url : 'https://' + window.location.hostname + '/mmc'
+  url : 'https://' + window.location.hostname + '/mmc-api'
  }
 };
