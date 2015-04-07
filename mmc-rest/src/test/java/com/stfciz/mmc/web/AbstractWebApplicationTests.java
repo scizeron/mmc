@@ -27,8 +27,8 @@ public class AbstractWebApplicationTests {
   
   @BeforeClass
   public static void initEnv() {
-    System.setProperty("spring.config.location","src/test/resources/configuration.yml");
     System.setProperty("spring.profiles.active","test");
+    System.setProperty("spring.config.location","src/test/resources/configuration.yml");
     System.setProperty("external.config.dir", "src/test/resources");
   }
   

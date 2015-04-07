@@ -12,4 +12,5 @@ core:
    delete: 777777777777777777
 web:
  oauth2VerifyUri: http://localhost:3000/authz/verify
+ esDirectory: ../../../elastic-mmc
   

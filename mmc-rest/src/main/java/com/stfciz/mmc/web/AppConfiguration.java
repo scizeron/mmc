@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 public class AppConfiguration {
 
   private String oauth2VerifyUri;
+  
+  private String esDirectory;
 
   /**
    * @return the oauth2VerifyUri
@@ -26,5 +28,21 @@ public class AppConfiguration {
    */
   public void setOauth2VerifyUri(String oauth2VerifyUri) {
     this.oauth2VerifyUri = oauth2VerifyUri;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public String getEsDirectory() {
+    return esDirectory;
+  }
+
+  /**
+   * 
+   * @param esDirectory
+   */
+  public void setEsDirectory(String esDirectory) {
+    this.esDirectory = esDirectory;
   }
 }
