@@ -60,7 +60,7 @@ public class PdfHttpMessageFindResponseConverter extends
 
   @Override
   protected boolean supports(Class<?> clazz) {
-    return true;
+    return clazz.isAssignableFrom(FindResponse.class);
   }
 
   @Override
