@@ -1,7 +1,7 @@
 var servicesEnv = {
  oauth2: {
   url: 'http://localhost:3000/authz',
-  client_id : 'mmc',
+  client_id : 'test',
   oidc : {
    scopes : 'openid profile',
    issuer : 'demo_issuer',

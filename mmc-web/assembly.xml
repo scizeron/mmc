@@ -16,15 +16,14 @@
 			<outputDirectory></outputDirectory>
 			<lineEnding>keep</lineEnding>
 			<excludes>
-				<!--exclude>images/**</exclude>
-				<exclude>css/*.gif</exclude>
-				<exclude>css/*.png</exclude-->
 				<exclude>js/services-env.js</exclude>
+				<exclude>settings/version.js</exclude>
 				<exclude>libs/angular/**</exclude>
 			</excludes>
 		</fileSet>
 		<fileSet>
 			<directory>${basedir}/src/main/resources</directory>
+			<filtered>true</filtered>
 			<outputDirectory></outputDirectory>
 			<lineEnding>keep</lineEnding>
 		</fileSet>
