@@ -10,8 +10,15 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>1.2.3.RELEASE</version>
-    <relativePath/>
+    <relativePath />
   </parent>
+
+  <developers>
+    <developer>
+      <name>Stephane CIZEON</name>
+    </developer>
+  </developers>
+
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
