@@ -1,1 +1,1 @@
-var siteInfos = { 'version' : ${project.version}};
+var siteInfos = { 'version' : '0.0.1'};

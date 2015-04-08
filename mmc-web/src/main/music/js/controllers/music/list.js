@@ -34,7 +34,7 @@ function ($scope, musicService, userService, refValues, appService, utils) {
 	 docInfos.recordGrade = doc.recordGrade;
 	 docInfos.sleeveGradeTip = refValues.getGradeToString(doc.sleeveGrade);
 	 docInfos.recordGradeTip = refValues.getGradeToString(doc.recordGrade);
-	 docInfos.origin = (doc.origin == null) ? 'null': doc.origin;
+	 docInfos.origin = (doc.origin == null) ? settings.music.defaultCountry : doc.origin;
 	 
 	 docInfos.line1 = doc.artist;
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.issue);

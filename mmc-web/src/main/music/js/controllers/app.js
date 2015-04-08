@@ -3,6 +3,7 @@
 angular.module('mmcApp')
 .controller('appCtrl', ['$rootScope', '$scope', '$location', 'userService', 'utils', 'refValues', 'appService',
 function ($rootScope, $scope, $location, userService, utils, refValues, appService) {
+ $rootScope.siteInfos = siteInfos;
  var app = appService.app();
  webUtils.debug('appCtrl : ' + $location.path());	
  utils.verbose = settings.verbose;

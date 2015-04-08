@@ -16,7 +16,6 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.canEdit = userService.userHasRole('WRITE');
   $scope.mainRightPartClazz = "col-md-7";
   musicService.getDoc(docId, function(response) {
-   $scope.action.resut = 0;
    $scope.doc = response;
   
    if ($scope.doc.images != null && $scope.doc.images.length > 0) {
@@ -34,7 +33,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
 	$scope.infos.push('');   
    }
    
-   $scope.doc.origin = (response.origin == null) ? 'null': response.origin;
+   $scope.doc.origin = (response.origin == null) ? settings.music.defaultCountry : response.origin;
    
    $scope.infos[0] = response.artist;
    $scope.infos[1] = appendToLine($scope.infos[1], response.issue);
@@ -71,9 +70,9 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
     }  
    }
    utils.debug($scope.infos.length + ' infos: ' + $scope.infos);
-
+   
   }, function() {
-   $scope.action.resut = 1;	 
+	utils.error('getDoc error');
   });
  };
  
