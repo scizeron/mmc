@@ -14,17 +14,19 @@
 		<fileSet>
 			<directory>${basedir}/src/main/music</directory>
 			<outputDirectory></outputDirectory>
-			<lineEnding>unix</lineEnding>
+			<lineEnding>keep</lineEnding>
 			<excludes>
-				<exclude>libs/angular/**</exclude>
-				<exclude>images/country/32/**</exclude>
+				<!--exclude>images/**</exclude>
+				<exclude>css/*.gif</exclude>
+				<exclude>css/*.png</exclude-->
 				<exclude>js/services-env.js</exclude>
+				<exclude>libs/angular/**</exclude>
 			</excludes>
 		</fileSet>
 		<fileSet>
 			<directory>${basedir}/src/main/resources</directory>
 			<outputDirectory></outputDirectory>
-			<lineEnding>unix</lineEnding>
+			<lineEnding>keep</lineEnding>
 		</fileSet>
 	</fileSets>
 </assembly>
