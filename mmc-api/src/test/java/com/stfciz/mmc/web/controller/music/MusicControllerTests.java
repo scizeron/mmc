@@ -71,6 +71,10 @@ public class MusicControllerTests extends AbstractWebApplicationTests {
     }
   }
   
+  /**
+   * 
+   * @throws Exception
+   */
   @Test public void searchByArtist() throws Exception {
     // when
     MvcResult result = this.mockMvc.perform(get("/music/md").param("q", "roger").accept(MediaType.ALL_VALUE))

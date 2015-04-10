@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.auth.Permission;
@@ -44,8 +42,6 @@ public class FlickrApiImpl implements FlickrApi {
 
   private FlickrConnect       flickrConnect;
   
-  private final ObjectMapper  tagMapper = new ObjectMapper();
-
   @Autowired
   public FlickrApiImpl(FlickrConnect flickrConnect) {
     this.flickrConnect = flickrConnect;
@@ -72,24 +68,39 @@ public class FlickrApiImpl implements FlickrApi {
   @Override
   @OAuthContext(Permission.READ_TYPE)
   public PhotoList<Photo> getPhotos(String photoSetId, Integer aPerPage, Integer aPage) throws FlickrException {
-    int perPage = aPerPage == null ? -1 : aPerPage;
-    int page = aPage == null ? -1 : aPage;
+    int perPage = aPerPage == null ? 500 : aPerPage;
+    int page = aPage == null ? 1 : aPage;
     
-    PhotoList<Photo> photos = this.flickrConnect.getFlickr().getPhotosetsInterface()
-        .getPhotos(photoSetId, GET_PHOTOS_EXTRAS, Flickr.PRIVACY_LEVEL_NO_FILTER, perPage, page);
+    PhotoList<Photo> result = new PhotoList<Photo>();
+    boolean oneMorePage = false;
     
-    if (photos != null) {
-      LOGGER.debug("{} photo(s) for photoSetId: {}, perPage: {}, page: {}", new Object[]{photos.getTotal(), photoSetId, perPage, page});
-      Iterator<Photo> iterator = photos.iterator();
-      while (iterator.hasNext()) {
-        Photo photo = iterator.next();
-        LOGGER.debug("id:{}, title:{}, url:{}", new Object[]{photo.getId(), photo.getTitle(), photo.getOriginalUrl()});
+    do {
+      PhotoList<Photo> photos = this.flickrConnect.getFlickr().getPhotosetsInterface()
+          .getPhotos(photoSetId, GET_PHOTOS_EXTRAS, Flickr.PRIVACY_LEVEL_NO_FILTER, perPage, page);
+      
+      if (photos != null) {
+        LOGGER.debug("{} photo(s) for photoSetId: {}, perPage: {}, page: {}", new Object[]{photos.getTotal(), photoSetId, perPage, page});
+        Iterator<Photo> iterator = photos.iterator();
+        while (iterator.hasNext()) {
+          Photo photo = iterator.next();
+          LOGGER.debug("id:{}, title:{}, url:{}", new Object[]{photo.getId(), photo.getTitle(), photo.getOriginalUrl()});
+        }
+        
+        if (photos.getTotal() > photos.size()) {
+          oneMorePage = true;
+          page++;
+          result.addAll(photos);
+        } else {
+          oneMorePage = false;
+        }
+        
+      } else {
+        LOGGER.info("No photo for photoSetId: {}, perPage: {}, page: {}", new Object[]{photoSetId, perPage, page});
+        oneMorePage = false;
       }
-    } else {
-      LOGGER.info("No photo for photoSetId: {}, perPage: {}, page: {}", new Object[]{photoSetId, perPage, page});
-    }
+    } while (oneMorePage);
     
-    return photos;
+    return result;
   }
 
   @Override
@@ -108,12 +119,7 @@ public class FlickrApiImpl implements FlickrApi {
       metaData.setTags(Collections2.transform(uploadPhoto.getTags(), new Function<Tag,String>(){
         @Override
         public String apply(Tag tag) {
-         try {
-          return tagMapper.writeValueAsString(tag);
-         } catch (JsonProcessingException e) {
-           LOGGER.error("write tag error", e);
-           return null;
-         }
+         return tag.toString();
         }
       }));
     }

@@ -2,4 +2,50 @@
  <strong>Warning!</strong> Unexpected error, retry.
 </div>
 <div>
-<htmldiv content="result"/>
+<!-- <div class="container slider"> -->
+<!--     <img ng-repeat="slide in slides" class="slide" -->
+<!--         ng-hide="!isCurrentSlideIndex($index)" ng-src="{{slide.image}}"> -->
+
+<!--     <a class="arrow prev" href="#" ng-click="nextSlide()"></a> -->
+<!--     <a class="arrow next" href="#" ng-click="prevSlide()"></a> -->
+<!--     <nav class="nav"> -->
+<!--         <div class="wrapper"> -->
+<!--             <ul class="dots"> -->
+<!--                 <li class="dot" ng-repeat="slide in slides"> -->
+<!--                     <a href="#" ng-class="{'active':isCurrentSlideIndex($index)}" -->
+<!--                       ng-click="setCurrentSlideIndex($index);">{{slide.description}}</a></li> -->
+<!--             </ul> -->
+<!--         </div> -->
+<!--     </nav> -->
+<!-- </div> -->
+
+
+
+
+<div class="row" >
+ <div class="col-md-4" >
+<!--   <div class="row"> -->
+<!--    <div class="col-md-4"> -->
+<!--     <label>Speed</label><input type="text" ng-model="INTERVAL"> -->
+<!--    </div> -->
+<!--   </div> -->
+<!--  </div> -->
+  <div class="row" style="margin-bottom: 20px;">
+   <div class="btn-group col-md-12"  role="group" style="margin-bottom: 20px;">
+    <button type="button" class="btn btn-primary" ng-click="prevSlide()"><span class="glyphicon glyphicon-step-backward"></span> Previous</button>
+    <button type="button" class="btn btn-primary" ng-click="doPause()" ng-hide="pause"><span class="glyphicon glyphicon-pause"></span> Pause</button>
+    <button type="button" class="btn btn-primary" ng-click="doResume()" ng-show="pause"><span class="glyphicon glyphicon-play"></span>   Play</button>
+    <button type="button" class="btn btn-primary" ng-click="nextSlide()"><span class="glyphicon glyphicon-step-forward"></span> Next</button>
+   </div>
+  </div>
+ </div>
+<!--  <div class="col-md-8"> -->
+<!--   <img ng-repeat="slide in slides" ng-if="isCurrentSlideIndex($index)" ng-src="{{slide.img.details.m.url}}"> -->
+<!--  </div> -->
+</div>
+<div class="row">
+ <div class="col-md-11">
+  <htmldiv content="result"/>
+ </div>
+</div> 
+

@@ -1,72 +1,116 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('adminPhotosCtrl',['$scope', 'utils', 'photoService', function($scope, utils, imgService) {
- $scope.imgPerPage = 16;
- $scope.nbImgPerRow = 4;
- $scope.getPhotos = function (page) {
+.controller('adminPhotosCtrl',['$scope', 'utils', 'photoService', '$timeout', '$modal', function($scope, utils, imgService, $timeout, $modal) {
+ $scope.INTERVAL = 3000;
+ $scope.pause = false;
+ 
+ /**
+  * 
+  */
+ $scope.setCurrentSlideIndex = function (index) {
+  $scope.currentIndex = index;
+ };
+
+ /**
+  * 
+  */
+ $scope.isCurrentSlideIndex = function (index) {
+  return $scope.currentIndex === index;
+ };
+
+ /**
+  * 
+  */
+ $scope.prevSlide = function () {
+   $scope.currentIndex = ($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0;
+ };
+
+ /**
+  * 
+  */
+ $scope.nextSlide = function () {
+  if (!$scope.pause) {	 
+   $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1;
+   if (!$scope.pause) {
+    $timeout($scope.nextSlide, $scope.INTERVAL);
+   }
+  }
+ };
+ 
+ /**
+  * 
+  */
+ $scope.loadSlides = function () {
+  $timeout($scope.nextSlide, $scope.INTERVAL);
+ };
+ 
+ /**
+  * 
+  */
+ $scope.doPause = function () {
+  utils.debug('pause');
+  $scope.pause = true; 
+ };
+ 
+ /**
+  * 
+  */
+ $scope.doResume = function () {
+  utils.debug('resume');
+  $scope.pause = false; 
+  $scope.nextSlide();
+ };
+
+ $scope.displayPhoto = function (indice) {
+  utils.debug(indice);	 
+ }
+ /**
+  * 
+  */
+ $scope.getPhotos = function () {
   $scope.action = {'result' : 0};	
-  imgService.getPhotos(page, $scope.imgPerPage, function(response) {
-   var imgPerPage = 16;
-   var nbImgPerRow = 4;	  
+  imgService.getPhotos(null, null, function(response) {
    var count = response.length;
-   utils.debug('---------------------------------------');
-   utils.debug(' page: ' + page + ', photos: ' + count);
-   utils.debug('---------------------------------------');
    var imgHtml = '';
-   var navigHtml = '';
-   var pages;
+   var nbImgPerRow = 11;
+   $scope.slides = [];
+   $scope.progress = 0;
+   $scope.loaded = false;
+   $scope.currentIndex = 0;
+     
    if (count > 0) {
     for (var x in response) {
-     utils.debug('photo['+x+']:  ' +JSON.stringify(response[x])); 
+     $scope.slides.push({'img': response[x]});	
+     
      if (x % nbImgPerRow == 0) {
  	  if (x > 0) {
    	   imgHtml += '</div>';    	   
 	  }
 	  imgHtml += '<div class="row">'; 
      }
-     imgHtml += '<div class="col-sm-3 style="margin-bottom: 5px;"><img src="' + response[x].details.t.url + '"/></div>';
-    } // end of for (var x in response) 
-   
+     imgHtml += '<div class="col-sm-1 style="margin: 2px;"><img src="' + response[x].details.t.url + '" ng-click="displayPhoto('+x+')"/></div>';
+    }
+
     if (count % nbImgPerRow != 0) {
 	 // completer la derniere ligne en cours
 	 for (var col=0; col<(nbImgPerRow-count); col++) {
-	  imgHtml += '<div class="col-sm-3"></div>';  
+	  imgHtml += '<div class="col-sm-1"></div>';  
 	 }
     }
     
     imgHtml += '</div>';
+    $scope.result = imgHtml;   
     
-    // navigation
-    if (count < imgPerPage) {
-     // pas d'image dans la page suivante
-     pages =  imgService.getPageCount();
-    } else {
-     // potentiellement des images dans la page suivante	
-     pages = imgService.incrPageCount(page);
-    }
-
-    utils.debug('navigation:' + pages);
-    
-    navigHtml = '<div><ul class="pagination">';
-    for (var p = 1; p <= pages + 1; p++) {
-     navigHtml+= '<li';
-     if (p == page) {
-      navigHtml += ' class="active"';  
-     }
-     navigHtml += '><a href ng-click="getPhotos('+p+')">' + p + '</a></li>';
-    } 
-    navigHtml += '</ul></div>';
-    $scope.result = navigHtml + imgHtml;   
-   
-   } else { // if (count > 0) 
-    // pas de photos pour cette page
-    imgService.decrPageCount(); 
+    $scope.loadSlides();
    } 
+  
   }, function() {
    $scope.action.result=1;
    utils.error("getPhotos error");  
   }); //  imgService.getPhotos
  }; // end of $scope.getPhotos
- $scope.getPhotos(1);
+ 
+ $scope.getPhotos();
+ 
 }]);

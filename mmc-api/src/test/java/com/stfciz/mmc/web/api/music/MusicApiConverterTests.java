@@ -17,12 +17,19 @@ public class MusicApiConverterTests {
   
   private MusicApiConverter apiConverter = new MusicApiConverter(new PhotoApiConverter());
   
+  /**
+   * 
+   * @return
+   */
   private MusicDocument newMusicDocument() {
     MusicDocument doc = new MusicDocument();
     doc.setId(UUID.randomUUID().toString());
     return doc;
   }
 
+  /**
+   * 
+   */
   @Test public void convertNewMusicRequestIn() {
     // given
     NewRequest request = new NewRequest();

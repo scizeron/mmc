@@ -1,28 +1,25 @@
 package com.stfciz.mmc.web.api.photo;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.common.collect.ImmutableMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.Size;
-import com.flickr4java.flickr.tags.Tag;
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.stfciz.mmc.core.music.ImageComparator;
 import com.stfciz.mmc.core.music.domain.PhotoMusicDocument;
 import com.stfciz.mmc.core.music.domain.PhotoMusicDocumentSize;
+import com.stfciz.mmc.core.photo.domain.TagName;
 
 /**
  * 
@@ -32,10 +29,6 @@ import com.stfciz.mmc.core.music.domain.PhotoMusicDocumentSize;
 @Component
 public class PhotoApiConverter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(PhotoApiConverter.class);
-  
-  private final ObjectMapper  tagMapper = new ObjectMapper();
-  
   /**
    * 
    * @author stfciz
@@ -120,33 +113,31 @@ public class PhotoApiConverter {
         photoDetails.setWidth(size.getWidth());
       }
     }
-    
-//    if (src.getTags() != null && !src.getTags().isEmpty()) {
-//      target.setMusicDocIds(new ArrayList<String>(
-//        Collections2.filter(Collections2.transform(
-//          Collections2.transform(src.getTags(), new Function<Tag, com.stfciz.mmc.core.photo.domain.Tag>() {
-//            @Override
-//            public com.stfciz.mmc.core.photo.domain.Tag apply(Tag tag) {
-//              try {
-//                if (tag == null) {
-//                  return null;
-//                }
-//                return tagMapper.readValue(tag.getValue(),com.stfciz.mmc.core.photo.domain.Tag.class);
-//              } catch (IOException e) {
-//                LOGGER.error("read tag error", e);
-//                return null;
-//              }
-//            }
-//          }), new Function<com.stfciz.mmc.core.photo.domain.Tag, String>() {
-//                @Override
-//                public String apply(com.stfciz.mmc.core.photo.domain.Tag tag) {
-//                  if (tag == null) {
-//                    return null;
-//                  }
-//                  return "musicDoc".equals(tag.getName()) ? tag.getValue() : null;
-//                }
-//        }), Predicates.isNull())));
-//    }
+  
+    if (src.getTags() != null && !src.getTags().isEmpty()) {
+        Collection<String> docId = Collections2.filter(Collections2.transform(
+          Collections2.transform(src.getTags(), new Function<com.flickr4java.flickr.tags.Tag, com.stfciz.mmc.core.photo.domain.Tag>() {
+            @Override
+            public com.stfciz.mmc.core.photo.domain.Tag apply(com.flickr4java.flickr.tags.Tag tag) {
+              if (tag == null) {
+               return null;
+              }
+              return com.stfciz.mmc.core.photo.domain.Tag.fromString(tag.getValue());
+            }
+          }), new Function<com.stfciz.mmc.core.photo.domain.Tag, String>() {
+                @Override
+                public String apply(com.stfciz.mmc.core.photo.domain.Tag tag) {
+                  if (tag == null) {
+                    return null;
+                  }
+                  return TagName.DOC_ID.name().equals(tag.getName()) ? tag.getValue() : null;
+                }
+        }), Predicates.isNull());
+        
+        if (docId != null && docId.size() > 0) {
+          target.setDocId(docId.iterator().next());
+        }
+    }
     return target;
   }
 

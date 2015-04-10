@@ -1,8 +1,6 @@
 package com.stfciz.mmc.web.api.photo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -68,7 +66,7 @@ public class Photo {
   
   private Map<String,PhotoDetails> details = new HashMap<>();
   
-  private List<String> musicDocIds;
+  private String docId;
   
   /**
    * @return the id
@@ -76,6 +74,7 @@ public class Photo {
   public String getId() {
     return this.id;
   }
+  
   /**
    * @param id the id to set
    */
@@ -87,24 +86,31 @@ public class Photo {
    * 
    * @return
    */
-  public List<String> getMusicDocIds() {
-    if (this.musicDocIds == null) {
-      this.musicDocIds = new ArrayList<>();
-    }
-    return this.musicDocIds;
+  public Map<String, PhotoDetails> getDetails() {
+    return this.details;
   }
   
   /**
    * 
-   * @param musicDocIds
+   * @param details
    */
-  public void setMusicDocIds(List<String> musicDocIds) {
-    this.musicDocIds = musicDocIds;
-  }
-  public Map<String, PhotoDetails> getDetails() {
-    return this.details;
-  }
   public void setDetails(Map<String, PhotoDetails> details) {
     this.details = details;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public String getDocId() {
+    return docId;
+  }
+  
+  /**
+   * 
+   * @param docId
+   */
+  public void setDocId(String docId) {
+    this.docId = docId;
   }
 }

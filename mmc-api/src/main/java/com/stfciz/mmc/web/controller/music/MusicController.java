@@ -30,6 +30,7 @@ import com.stfciz.mmc.core.music.domain.PhotoMusicDocument;
 import com.stfciz.mmc.core.photo.dao.FlickrApi;
 import com.stfciz.mmc.core.photo.dao.UploadPhoto;
 import com.stfciz.mmc.core.photo.domain.Tag;
+import com.stfciz.mmc.core.photo.domain.TagName;
 import com.stfciz.mmc.web.api.music.FindResponse;
 import com.stfciz.mmc.web.api.music.GetResponse;
 import com.stfciz.mmc.web.api.music.MusicApiConverter;
@@ -233,7 +234,7 @@ public class MusicController {
   
   @RequestMapping(value = "/{id}/photos", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
   @Permission(scopes = { OAuth2ScopeApi.WRITE })
-  public ResponseEntity<com.stfciz.mmc.web.api.photo.Photo> uploadImage(@PathVariable String id, @RequestParam("file") MultipartFile file) throws Exception {
+  public ResponseEntity<com.stfciz.mmc.web.api.photo.Photo> uploadPhoto(@PathVariable String id, @RequestParam("file") MultipartFile file) throws Exception {
     MusicDocument doc = this.repository.findOne(id);
     if (doc == null) {
       LOGGER.error("\"{}\" not found");
@@ -250,7 +251,7 @@ public class MusicController {
       UploadPhoto uploadPhoto = new UploadPhoto();
       uploadPhoto.setAsync(false);
       uploadPhoto.setFilename(file.getOriginalFilename());
-      uploadPhoto.getTags().add(new Tag("musicDoc", id));
+      uploadPhoto.getTags().add(new Tag(TagName.DOC_ID, id));
       uploadPhoto.setPhotoSetId(this.configuration.getFlickr().getAppGalleryId());
       uploadPhoto.setContent(file.getBytes());
       

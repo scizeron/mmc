@@ -7,26 +7,21 @@ angular.module('mmcApp').service('photoService', ['$http', '$q', 'utils', functi
  return {
   getPhotos: function(page, perPage, onSuccessCallback, onErrorCallack) {
    utils.debug('getPhotos (page: ' + page + ', perPage:' + perPage + ')');
-   var uri = '/photosets/mmc?page=' + page + '&perPage=' + perPage;
+   var uri = '/photosets/mmc';
+   
+   if (page != null && perPage != null) {
+	uri += '&perPage=' + perPage;    
+   } else if (perPage != null) {
+	uri += '?perPage=' + perPage;  
+   } else if (page != null) {
+	uri += '?page=' + page;  
+   }
+      
    $http.get(uri).success(function(response) {
      onSuccessCallback(response);
     }).error(function(data, status, headers, config) {
      onErrorCallack();
     })
-  },
-  incrPageCount: function(page) {
-   var key  = 'p'+ page;
-   if (!(key in pages)) {
-    pages[key] = page;  
-    this.count = this.count + 1;
-   }
-   return this.count;
-  },
-  decrPageCount: function() {
-   this.count = this.count - 1;
-  }, 
-  getPageCount: function() {
-   return this.count;	
-  }  
+  }
  };
 }]);
