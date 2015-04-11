@@ -6,20 +6,19 @@
   <div class="modal-header">
    <div class="container">
     <div class="row" style="margin-bottom: 20px;">
-     <div class="btn-group col-md-4">
+     <div class="btn-group col-md-5">
       <button type="button" class="btn btn-primary" ng-click="prevSlide()"><span class="glyphicon glyphicon-step-backward"></span> Previous</button>
       <button type="button" class="btn btn-primary" ng-click="doPause()" ng-hide="pause"><span class="glyphicon glyphicon-pause"></span> Pause</button>
       <button type="button" class="btn btn-primary" ng-click="doResume()" ng-show="pause"><span class="glyphicon glyphicon-play"></span>   Play</button>
       <button type="button" class="btn btn-primary" ng-click="nextSlide('manual')"><span class="glyphicon glyphicon-step-forward"></span> Next</button>
       <label style="padding-top: 5px; padding-left: 10px">{{currentIndex+1}} / {{slides.length}}</label>
 	 </div>
-     <div class="btn-group col-md-3">
+     <div class="btn-group col-md-5">
       <button type="button" class="btn btn-success" ng-click="delay(2)">Delay 2s</button>
       <button type="button" class="btn btn-success" ng-click="delay(3)">Delay 3s</button>
       <button type="button" class="btn btn-success" ng-click="delay(6)">Delay 6s</button>
 	 </div>
-
-     <div class="col-md-2">
+     <div class="col-md-1">
       <button class="btn btn-danger" ng-click="close()" style="float: right">Close</button> 
 	 </div>
     </div>
