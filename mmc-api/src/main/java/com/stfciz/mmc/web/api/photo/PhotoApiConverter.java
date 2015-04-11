@@ -14,6 +14,7 @@ import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.Size;
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.stfciz.mmc.core.music.ImageComparator;
@@ -115,27 +116,30 @@ public class PhotoApiConverter {
     }
   
     if (src.getTags() != null && !src.getTags().isEmpty()) {
-        Collection<String> docId = Collections2.filter(Collections2.transform(
-          Collections2.transform(src.getTags(), new Function<com.flickr4java.flickr.tags.Tag, com.stfciz.mmc.core.photo.domain.Tag>() {
-            @Override
-            public com.stfciz.mmc.core.photo.domain.Tag apply(com.flickr4java.flickr.tags.Tag tag) {
-              if (tag == null) {
-               return null;
-              }
-              return com.stfciz.mmc.core.photo.domain.Tag.fromString(tag.getValue());
-            }
-          }), new Function<com.stfciz.mmc.core.photo.domain.Tag, String>() {
-                @Override
-                public String apply(com.stfciz.mmc.core.photo.domain.Tag tag) {
-                  if (tag == null) {
-                    return null;
-                  }
-                  return TagName.DOC_ID.name().equals(tag.getName()) ? tag.getValue() : null;
-                }
-        }), Predicates.notNull());
+        Collection<com.stfciz.mmc.core.photo.domain.Tag> docId = 
+            Collections2.filter(
+                Collections2.filter(
+                    Collections2.transform(src.getTags(), new Function<com.flickr4java.flickr.tags.Tag, com.stfciz.mmc.core.photo.domain.Tag>() {
+                      @Override
+                      public com.stfciz.mmc.core.photo.domain.Tag apply(com.flickr4java.flickr.tags.Tag tag) {
+                        if (tag == null) {
+                          return null;
+                        }
+                        return com.stfciz.mmc.core.photo.domain.Tag.fromString(tag.getValue());
+                      }
+                    }), 
+                    new Predicate<com.stfciz.mmc.core.photo.domain.Tag>() {
+                      @Override
+                      public boolean apply(com.stfciz.mmc.core.photo.domain.Tag tag) {
+                        return tag != null && TagName.DOC_ID == tag.getName();
+                      }
+                   }
+                ), 
+                Predicates.notNull()
+            );
         
         if (docId != null && docId.size() > 0) {
-          target.setDocId(docId.iterator().next());
+          target.setDocId(docId.iterator().next().getValue());
         }
     }
     return target;
