@@ -38,7 +38,7 @@ public class FlickrApiImpl implements FlickrApi {
 
   private static final Logger LOGGER            = LoggerFactory.getLogger(FlickrApiImpl.class);
 
-  private Set<String>         GET_PHOTOS_EXTRAS = new HashSet<>(Arrays.asList("url_t", "url_s", "url_m", "url_o"));
+  private Set<String>         GET_PHOTOS_EXTRAS = new HashSet<>(Arrays.asList("url_t", "url_s", "url_m", "url_o","tags"));
 
   private FlickrConnect       flickrConnect;
   
@@ -79,6 +79,7 @@ public class FlickrApiImpl implements FlickrApi {
           .getPhotos(photoSetId, GET_PHOTOS_EXTRAS, Flickr.PRIVACY_LEVEL_NO_FILTER, perPage, page);
       
       if (photos != null) {
+        result.addAll(photos);
         LOGGER.debug("{} photo(s) for photoSetId: {}, perPage: {}, page: {}", new Object[]{photos.getTotal(), photoSetId, perPage, page});
         Iterator<Photo> iterator = photos.iterator();
         while (iterator.hasNext()) {
@@ -89,7 +90,6 @@ public class FlickrApiImpl implements FlickrApi {
         if (photos.getTotal() > photos.size()) {
           oneMorePage = true;
           page++;
-          result.addAll(photos);
         } else {
           oneMorePage = false;
         }
