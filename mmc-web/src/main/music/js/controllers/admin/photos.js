@@ -82,7 +82,7 @@ angular.module('mmcApp')
    if (count > 0) {
     for (var x in response) {
      $scope.slides.push({'img': response[x]});	
-     
+     utils.debug('- response['+x+']: ' + JSON.stringify(response[x]));
      if (x % nbImgPerRow == 0) {
  	  if (x > 0) {
    	   imgHtml += '</div>';    	   

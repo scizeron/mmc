@@ -132,7 +132,7 @@ public class PhotoApiConverter {
                   }
                   return TagName.DOC_ID.name().equals(tag.getName()) ? tag.getValue() : null;
                 }
-        }), Predicates.isNull());
+        }), Predicates.notNull());
         
         if (docId != null && docId.size() > 0) {
           target.setDocId(docId.iterator().next());

@@ -1,5 +1,7 @@
 package com.stfciz.mmc.core.photo.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 
  * @author stfciz
@@ -7,8 +9,6 @@ package com.stfciz.mmc.core.photo.domain;
  */
 public class Tag {
   
-  private static final String TAG_SEPARATOR = "#";
-
   private TagName name;
   
   private String value;
@@ -41,7 +41,7 @@ public class Tag {
   
   @Override
   public String toString() {
-    return this.name.name() + TAG_SEPARATOR + this.value;
+    return this.name.getValue() + this.value;
   }
   
   /**
@@ -51,9 +51,11 @@ public class Tag {
    */
   public static Tag fromString(String value) {
     try {
-      String[] split = value.split(TAG_SEPARATOR);
-      if (split != null && split.length == 2) {
-       return new Tag(TagName.valueOf(split[0]), split[1]);
+      TagName[] tagNames = TagName.values();
+      for (TagName tagName : tagNames) {
+        if (value.startsWith(tagName.getValue())) {
+          return new Tag(tagName, StringUtils.remove(value, tagName.getValue()));
+        }
       }
     } catch(Exception e) {
       /** NOOP **/
