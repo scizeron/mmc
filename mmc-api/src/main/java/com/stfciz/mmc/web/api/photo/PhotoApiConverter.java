@@ -131,7 +131,7 @@ public class PhotoApiConverter {
                     new Predicate<com.stfciz.mmc.core.photo.domain.Tag>() {
                       @Override
                       public boolean apply(com.stfciz.mmc.core.photo.domain.Tag tag) {
-                        return tag != null && TagName.DOC_ID == tag.getName();
+                        return tag != null && TagName.DOC_ID.equals(tag.getName());
                       }
                    }
                 ), 
