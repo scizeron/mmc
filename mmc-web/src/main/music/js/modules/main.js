@@ -31,7 +31,7 @@ angular.module('mmcApp', [
    controller: 'musicListCtrl'
   }).
   when('/music_listing', {
-   templateUrl: 'views/music/admin.html',
+   templateUrl: 'views/admin/music/list.html',
    controller: 'musicListingCtrl',
    role: 'admin'
   }).  
