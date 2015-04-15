@@ -8,6 +8,29 @@
 
   <build>
     <plugins>
+<!--       <plugin> -->
+<!--         <groupId>com.samaxes.maven</groupId> -->
+<!--         <artifactId>minify-maven-plugin</artifactId> -->
+<!--         <version>1.7.4</version> -->
+<!--         <executions> -->
+<!--           <execution> -->
+<!--             <id>default-minify</id> -->
+<!--             <phase>package</phase>When omitted defaults to 'process-resources' -->
+<!--             <configuration> -->
+<!--               <charset>UTF-8</charset> -->
+<!--               <webappSourceDir>${basedir}/src/main/music</webappSourceDir> -->
+<!--               <jsSourceDir>js</jsSourceDir> -->
+<!--               <jsSourceIncludes> -->
+<!--                 <jsSourceInclude>**/.js</jsSourceInclude> -->
+<!--               </jsSourceIncludes> -->
+<!--               <jsFinalFile>script.js</jsFinalFile> -->
+<!--             </configuration> -->
+<!--             <goals> -->
+<!--               <goal>minify</goal> -->
+<!--             </goals> -->
+<!--           </execution> -->
+<!--         </executions> -->
+<!--       </plugin> -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
