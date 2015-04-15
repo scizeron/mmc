@@ -82,10 +82,8 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
    if ($scope.doc.purchaseMonth != null 
 	&& $scope.doc.purchaseYear != null
 	&& $scope.doc.purchasePrice != null) {
-
     $scope.data.push({ x: new Date($scope.doc.purchaseYear, $scope.doc.purchaseMonth,1,0,0,0,0)
     , price: $scope.doc.purchasePrice});	   
-	   
    }
   
    for (var i = 0; i < $scope.doc.prices.length; i++) {
