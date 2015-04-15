@@ -57,6 +57,15 @@
 	 <button type="button" class="btn btn-danger btn-xs" ng-click="removePrice($index)" ng-show="price.display == 'read'"><span class="glyphicon glyphicon-trash"></span> Remove</button>
     </td>
    </tr>
+   <tr ng-show="doc.purchasePrice != null && doc.purchaseMonth != null && doc.purchaseYear">
+    <td>
+     <div>{{doc.purchasePrice}} €</div>
+    </td>
+    <td>
+     <div>{{doc.purchaseMonth}} / {{doc.purchaseYear}}</div>
+    </td>
+    <td><i>purchase</i></td>
+   </tr>
   </table>
  </div>
  <div class="col-md-6" ng-show="data.length > 0">

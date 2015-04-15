@@ -78,26 +78,37 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.data = [];
   // prices
   if ($scope.doc.prices != null) {
-	  
+   // on rajoute le prix d'achat
+   if ($scope.doc.purchaseMonth != null 
+	&& $scope.doc.purchaseYear != null
+	&& $scope.doc.purchasePrice != null) {
+
+    $scope.data.push({ x: new Date($scope.doc.purchaseYear, $scope.doc.purchaseMonth,1,0,0,0,0)
+    , price: $scope.doc.purchasePrice});	   
+	   
+   }
+  
    for (var i = 0; i < $scope.doc.prices.length; i++) {
 	$scope.updatePrices.push({'value' : $scope.doc.prices[i].price
 	                        , 'month' : $scope.doc.prices[i].month
 		                    , 'year' : $scope.doc.prices[i].year
 		                    , 'display' : 'read'
+		                    , 'type' : 'update' 
 	                        });
-	// trie par ordre de date
-	
-	$scope.data.push({ x: new Date($scope.doc.prices[i].year, $scope.doc.prices[i].month,1,0,0,0,0), price: $scope.doc.prices[i].price});
-   }   
-   
-   
-   $scope.data.sort(function(p1,p2) {
-	return p1.x - p2.x;
-   });
-   
+	$scope.data.push({ x: new Date($scope.updatePrices[i].year, $scope.updatePrices[i].month,1,0,0,0,0)
+		, price: $scope.updatePrices[i].value});	
+   }  
+
+   // tri DESC pour tableau
    $scope.updatePrices.sort(function(p1,p2) {
 	return (p2.year  - p1.year == 0) ? p2.month - p1.month : p2.year  - p1.year;
+   });   
+
+   // tri ASC pour abscisse
+   $scope.data.sort(function(p1,p2) {
+    return p1.x - p2.x;
    });
+
   }
   
   $scope.options = {
@@ -123,7 +134,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
    tooltip: {
 	mode: "scrubber",
 	formatter: function (x, y, series) {
-	 return moment(x).fromNow() + ' : ' + y + ' €';
+	return moment(x).fromNow() + ' : ' + y + ' €';
 	}
    },
    columnsHGap: 5
