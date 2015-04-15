@@ -9,7 +9,7 @@ angular.module('mmcApp')
   var modalInstance = $modal.open({
    templateUrl : 'popupPhoto',
    controller : 'popupPhotoCtrl',
-   size: 'lg',
+   windowClass: 'app-modal-window',
    resolve: {
     datas: function () {
      return {'slides' : $scope.slides, 'index' : index}; 
@@ -28,13 +28,10 @@ angular.module('mmcApp')
   $scope.action = {'result' : 0};	
   imgService.getPhotos(null, null, function(response) {
    var count = response.length;
-   var imgHtml = '';
    var nbImgPerRow = 11;
    $scope.slides = [];
-   $scope.progress = 0;
-   $scope.loaded = false;
-   $scope.currentIndex = 0;
-     
+   var imgHtml = '';     
+   
    if (count > 0) {
     for (var x in response) {
      $scope.slides.push({'image': response[x]});	
@@ -70,32 +67,91 @@ angular.module('mmcApp')
 }]);
 
 
-angular.module('mmcApp').controller('popupPhotoCtrl', function($scope, $timeout, $modalInstance, utils, datas) {
+angular.module('mmcApp').controller('popupPhotoCtrl', function($scope, $location, $timeout, $modalInstance, utils, musicService, refValues, datas) {
+ $scope.DELAY = 5;
  $scope.slides = datas.slides;
- //$scope.slide = slides[datas.index];
- $scope.INTERVAL = 3000;
  $scope.pause = false;
- $scope.currentIndex = datas.index;
+ $scope.currentIndex = datas.index - 1;
+ $scope.doc = null;
+ 
+ /**
+  * 
+  */
+ $scope.loadCurrentInfos = function(index) {
+  var docId = $scope.slides[index].image.docId;
+  if (typeof(docId) != 'undefined' && docId != null) {
+   musicService.getDoc(docId, function(response) {
+	$scope.doc = response;
+	$scope.doc.sleeveGradeTip = refValues.getGradeToString($scope.doc.sleeveGrade);
+	$scope.doc.recordGradeTip = refValues.getGradeToString($scope.doc.recordGrade);
+    $scope.infos = []
+    for (var i=0; i < 4; i++) {
+	 $scope.infos.push('');   
+    }
+	   
+	$scope.doc.origin = (response.origin == null) ? settings.music.defaultCountry : response.origin;
+    $scope.infos[0] = response.artist;
+    $scope.infos[1] = appendToLine($scope.infos[1], response.issue);
+    
+    $scope.infos[1] = appendToLine($scope.infos[1], response.mainType, function(value) {
+     if (response.nbType != null && response.nbType > 1) {
+      return response.nbType + ' ' + value;
+     }
+     return value;	
+    });
+   
+    $scope.infos[1] = appendToLine($scope.infos[1], response.reEdition, function(value) {
+	 return value ? 're-edition' : '';   
+    });  
+ 
+    $scope.infos[1] = appendToLine($scope.infos[1], response.promo, function(value) {
+     return value == true ? 'promo' : '';   
+    });
+   
+    $scope.infos[2] = appendToLine($scope.infos[2], response.serialNumber, function(value) {
+     return 'N° ' + value;   
+    });
+   
+    $scope.infos[2] = appendToLine($scope.infos[2], response.pubNum, function(value) {
+     return ' [Limited Edition : ' + value + '/' + response.pubTotal + ']';   
+    });
+
+    $scope.infos[3] = appendToLine($scope.infos[3], response.recordCompany);
+    $scope.infos[3] = appendToLine($scope.infos[3], response.label);
+   
+    for (var j= $scope.infos.length-1; j>=0; j--) {
+     if ($scope.infos[j] == '') {
+      $scope.infos.splice(j, 1);   
+     }  
+    }
+   }, function() {
+	$scope.doc = null;
+   });
+  } else {
+   $scope.doc = null;	  
+  }
+ };
  
  /**
   * 
   */
  $scope.setCurrentSlideIndex = function (index) {
   $scope.currentIndex = index;
+  $scope.loadCurrentInfos($scope.currentIndex);
  };
 
  /**
   * 
   */
  $scope.isCurrentSlideIndex = function (index) {
-  return $scope.currentIndex === index;
+  return $scope.currentIndex == index;
  };
 
  /**
   * 
   */
  $scope.prevSlide = function () {
-  $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1;
+  $scope.setCurrentSlideIndex(($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1);
  };
 
  /**
@@ -103,19 +159,15 @@ angular.module('mmcApp').controller('popupPhotoCtrl', function($scope, $timeout,
   */
  $scope.nextSlide = function (mode) {
   if ( ('auto' == mode && !$scope.pause) || ('manual' == mode) ) {	 
-   $scope.currentIndex = ($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0;
+   $scope.setCurrentSlideIndex(($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0);
    if ('auto' == mode && !$scope.pause) {
-    $scope.tf = $timeout(function() {$scope.nextSlide('auto')}, $scope.INTERVAL);
+	utils.debug('Wait ' + $scope.DELAY + ' s ...');
+    $scope.tf = $timeout(function() {$scope.nextSlide('auto')}, $scope.DELAY * 1000);
    }
   }
  };
  
- /**
-  * 
-  */
- $scope.delay = function(valueInSec) {
-  $scope.INTERVAL = valueInSec * 1000;
- }
+
  
  /**
   * 
@@ -133,6 +185,7 @@ angular.module('mmcApp').controller('popupPhotoCtrl', function($scope, $timeout,
   $scope.pause = false; 
   $scope.nextSlide('auto');
  };
+ 
  /**
   * 
   */
@@ -143,6 +196,17 @@ angular.module('mmcApp').controller('popupPhotoCtrl', function($scope, $timeout,
   }
   $modalInstance.close('close');
  }; 
+ 
+ /**
+  * 
+  */
+ $scope.viewCurrent = function() {
+  var docId = $scope.doc != null ? $scope.doc.id : null;
+  if (docId != null) {
+   $scope.close();
+   $location.path('/music_view/' + docId);
+  }
+ };
  
  $scope.nextSlide('auto');
  

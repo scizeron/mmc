@@ -134,3 +134,5 @@ footer {
     width: 100%;
 }
 
+#wrapper {width:100%;}
+.app-modal-window .modal-dialog {width:95%; margin:0 auto;}

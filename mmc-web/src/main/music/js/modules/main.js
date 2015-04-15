@@ -122,9 +122,9 @@ angular.module('mmcApp', [
    }
   } 
   
-  if ($location.path().indexOf('/music_view') == 0 || $location.path().indexOf('/music_edit') == 0
-   || $location.path().indexOf('/book_view') == 0 || $location.path().indexOf('/book_edit') == 0
-   || $location.path().indexOf('/merchandising_view') == 0 || $location.path().indexOf('/merchandising_edit') == 0
+  if ($location.path().indexOf('/music_view') == 0 
+   || $location.path().indexOf('/book_view') == 0 
+   || $location.path().indexOf('/merchandising_view') == 0 
   ) {
    $rootScope.$broadcast('showItemsNavBar', true);  
   } else {

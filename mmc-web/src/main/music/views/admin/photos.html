@@ -3,7 +3,7 @@
 </div>
 <div>
 <script type="text/ng-template" id="popupPhoto">
-  <div class="modal-header">
+  <div class="modal-header" id="wrapper">
    <div class="container">
     <div class="row" style="margin-bottom: 20px;">
      <div class="btn-group col-md-5">
@@ -11,23 +11,41 @@
       <button type="button" class="btn btn-primary" ng-click="doPause()" ng-hide="pause"><span class="glyphicon glyphicon-pause"></span> Pause</button>
       <button type="button" class="btn btn-primary" ng-click="doResume()" ng-show="pause"><span class="glyphicon glyphicon-play"></span>   Play</button>
       <button type="button" class="btn btn-primary" ng-click="nextSlide('manual')"><span class="glyphicon glyphicon-step-forward"></span> Next</button>
-      <label style="padding-top: 5px; padding-left: 10px">{{currentIndex+1}} / {{slides.length}}</label>
 	 </div>
-     <div class="btn-group col-md-5">
-      <button type="button" class="btn btn-success" ng-click="delay(2)">Delay 2s</button>
-      <button type="button" class="btn btn-success" ng-click="delay(3)">Delay 3s</button>
-      <button type="button" class="btn btn-success" ng-click="delay(6)">Delay 6s</button>
+	 <!--     
+     <div class="btn-group col-md-4">
+      <input type="range" name="points" min="1" max="10"  ng-model="DELAY">
+      <label>{{DELAY}} s</label>
 	 </div>
-     <div class="col-md-1">
+     -->
+     <div class="col-md-7">
       <button class="btn btn-danger" ng-click="close()" style="float: right">Close</button> 
 	 </div>
     </div>
     <div class="row">
-     <div class="col-md-10">
-      <img ng-repeat="slide in slides" ng-if="isCurrentSlideIndex($index)" ng-src="{{slide.image.details.o.url}}" width="70%">
+     <div class="col-md-3" ng-show="doc != null">
+      <div class="row">
+       <div class="col-md-12"> 
+        <div class="row"  ng-repeat="info in infos">
+         <div class="col-md-12" ng-if="$index == 1"><img ng-src="images/country/24/{{doc.origin}}.png"/> {{info}}</div>
+         <div class="col-md-12" ng-if="$index == 2 && doc.vinylColor != null"><img ng-src="images/vinyls/{{doc.vinylColor.replace('#','')}}.png"/> {{info}}</div>
+         <div class="col-md-12" ng-if="$index != 1 && $index != 2"> {{info}}</div>
+        </div>
+  	    <div class="row">
+         <div class="col-md-12" ng-show="doc.sleeveGrade">
+   	      <img src="images/rating/sleeve.png" title="{{doc.sleeveGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating/rating{{doc.sleeveGrade}}.png" title="{{doc.sleeveGradeTip}}"/>
+         </div>
+        </div>
+   	    <div class="row">
+         <div class="col-md-12" ng-show="doc.sleeveGrade">
+   	      <img src="images/rating/sleeve.png" title="{{doc.recordGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating/rating{{doc.recordGrade}}.png" title="{{doc.recordGradeTip}}"/>
+         </div>
+        </div>       
+       </div>
+      </div>
      </div>
-     <div class="col-md-2">
-       infos
+     <div class="col-md-9">
+      <img ng-repeat="slide in slides" ng-if="isCurrentSlideIndex($index)" ng-click="viewCurrent()"  ng-src="{{slide.image.details.o.url}}" width="90%" style="float: right">
      </div>
     </div>
    </div>

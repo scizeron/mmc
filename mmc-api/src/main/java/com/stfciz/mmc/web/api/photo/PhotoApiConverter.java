@@ -125,7 +125,7 @@ public class PhotoApiConverter {
                         if (tag == null) {
                           return null;
                         }
-                        return com.stfciz.mmc.core.photo.domain.Tag.fromString(tag.getValue());
+                        return com.stfciz.mmc.core.photo.domain.Tag.fromFlickrFormat(tag.getValue());
                       }
                     }), 
                     new Predicate<com.stfciz.mmc.core.photo.domain.Tag>() {

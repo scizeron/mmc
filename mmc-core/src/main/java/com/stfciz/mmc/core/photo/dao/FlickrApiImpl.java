@@ -119,7 +119,7 @@ public class FlickrApiImpl implements FlickrApi {
       metaData.setTags(Collections2.transform(uploadPhoto.getTags(), new Function<Tag,String>(){
         @Override
         public String apply(Tag tag) {
-         return tag.toString();
+         return tag.toFlickrFormat();
         }
       }));
     }
