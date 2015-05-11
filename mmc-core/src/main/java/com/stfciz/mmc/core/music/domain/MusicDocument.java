@@ -73,7 +73,7 @@ public class MusicDocument {
   private Date              modified;
   
   /** EP/LP side matrix number **/
-  private List<SideMatrix>  sidesMatrix;
+  private List<SideMatrix>  sideMatrixes;
 
   /**
    * @return the id
@@ -425,18 +425,18 @@ public class MusicDocument {
    * 
    * @return
    */
-  public List<SideMatrix> getSidesMatrix() {
-    if (this.sidesMatrix == null) {
-      this.sidesMatrix = new ArrayList<>();
+  public List<SideMatrix> getSideMatrixs() {
+    if (this.sideMatrixes == null) {
+      this.sideMatrixes = new ArrayList<>();
     }
-    return this.sidesMatrix;
+    return this.sideMatrixes;
   }
   
   /**
    * 
    * @param sidesMatrix
    */
-  public void setSidesMatrix(List<SideMatrix> sidesMatrix) {
-    this.sidesMatrix = sidesMatrix;
+  public void setSideMatrixs(List<SideMatrix> sideMatrixes) {
+    this.sideMatrixes = sideMatrixes;
   }
 }

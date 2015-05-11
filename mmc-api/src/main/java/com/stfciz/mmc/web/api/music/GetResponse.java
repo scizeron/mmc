@@ -12,7 +12,6 @@ import com.stfciz.mmc.web.api.photo.Photo;
  */
 public class GetResponse extends AbstractBaseResponse {
 
-
   private String comment;
 
   private Integer purchaseMonth;
@@ -28,6 +27,8 @@ public class GetResponse extends AbstractBaseResponse {
   private List<Photo> images;
 
   private List<UpdatePrice> prices;
+  
+  private List<SideMatrix>  sideMatrixes;
 
   /**
    * 
@@ -45,7 +46,6 @@ public class GetResponse extends AbstractBaseResponse {
     this.purchaseMonth = purchaseMonth;
   }
 
-  
   /**
    * 
    * @return
@@ -148,7 +148,7 @@ public class GetResponse extends AbstractBaseResponse {
    */
   public List<UpdatePrice> getPrices() {
     if (this.prices == null) {
-     this.prices = new ArrayList<>();
+      this.prices = new ArrayList<>();
     }
     return prices;
   }
@@ -159,5 +159,24 @@ public class GetResponse extends AbstractBaseResponse {
    */
   public void setPrices(List<UpdatePrice> prices) {
     this.prices = prices;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public List<SideMatrix> getSideMatrixs() {
+    if (this.sideMatrixes == null) {
+      this.sideMatrixes = new ArrayList<>();
+    }
+    return this.sideMatrixes;
+  }
+  
+  /**
+   * 
+   * @param sidesMatrix
+   */
+  public void setSideMatrixs(List<SideMatrix> sideMatrixes) {
+    this.sideMatrixes = sideMatrixes;
   }
 }

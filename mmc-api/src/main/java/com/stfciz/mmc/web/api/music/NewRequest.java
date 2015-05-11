@@ -1,5 +1,8 @@
 package com.stfciz.mmc.web.api.music;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * 
@@ -55,6 +58,8 @@ public class NewRequest {
   private String            purchaseVendor;
   
   private String            purchaseContext;
+  
+  private List<SideMatrix>  sideMatrixes;
   
   public Boolean getReEdition() {
     return reEdition;
@@ -246,5 +251,24 @@ public class NewRequest {
 
   public void setVinylColor(String vinylColor) {
     this.vinylColor = vinylColor;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public List<SideMatrix> getSideMatrixs() {
+    if (this.sideMatrixes == null) {
+      this.sideMatrixes = new ArrayList<>();
+    }
+    return this.sideMatrixes;
+  }
+  
+  /**
+   * 
+   * @param sidesMatrix
+   */
+  public void setSideMatrixs(List<SideMatrix> sideMatrixes) {
+    this.sideMatrixes = sideMatrixes;
   }
 }

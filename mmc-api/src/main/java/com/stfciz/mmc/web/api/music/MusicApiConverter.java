@@ -13,6 +13,7 @@ import com.stfciz.mmc.core.music.domain.MusicDocument;
 import com.stfciz.mmc.core.music.domain.Obi;
 import com.stfciz.mmc.core.music.domain.Purchase;
 import com.stfciz.mmc.core.music.domain.RecordCompany;
+import com.stfciz.mmc.core.music.domain.SideMatrix;
 import com.stfciz.mmc.web.api.photo.Photo;
 import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 
@@ -106,6 +107,14 @@ public class MusicApiConverter {
       purchase.setMonth(request.getPurchaseMonth());
       purchase.setYear(request.getPurchaseYear());
       purchase.setVendor(request.getPurchaseVendor());
+    }
+    
+    if (request.getSideMatrixs() != null && ! request.getSideMatrixs().isEmpty()) {
+      for (com.stfciz.mmc.web.api.music.SideMatrix srcSideMatrix : request.getSideMatrixs()) {
+        SideMatrix targetSideMatrix = new SideMatrix();
+        BeanUtils.copyProperties(srcSideMatrix, targetSideMatrix);
+        target.getSideMatrixs().add(targetSideMatrix);
+      }
     }
     
     return target;
@@ -206,6 +215,14 @@ public class MusicApiConverter {
         com.stfciz.mmc.web.api.music.UpdatePrice up = new com.stfciz.mmc.web.api.music.UpdatePrice();
         BeanUtils.copyProperties(updatePrice, up);
         target.getPrices().add(up);
+      }
+    }
+    
+    if (src.getSideMatrixs() != null && ! src.getSideMatrixs().isEmpty()) {
+      for (com.stfciz.mmc.core.music.domain.SideMatrix srcSideMatrix : src.getSideMatrixs()) {
+        com.stfciz.mmc.web.api.music.SideMatrix targetSideMatrix = new  com.stfciz.mmc.web.api.music.SideMatrix();
+        BeanUtils.copyProperties(srcSideMatrix, targetSideMatrix);
+        target.getSideMatrixs().add(targetSideMatrix);
       }
     }
     

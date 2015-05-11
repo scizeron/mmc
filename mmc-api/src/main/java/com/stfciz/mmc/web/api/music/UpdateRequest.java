@@ -14,14 +14,26 @@ public class UpdateRequest extends NewRequest {
   
   private List<UpdatePrice> prices;
 
+  /**
+   * 
+   * @return
+   */
   public String getId() {
     return this.id;
   }
 
+  /**
+   * 
+   * @param id
+   */
   public void setId(String id) {
     this.id = id;
   }
 
+  /**
+   * 
+   * @return
+   */
   public List<UpdatePrice> getPrices() {
     if (this.prices == null) {
       this.prices = new ArrayList<>();
@@ -29,6 +41,10 @@ public class UpdateRequest extends NewRequest {
     return this.prices;
   }
 
+  /**
+   * 
+   * @param prices
+   */
   public void setPrices(List<UpdatePrice> prices) {
     this.prices = prices;
   }

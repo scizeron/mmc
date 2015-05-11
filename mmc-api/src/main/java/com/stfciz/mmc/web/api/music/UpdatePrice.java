@@ -1,5 +1,10 @@
 package com.stfciz.mmc.web.api.music;
 
+/**
+ * 
+ * @author Bellevue
+ *
+ */
 public class UpdatePrice {
   
   private Integer price;
