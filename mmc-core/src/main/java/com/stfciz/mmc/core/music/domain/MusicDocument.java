@@ -35,8 +35,6 @@ public class MusicDocument {
   /** year  **/
   private boolean           reEdition;
 
-
-
   /** year  **/
   private Integer           issue;
 
@@ -73,6 +71,9 @@ public class MusicDocument {
   private List<UpdatePrice> prices;
   
   private Date              modified;
+  
+  /** EP/LP side matrix number **/
+  private List<SideMatrix>  sidesMatrix;
 
   /**
    * @return the id
@@ -404,11 +405,38 @@ public class MusicDocument {
     this.reEdition = reEdition;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getVinylColor() {
     return vinylColor;
   }
 
+  /**
+   * 
+   * @param vinylColor
+   */
   public void setVinylColor(String vinylColor) {
     this.vinylColor = vinylColor;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public List<SideMatrix> getSidesMatrix() {
+    if (this.sidesMatrix == null) {
+      this.sidesMatrix = new ArrayList<>();
+    }
+    return this.sidesMatrix;
+  }
+  
+  /**
+   * 
+   * @param sidesMatrix
+   */
+  public void setSidesMatrix(List<SideMatrix> sidesMatrix) {
+    this.sidesMatrix = sidesMatrix;
   }
 }
