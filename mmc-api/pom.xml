@@ -12,9 +12,31 @@
   </parent>
 
   <properties>
-    <jidr.version>1.0.9-SNAPSHOT</jidr.version>
+    <jidr.version>0.0.1</jidr.version>
     <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
   </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.github.scizeron.jidr</groupId>
+        <artifactId>jidr-app-maven-plugin</artifactId>
+        <version>${jidr.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>package</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 
   <dependencies>
     <dependency>
@@ -98,49 +120,6 @@
       </snapshots>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </pluginRepository>
-    <pluginRepository>
-      <id>sonatype-nexus-staging</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
   </pluginRepositories>
 
-  <profiles>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>com.github.scizeron.jidr</groupId>
-            <artifactId>jidr-app-maven-plugin</artifactId>
-            <version>${jidr.version}</version>
-            <executions><execution><goals><goal>package</goal></goals></execution></executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>no-stfciz-deps</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

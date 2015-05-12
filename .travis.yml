@@ -3,6 +3,6 @@ language: java
 jdk:
   - oraclejdk8
   
-install: mvn -P no-stfciz-deps install -DskipTests=true
+install: mvn install -DskipTests=true
 
-script : mvn -P no-stfciz-deps test 
+script : mvn test 
