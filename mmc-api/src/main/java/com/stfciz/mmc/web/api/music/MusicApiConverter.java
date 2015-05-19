@@ -109,8 +109,8 @@ public class MusicApiConverter {
       purchase.setVendor(request.getPurchaseVendor());
     }
     
-    if (request.getSideMatrixs() != null && ! request.getSideMatrixs().isEmpty()) {
-      for (com.stfciz.mmc.web.api.music.SideMatrix srcSideMatrix : request.getSideMatrixs()) {
+    if (request.getSideMatrixes() != null && ! request.getSideMatrixes().isEmpty()) {
+      for (com.stfciz.mmc.web.api.music.SideMatrix srcSideMatrix : request.getSideMatrixes()) {
         SideMatrix targetSideMatrix = new SideMatrix();
         BeanUtils.copyProperties(srcSideMatrix, targetSideMatrix);
         target.getSideMatrixs().add(targetSideMatrix);
@@ -222,7 +222,7 @@ public class MusicApiConverter {
       for (com.stfciz.mmc.core.music.domain.SideMatrix srcSideMatrix : src.getSideMatrixs()) {
         com.stfciz.mmc.web.api.music.SideMatrix targetSideMatrix = new  com.stfciz.mmc.web.api.music.SideMatrix();
         BeanUtils.copyProperties(srcSideMatrix, targetSideMatrix);
-        target.getSideMatrixs().add(targetSideMatrix);
+        target.getSideMatrixes().add(targetSideMatrix);
       }
     }
     
