@@ -186,6 +186,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.updatePrice = {};
   $scope.updatePrices = [];
   $scope.colors = refValues.getColors(); 
+  $scope.newMatrice = {'disc':'', 'side' : 'A', 'value':''};
   musicService.getDoc(docId, function(response) {
    $scope.doc = response;
    $scope.initSelectedImages();
