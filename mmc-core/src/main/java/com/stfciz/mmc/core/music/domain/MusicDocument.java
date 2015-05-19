@@ -1,14 +1,11 @@
 package com.stfciz.mmc.core.music.domain;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import com.stfciz.mmc.core.music.ImageComparator;
+import com.stfciz.mmc.core.domain.AbstractDocument;
 
 /**
  * 
@@ -16,27 +13,15 @@ import com.stfciz.mmc.core.music.ImageComparator;
  *
  */
 @Document(indexName = "music", type = "md")
-public class MusicDocument {
-
-  @Id
-  private String            id;
+public class MusicDocument extends AbstractDocument {
 
   private String            title;
 
   private String            artist;
 
   private boolean           promo;
-  
-  /** CODE ISO **/
-  private String            origin;
 
   private String            serialNumber;
-
-  /** year  **/
-  private boolean           reEdition;
-
-  /** year  **/
-  private Integer           issue;
 
   /** code : LP, EP, CD ... **/
   private String            mainType;
@@ -62,33 +47,10 @@ public class MusicDocument {
   /** uses the Goldmine Standard code **/
   private Integer           recordRating;
 
-  private String            comment;
-
-  private List<PhotoMusicDocument> photos;
-
-  private Purchase          purchase;
-
   private List<UpdatePrice> prices;
-  
-  private Date              modified;
   
   /** EP/LP side matrix number **/
   private List<SideMatrix>  sideMatrixes;
-
-  /**
-   * @return the id
-   */
-  public String getId() {
-    return this.id;
-  }
-
-  /**
-   * @param id
-   *          the id to set
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
 
   /**
    * @return the title
@@ -121,21 +83,6 @@ public class MusicDocument {
   }
 
   /**
-   * @return the origin
-   */
-  public String getOrigin() {
-    return this.origin;
-  }
-
-  /**
-   * @param origin
-   *          the origin to set
-   */
-  public void setOrigin(String origin) {
-    this.origin = origin;
-  }
-
-  /**
    * @return the serialNumber
    */
   public String getSerialNumber() {
@@ -148,21 +95,6 @@ public class MusicDocument {
    */
   public void setSerialNumber(String serialNumber) {
     this.serialNumber = serialNumber;
-  }
-
-  /**
-   * @return the issue
-   */
-  public Integer getIssue() {
-    return this.issue;
-  }
-
-  /**
-   * @param issue
-   *          the issue to set
-   */
-  public void setIssue(Integer issue) {
-    this.issue = issue;
   }
 
   /**
@@ -240,46 +172,7 @@ public class MusicDocument {
     this.recordCompany = recordCompany;
   }
 
-  /**
-   * @return the comment
-   */
-  public String getComment() {
-    return this.comment;
-  }
 
-  /**
-   * @param comment
-   *          the comment to set
-   */
-  public void setComment(String comment) {
-    this.comment = comment;
-  }
-
-  /**
-   * @param photos
-   *          the photos to set
-   */
-  public void setPhotos(List<PhotoMusicDocument> photos) {
-    if (photos != null) {
-      Collections.sort(photos, ImageComparator.get());
-      this.photos = photos;
-    }
-  }
-
-  /**
-   * @return the purchase
-   */
-  public Purchase getPurchase() {
-    return this.purchase;
-  }
-
-  /**
-   * @param purchase
-   *          the purchase to set
-   */
-  public void setPurchase(Purchase purchase) {
-    this.purchase = purchase;
-  }
 
   /**
    * @return the prices
@@ -297,16 +190,6 @@ public class MusicDocument {
    */
   public void setPrices(List<UpdatePrice> prices) {
     this.prices = prices;
-  }
-  
-  /**
-   * @return the photos
-   */
-  public List<PhotoMusicDocument> getPhotos() {
-    if (this.photos == null) {
-      this.photos = new ArrayList<>();
-    }
-    return this.photos;
   }
 
   /**
@@ -340,22 +223,6 @@ public class MusicDocument {
   public void setObi(Obi obi) {
     this.obi = obi;
   }
-
-  /**
-   * 
-   * @return
-   */
-  public Date getModified() {
-    return this.modified;
-  }
-
-  /**
-   * 
-   * @param modified
-   */
-  public void setModified(Date modified) {
-    this.modified = modified;
-  }
   
   /**
    * 
@@ -387,22 +254,6 @@ public class MusicDocument {
    */
   public void setRecordRating(Integer recordRating) {
     this.recordRating = recordRating;
-  }
-  
-  /**
-   * *
-   * @return
-   */
-  public boolean isReEdition() {
-    return reEdition;
-  }
-
-  /**
-   * 
-   * @param reEdition
-   */
-  public void setReEdition(boolean reEdition) {
-    this.reEdition = reEdition;
   }
 
   /**

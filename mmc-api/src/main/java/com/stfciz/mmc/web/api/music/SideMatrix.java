@@ -6,9 +6,10 @@ package com.stfciz.mmc.web.api.music;
  *
  */
 public class SideMatrix {
+ 
   private String disc;
   
-  private int side;
+  private String side;
   
   private String value;
 
@@ -28,11 +29,11 @@ public class SideMatrix {
     this.disc = disc;
   }
 
-  public int getSide() {
+  public String getSide() {
     return side;
   }
 
-  public void setSide(int side) {
+  public void setSide(String side) {
     this.side = side;
   }
 }

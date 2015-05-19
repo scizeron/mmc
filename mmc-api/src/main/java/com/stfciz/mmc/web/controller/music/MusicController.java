@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.photos.Photo;
-import com.stfciz.mmc.core.CoreConfiguration;
 import com.stfciz.mmc.core.music.MusicDocumentRepository;
 import com.stfciz.mmc.core.music.domain.MusicDocument;
-import com.stfciz.mmc.core.music.domain.PhotoMusicDocument;
 import com.stfciz.mmc.core.photo.dao.FlickrApi;
 import com.stfciz.mmc.core.photo.dao.UploadPhoto;
+import com.stfciz.mmc.core.photo.domain.PhotoDocument;
 import com.stfciz.mmc.core.photo.domain.Tag;
 import com.stfciz.mmc.core.photo.domain.TagName;
 import com.stfciz.mmc.web.api.music.FindResponse;
@@ -37,7 +34,7 @@ import com.stfciz.mmc.web.api.music.MusicApiConverter;
 import com.stfciz.mmc.web.api.music.NewRequest;
 import com.stfciz.mmc.web.api.music.RemovePhotosIn;
 import com.stfciz.mmc.web.api.music.UpdateRequest;
-import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
+import com.stfciz.mmc.web.controller.AbstractApiController;
 import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
 import com.stfciz.mmc.web.oauth2.Permission;
 import com.stfciz.mmc.web.oauth2.UserRole;
@@ -49,10 +46,7 @@ import com.stfciz.mmc.web.oauth2.UserRole;
  */
 @RestController
 @RequestMapping(value = "/music/md", produces = { MediaType.APPLICATION_JSON_VALUE })
-public class MusicController {
-
-  private static final Logger LOGGER = LoggerFactory
-      .getLogger(MusicController.class);
+public class MusicController extends AbstractApiController {
 
   @Autowired
   private MusicDocumentRepository repository;
@@ -61,14 +55,8 @@ public class MusicController {
   private FlickrApi flickrApi;
 
   @Autowired
-  private MusicApiConverter apiConverter;
+  private MusicApiConverter musicApiConverter;
   
-  @Autowired
-  private PhotoApiConverter photoApiConverter;
-
-  @Autowired
-  private CoreConfiguration configuration;
-
   @RequestMapping(method = RequestMethod.GET
       , consumes = { MediaType.ALL_VALUE }
       , produces = { MediaType.APPLICATION_JSON_VALUE, "application/pdf" })
@@ -125,7 +113,7 @@ public class MusicController {
       
       if (result.hasContent()) {
         for (MusicDocument doc : result.getContent()) {
-          response.getDocs().add(this.apiConverter.convertMusicDocumentToFindDocument(doc));
+          response.getDocs().add(this.musicApiConverter.convertMusicDocumentToFindDocument(doc));
         }
       }
       
@@ -141,21 +129,21 @@ public class MusicController {
   @RequestMapping(method = RequestMethod.POST)
   @Permission(scopes = { OAuth2ScopeApi.WRITE })
   public ResponseEntity<GetResponse> create(@RequestBody(required = true) NewRequest req) {
-    return new ResponseEntity<GetResponse>(this.apiConverter.convertMusicDocumentToGetResponse(
-        this.repository.save(this.apiConverter.convertNewMusicRequestIn(req))), HttpStatus.CREATED);
+    return new ResponseEntity<GetResponse>(this.musicApiConverter.convertMusicDocumentToGetResponse(
+        this.repository.save(this.musicApiConverter.convertNewMusicRequestIn(req))), HttpStatus.CREATED);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.POST)
   @Permission(scopes = { OAuth2ScopeApi.WRITE})
   public ResponseEntity<GetResponse> update(@PathVariable String id, @RequestBody(required = true) UpdateRequest req) {
-    MusicDocument partialDoc = this.apiConverter.convertUpdateMusicRequestIn(req);
+    MusicDocument partialDoc = this.musicApiConverter.convertUpdateMusicRequestIn(req);
     // docToUpdate ne contient pas les images, elles seront supprimées si update
     MusicDocument docToUpdate = this.repository.findOne(id);
     if (docToUpdate == null) {
      return new ResponseEntity<GetResponse>(HttpStatus.BAD_REQUEST);  
     }
     partialDoc.setPhotos(docToUpdate.getPhotos());
-    return new ResponseEntity<GetResponse>(this.apiConverter.convertMusicDocumentToGetResponse(this.repository.save(partialDoc)), HttpStatus.OK);
+    return new ResponseEntity<GetResponse>(this.musicApiConverter.convertMusicDocumentToGetResponse(this.repository.save(partialDoc)), HttpStatus.OK);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -166,7 +154,7 @@ public class MusicController {
       return new ResponseEntity<GetResponse>(HttpStatus.BAD_REQUEST);
     }
     return new ResponseEntity<GetResponse>(
-        this.apiConverter.convertMusicDocumentToGetResponse(result),
+        this.musicApiConverter.convertMusicDocumentToGetResponse(result),
         HttpStatus.OK);
   }
   
@@ -178,9 +166,9 @@ public class MusicController {
       return new ResponseEntity<String>(HttpStatus.OK);
     }
     
-    List<PhotoMusicDocument> photos = result.getPhotos();
+    List<PhotoDocument> photos = result.getPhotos();
     if (photos != null && !photos.isEmpty()) {
-      for (PhotoMusicDocument photo : photos) {
+      for (PhotoDocument photo : photos) {
         try {
           this.flickrApi.deletePhoto(photo.getId());
         } catch (FlickrException e) {
@@ -201,10 +189,10 @@ public class MusicController {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }  
     
-    List<PhotoMusicDocument> photos = doc.getPhotos();
+    List<PhotoDocument> photos = doc.getPhotos();
     if (photos == null || photos.isEmpty()) {
       LOGGER.debug("No photo to remove");
-      return new ResponseEntity<>(this.apiConverter.convertMusicDocumentToGetResponse(doc), HttpStatus.OK);
+      return new ResponseEntity<>(this.musicApiConverter.convertMusicDocumentToGetResponse(doc), HttpStatus.OK);
     }
     
     int initialSize = photos.size();
@@ -229,7 +217,7 @@ public class MusicController {
       }
     }
     
-    return new ResponseEntity<>(this.apiConverter.convertMusicDocumentToGetResponse(doc), HttpStatus.OK);
+    return new ResponseEntity<>(this.musicApiConverter.convertMusicDocumentToGetResponse(doc), HttpStatus.OK);
   }
   
   @RequestMapping(value = "/{id}/photos", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
@@ -259,7 +247,7 @@ public class MusicController {
       photo = this.flickrApi.getPhoto(photoId);
     
       int order = doc.getPhotos().size();
-      PhotoMusicDocument photoMusicDocument = this.photoApiConverter.convertToPhotoMusicDocument(photo, order);
+      PhotoDocument photoMusicDocument = this.photoApiConverter.convertToPhotoMusicDocument(photo, order);
       doc.getPhotos().add(photoMusicDocument);
       doc = this.repository.save(doc);
       

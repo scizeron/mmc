@@ -1,4 +1,4 @@
-package com.stfciz.mmc.core.music.domain;
+package com.stfciz.mmc.core.photo.domain;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
  * @author stfciz
  *
  */
-public class PhotoMusicDocument {
+public class PhotoDocument {
 
   private String id;
   
@@ -29,12 +29,12 @@ public class PhotoMusicDocument {
   
   private boolean main;
   
-  private Map<String,PhotoMusicDocumentSize> sizes = new HashMap<>();
+  private Map<String, PhotoDocumentSize> sizes = new HashMap<>();
 
   /**
    * 
    */
-  public PhotoMusicDocument() {
+  public PhotoDocument() {
     /** EMPTY **/
   }
 
@@ -113,12 +113,12 @@ public class PhotoMusicDocument {
   }
 
 
-  public Map<String, PhotoMusicDocumentSize> getSizes() {
+  public Map<String, PhotoDocumentSize> getSizes() {
     return this.sizes;
   }
 
 
-  public void setSizes(Map<String, PhotoMusicDocumentSize> sizes) {
+  public void setSizes(Map<String, PhotoDocumentSize> sizes) {
     this.sizes = sizes;
   }
 }

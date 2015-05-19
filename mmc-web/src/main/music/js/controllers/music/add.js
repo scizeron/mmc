@@ -32,7 +32,7 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
  $scope.init = function() {
   $scope.doc = { 'mainType' : 'LP', 'nbType' : 1, 'origin' : settings.music.defaultCountry, 'obiPos':'V', 'vinylColor' : '#000000'};
   utils.debug('Initial doc: ' + JSON.stringify($scope.doc));  
-
+  $scope.newMatrice = {'disc':'', 'side' : 'A', 'value':''};
   $scope.countries = refValues.getCountries();
   $scope.grades = refValues.getGrades();
   $scope.nbTypeRange = refValues.getNbTypeRange();
@@ -40,6 +40,7 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   $scope.months = refValues.getMonths();
   $scope.types = settings.music.types;
   $scope.colors = refValues.getColors();
+  $scope.matrices = [];
  };
  
  /**
@@ -79,6 +80,14 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   * 
   */
  $scope.submit = function() {
+  // ajout matrices
+  if ($scope.matrices.length > 0) {
+   $scope.doc.sideMatrixes = [];
+   for (var i=0; i < $scope.matrices.length; i++) {
+	$scope.doc.sideMatrixes.push({'disc': $scope.matrices[i].disc, 'side': $scope.matrices[i].side, 'value' : $scope.matrices[i].value});  
+   }
+  }
+	 
   musicService.addDoc($scope.doc, function(response) {
    $scope.doc = response; 
    $scope.submitCallback(true, response);
@@ -94,6 +103,25 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   utils.debug($scope.doc.id);
   var uri = '/music_edit/' + $scope.doc.id;	 
   $location.path(uri); 
+ };
+ 
+ /**
+  * 
+  */
+ $scope.addNewMatrice = function() {
+  if ($scope.newMatrice.value != '') {
+   utils.debug('Add matrice : ' + JSON.stringify($scope.newMatrice));
+   $scope.matrices.push($scope.newMatrice);
+   $scope.newMatrice = {'disc':'', 'side' : 'A', 'value':''};
+  }
+ };
+ 
+ /**
+  * 
+  */
+ $scope.removeMatrice = function(index) {
+  utils.debug('removeMatrice:' + JSON.stringify($scope.matrices[index]));
+  $scope.matrices.splice(index, 1);
  };
  
  $scope.init();

@@ -257,7 +257,7 @@ public class NewRequest {
    * 
    * @return
    */
-  public List<SideMatrix> getSideMatrixs() {
+  public List<SideMatrix> getSideMatrixes() {
     if (this.sideMatrixes == null) {
       this.sideMatrixes = new ArrayList<>();
     }
@@ -268,7 +268,7 @@ public class NewRequest {
    * 
    * @param sidesMatrix
    */
-  public void setSideMatrixs(List<SideMatrix> sideMatrixes) {
+  public void setSideMatrixes(List<SideMatrix> sideMatrixes) {
     this.sideMatrixes = sideMatrixes;
   }
 }

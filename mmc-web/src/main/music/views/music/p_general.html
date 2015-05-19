@@ -29,7 +29,7 @@
 </div>
 <div class="form-group">
  <label class="control-label col-md-2" for="issue">Issue</label>
- <div class="col-md-6"">
+ <div class="col-md-6">
   <div class="row">
    <div class="col-md-3">
     <select class="form-control" id="issue" name="issue" ng-model="doc.issue">
@@ -101,4 +101,43 @@
  <div class="col-md-2">
   <input type="text" class="form-control" id="label" name="label" ng-model="doc.label" placeholder="record label">    
  </div>
+</div>
+<!-- side matrice -->
+<div class="form-group" ng-show="doc.mainType.indexOf('LP') > -1 || doc.mainType.indexOf('EP') > -1">
+ <label class="control-label col-md-2" for="origin">Matrices</label>
+ <div class="col-md-1">
+  <select class="form-control" ng-model="newMatrice.disc">
+   <option ng-repeat="nbType in nbTypeRange" value="{{nbType}}">{{nbType}}</option>
+  </select>
+ </div>
+ <div class="col-md-1">
+  <select class="form-control" ng-model="newMatrice.side">
+   <option value="A">A</option>
+   <option value="B">B</option>
+  </select>
+ </div>
+ <div class="col-md-2"><input type="text" ng-model="newMatrice.value" class="form-control"></div>
+ <div class="col-md-1">
+  <button type="button" ng-click="addNewMatrice()" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
+ </div>
+</div>
+<div class="form-group" ng-show="(doc.mainType.indexOf('LP') > -1 || doc.mainType.indexOf('EP') > -1) && matrices.length > 0"> 
+ <div class="col-md-offset-2 col-md-3">
+  <table class="table table-hover">
+   <thead>
+    <tr>
+     <th>Disc</th>
+     <th>Side</th>
+     <th>Value</th>
+     <th></th>
+    </tr>
+   </thead>
+   <tr ng-repeat="matrice in matrices">
+    <td>{{matrice.disc}}</td>
+    <td>{{matrice.side}}</td>
+    <td>{{matrice.value}}</td>
+    <td><button type="button" class="btn btn-danger btn-xs" ng-click="removeMatrice($index)"><span class="glyphicon glyphicon-trash"></span> Remove</button></td>     
+   </tr>
+  </table>
+ </div> 
 </div>

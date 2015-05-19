@@ -1,10 +1,10 @@
-package com.stfciz.mmc.core.music.domain;
+package com.stfciz.mmc.core.photo.domain;
 /**
  * 
  * @author stfciz
  *
  */
-public class PhotoMusicDocumentSize {
+public class PhotoDocumentSize {
   private int height;
   
   private int width;

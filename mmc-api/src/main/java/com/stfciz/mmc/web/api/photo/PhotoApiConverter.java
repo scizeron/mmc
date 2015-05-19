@@ -18,8 +18,8 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.stfciz.mmc.core.music.ImageComparator;
-import com.stfciz.mmc.core.music.domain.PhotoMusicDocument;
-import com.stfciz.mmc.core.music.domain.PhotoMusicDocumentSize;
+import com.stfciz.mmc.core.photo.domain.PhotoDocument;
+import com.stfciz.mmc.core.photo.domain.PhotoDocumentSize;
 import com.stfciz.mmc.core.photo.domain.TagName;
 
 /**
@@ -70,7 +70,7 @@ public class PhotoApiConverter {
    * @return
    * @throws FlickrException 
    */
-  public com.stfciz.mmc.web.api.photo.Photo convertPhotoMusicDocumentToPhotoApi(PhotoMusicDocument photoMusicDocument) {
+  public com.stfciz.mmc.web.api.photo.Photo convertPhotoMusicDocumentToPhotoApi(PhotoDocument photoMusicDocument) {
     com.stfciz.mmc.web.api.photo.Photo target = new com.stfciz.mmc.web.api.photo.Photo();
     target.setId(photoMusicDocument.getId());
     for (Map.Entry<String, PhotoFeatures> photoFeatures : PHOTO_FEATURES_RETRIEVERS.entrySet()) {
@@ -151,8 +151,8 @@ public class PhotoApiConverter {
    * @param src
    * @return
    */
-  public PhotoMusicDocument convertToPhotoMusicDocument(com.flickr4java.flickr.photos.Photo src, int order) {
-    PhotoMusicDocument target = new PhotoMusicDocument();
+  public PhotoDocument convertToPhotoMusicDocument(com.flickr4java.flickr.photos.Photo src, int order) {
+    PhotoDocument target = new PhotoDocument();
     target.setId(src.getId());
     target.setFarmId(src.getFarm());
     target.setServerId(src.getServer());
@@ -162,7 +162,7 @@ public class PhotoApiConverter {
     for (Map.Entry<String, PhotoFeatures> photoFeatures : PHOTO_FEATURES_RETRIEVERS.entrySet()) {
       Size size = (Size) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(src.getClass(), photoFeatures.getValue().getSizeMethod()), src);
       if (size != null) {
-        PhotoMusicDocumentSize photoMusicDocumentSize = new PhotoMusicDocumentSize();
+        PhotoDocumentSize photoMusicDocumentSize = new PhotoDocumentSize();
         photoMusicDocumentSize.setHeight(size.getHeight());
         photoMusicDocumentSize.setWidth(size.getWidth());
         target.getSizes().put(photoFeatures.getKey(), photoMusicDocumentSize);
@@ -178,13 +178,13 @@ public class PhotoApiConverter {
    * @return
    * @throws FlickrException
    */
-  public List<com.stfciz.mmc.web.api.photo.Photo> convertToApiPhotos(List<PhotoMusicDocument> photoMusicDocuments) {
+  public List<com.stfciz.mmc.web.api.photo.Photo> convertToApiPhotos(List<PhotoDocument> photoMusicDocuments) {
     if (photoMusicDocuments == null || photoMusicDocuments.isEmpty()) {
       return null;
     }
     
     List<com.stfciz.mmc.web.api.photo.Photo> target = new ArrayList<com.stfciz.mmc.web.api.photo.Photo>();
-    for (PhotoMusicDocument photoMusicDocument : photoMusicDocuments) {
+    for (PhotoDocument photoMusicDocument : photoMusicDocuments) {
       target.add(convertPhotoMusicDocumentToPhotoApi(photoMusicDocument));
     }
     return target;
@@ -194,7 +194,7 @@ public class PhotoApiConverter {
    * 
    * @return
    */
-  public List<PhotoMusicDocument> getSortedImages(List<PhotoMusicDocument> imgs) {
+  public List<PhotoDocument> getSortedImages(List<PhotoDocument> imgs) {
     if (imgs != null) {
       Collections.sort(imgs, ImageComparator.get());
     }

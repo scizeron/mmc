@@ -1,4 +1,4 @@
-package com.stfciz.mmc.core.music.domain;
+package com.stfciz.mmc.core.domain;
 
 
 /**

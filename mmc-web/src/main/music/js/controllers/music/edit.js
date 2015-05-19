@@ -190,6 +190,12 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
    $scope.doc = response;
    $scope.initSelectedImages();
    $scope.initUpdatePrices();
+   $scope.matrices = [];
+   if ($scope.doc.sideMatrixes != null) {
+    for (var i=0; i < $scope.doc.sideMatrixes.length; i++) {
+     $scope.matrices.push({'disc': $scope.doc.sideMatrixes[i].disc, 'side': $scope.doc.sideMatrixes[i].side, 'value' : $scope.doc.sideMatrixes[i].value});  
+	}   
+   }
   }, function() {
 	$scope.displayPopup(false, docId, 'edit');	 
   });
@@ -207,6 +213,8 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   */
  $scope.update = function() {
   utils.debug('"Update: ' + JSON.stringify($scope.doc));
+  // matrices
+  $scope.doc.sideMatrixes = $scope.matrices;
   musicService.updateDoc($scope.doc, function(response) {
 	$scope.displayPopup(true, $scope.doc.id, 'save');
 	$scope.doc = response;
@@ -347,8 +355,29 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
  /**
   * 
   */
- $scope.nbTypeChanged = function() {
-  alert('nbTypeChanged: ' + $scope.doc.nbType);
+ $scope.uploadImages = function() {
+  utils.debug($scope.doc.id);
+  var uri = '/music_edit/' + $scope.doc.id;	 
+  $location.path(uri); 
+ };
+ 
+ /**
+  * 
+  */
+ $scope.addNewMatrice = function() {
+  if ($scope.newMatrice.value != '') {
+   utils.debug('Add matrice : ' + JSON.stringify($scope.newMatrice));
+   $scope.matrices.push($scope.newMatrice);
+   $scope.newMatrice = {'disc':'', 'side' : 'A', 'value':''};
+  }
+ };
+ 
+ /**
+  * 
+  */
+ $scope.removeMatrice = function(index) {
+  utils.debug('removeMatrice:' + JSON.stringify($scope.matrices[index]));
+  $scope.matrices.splice(index, 1);
  };
 
  $scope.edit($routeParams.musicDocId, $routeParams.tabId);
