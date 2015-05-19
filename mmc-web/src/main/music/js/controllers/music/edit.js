@@ -309,40 +309,47 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
  /**
   * 
   */
- $scope.editPrice = function($index) {
-  $scope.updatePrices[$index].display = 'edit';
-  $scope.updatePrice.value = $scope.updatePrices[$index].value;
-  $scope.updatePrice.month = $scope.updatePrices[$index].month;
-  $scope.updatePrice.year = $scope.updatePrices[$index].year;
- }
+ $scope.editPrice = function(index) {
+  $scope.updatePrices[index].display = 'edit';
+  $scope.updatePrice.value = $scope.updatePrices[index].value;
+  $scope.updatePrice.month = $scope.updatePrices[index].month;
+  $scope.updatePrice.year = $scope.updatePrices[index].year;
+ };
  
  /**
   * 
   */
- $scope.undoEditPrice = function($index) {
-  $scope.updatePrices[$index].display = 'read';	 
- }
+ $scope.undoEditPrice = function(index) {
+  $scope.updatePrices[index].display = 'read';	 
+ };
  
  /**
   * 
   */
- $scope.doUpdatePrice = function($index) {
-  $scope.updatePrices[$index].display = 'read';
-  $scope.doc.prices[$index].price = $scope.updatePrice.value;
-  $scope.doc.prices[$index].month = $scope.updatePrice.month;
-  $scope.doc.prices[$index].year = $scope.updatePrice.year;
-  utils.debug('updatePrice:' + JSON.stringify($scope.doc.prices[$index]));
+ $scope.doUpdatePrice = function(index) {
+  $scope.updatePrices[index].display = 'read';
+  $scope.doc.prices[index].price = $scope.updatePrice.value;
+  $scope.doc.prices[index].month = $scope.updatePrice.month;
+  $scope.doc.prices[index].year = $scope.updatePrice.year;
+  utils.debug('updatePrice:' + JSON.stringify($scope.doc.prices[index]));
   $scope.update();
- }
+ };
  
  /**
   * 
   */
- $scope.removePrice = function($index) {
-  utils.debug('removePrice:' + JSON.stringify($scope.doc.prices[$index]));
-  $scope.doc.prices.splice($index, 1);
+ $scope.removePrice = function(index) {
+  utils.debug('removePrice:' + JSON.stringify($scope.doc.prices[index]));
+  $scope.doc.prices.splice(index, 1);
   $scope.update();
- }
+ };
+ 
+ /**
+  * 
+  */
+ $scope.nbTypeChanged = function() {
+  alert('nbTypeChanged: ' + $scope.doc.nbType);
+ };
 
  $scope.edit($routeParams.musicDocId, $routeParams.tabId);
  
