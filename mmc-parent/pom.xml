@@ -15,16 +15,25 @@
 
   <developers>
     <developer>
-      <name>Stephane CIZEON</name>
+      <name>Stephane Cizeron</name>
+      <email>stephane.cizeron@gmail.com</email>
+      <roles>
+        <role>Project lead</role>
+      </roles>
     </developer>
   </developers>
-
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+
+  <scm>
+    <connection>scm:git:git@github.com:scizeron/mmc.git</connection>
+    <developerConnection>scm:git:git@github.com:scizeron/mmc.git</developerConnection>
+    <url>https://github.com/scizeron/mmc</url>
+  </scm>
 
   <dependencies>
     <dependency>
