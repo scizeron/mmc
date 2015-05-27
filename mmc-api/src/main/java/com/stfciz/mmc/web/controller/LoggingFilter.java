@@ -20,10 +20,10 @@ public class LoggingFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     try {
-      LOGGER.debug(">> {}", request.getRequestURL());
+      LOGGER.debug("{} >> {}", request.getRemoteAddr(), request.getRequestURL());
       filterChain.doFilter(request, response);
     } finally {
-      LOGGER.debug("<< {}", response.getStatus());
+      LOGGER.debug("{} << {}", request.getRemoteAddr(), response.getStatus());
     }
   }
 }
