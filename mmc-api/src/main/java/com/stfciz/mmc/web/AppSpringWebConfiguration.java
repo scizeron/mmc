@@ -3,6 +3,9 @@ package com.stfciz.mmc.web;
 import java.io.File;
 import java.util.Arrays;
 
+import javax.servlet.Filter;
+
+import org.apache.catalina.filters.RemoteIpFilter;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.NodeBuilder;
@@ -29,6 +32,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 import com.stfciz.mmc.web.api.music.PdfHttpMessageFindResponseConverter;
 import com.stfciz.mmc.web.controller.CorsFilter;
+import com.stfciz.mmc.web.controller.LoggingFilter;
 import com.stfciz.mmc.web.oauth2.OAuth2Filter;
 import com.stfciz.mmc.web.oauth2.PermissionAspect;
 
@@ -54,22 +58,41 @@ public class AppSpringWebConfiguration {
 
   private static final String[] FILTER_URL_PATTERNS = { "/*" };
   
-  @Bean
-  public FilterRegistrationBean getCORSFilter(CorsFilter filter) {
+  /**
+   * 
+   * @param filter
+   * @param order
+   * @return
+   */
+  private FilterRegistrationBean newFilterRegistration(Filter filter , int order) {
     FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
     registrationBean.setUrlPatterns(Arrays.asList(FILTER_URL_PATTERNS));
     registrationBean.setName(filter.getClass().getSimpleName());
-    registrationBean.setOrder(1);
+    registrationBean.setOrder(order);
     return registrationBean;
+  }
+  
+  @Bean
+  FilterRegistrationBean remoteIpFilter() {
+    RemoteIpFilter filter = new RemoteIpFilter();
+    filter.setProtocolHeader("X-Forwarded-Proto");
+    return newFilterRegistration(filter, 1);
+  }
+  
+  @Bean
+  FilterRegistrationBean loggingFilter() {
+    LoggingFilter filter = new LoggingFilter();
+    return newFilterRegistration(filter, 2);
+  }
+  
+  @Bean
+  public FilterRegistrationBean getCORSFilter(CorsFilter filter) {
+    return newFilterRegistration(filter, 3);
   }
 
   @Bean
   public FilterRegistrationBean getOAuth2Filter(OAuth2Filter filter) {
-    FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
-    registrationBean.setUrlPatterns(Arrays.asList(FILTER_URL_PATTERNS));
-    registrationBean.setName(filter.getClass().getSimpleName());
-    registrationBean.setOrder(2);
-    return registrationBean;
+    return newFilterRegistration(filter, 4);
   }
   
   @Bean
