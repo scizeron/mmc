@@ -12,7 +12,7 @@
   </parent>
 
   <properties>
-    <jidr.version>0.0.1</jidr.version>
+    <jidr.version>0.0.2</jidr.version>
     <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
   </properties>
 
