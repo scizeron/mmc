@@ -25,10 +25,10 @@ public class LoggingFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     try {
       MDC.put(REQUEST_ID_MDC_ATTR, UUID.randomUUID().toString());
-      LOGGER.debug("remoteAddr: {}, secure: {}  >> {}", new Object[]{request.getRemoteAddr(), request.isSecure(), request.getRequestURI()});
+      LOGGER.debug("remoteAddr:{},secure:{}  >> {}", new Object[]{request.getRemoteAddr(), request.isSecure(), request.getRequestURI()});
       filterChain.doFilter(request, response);
     } finally {
-      LOGGER.debug("remoteAddr: {}, secure: {} << {}", new Object[]{request.getRemoteAddr(), response.getStatus()});
+      LOGGER.debug("remoteAddr:{},secure:{} << {}", new Object[]{request.getRemoteAddr(), request.isSecure(), response.getStatus()});
       MDC.remove(REQUEST_ID_MDC_ATTR);
     }
   }
