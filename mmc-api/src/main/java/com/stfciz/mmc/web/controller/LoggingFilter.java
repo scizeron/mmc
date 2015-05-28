@@ -11,10 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-@Component
+/**
+ * 
+ * @author Bellevue
+ *
+ */
 public class LoggingFilter extends OncePerRequestFilter {
 
   private static Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);

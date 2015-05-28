@@ -81,18 +81,17 @@ public class AppSpringWebConfiguration {
   
   @Bean
   FilterRegistrationBean loggingFilter() {
-    LoggingFilter filter = new LoggingFilter();
-    return newFilterRegistration(filter, 2);
+    return newFilterRegistration(new LoggingFilter(), 2);
   }
   
   @Bean
-  public FilterRegistrationBean getCORSFilter(CorsFilter filter) {
-    return newFilterRegistration(filter, 3);
+  public FilterRegistrationBean getCORSFilter() {
+    return newFilterRegistration(new CorsFilter(), 3);
   }
 
   @Bean
-  public FilterRegistrationBean getOAuth2Filter(OAuth2Filter filter) {
-    return newFilterRegistration(filter, 4);
+  public FilterRegistrationBean getOAuth2Filter() {
+    return newFilterRegistration(new OAuth2Filter(), 4);
   }
   
   @Bean
