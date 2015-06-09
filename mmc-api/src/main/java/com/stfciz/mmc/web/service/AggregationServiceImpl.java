@@ -1,13 +1,11 @@
 package com.stfciz.mmc.web.service;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
-import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
+import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ResultsExtractor;
@@ -22,14 +20,14 @@ public class AggregationServiceImpl implements AggregationService {
   
   @Override
   public Long getSumOfPurchases(String type) {
-    final String bucketName = "purchase";
+    final String agg = "getSumOfUpatedPrices";
     
     Aggregations aggregations = this.elasticsearchOperations.query(
       new NativeSearchQueryBuilder()
         .withQuery(matchAllQuery())
         .withSearchType(org.elasticsearch.action.search.SearchType.COUNT)
         .withTypes(type)
-        .addAggregation(terms(bucketName).field("price")).build()
+        .addAggregation(AggregationBuilders.sum(agg).field("purchase.price")).build()
     , new ResultsExtractor<Aggregations>() {
         @Override
         public Aggregations extract(SearchResponse response) {
@@ -37,20 +35,27 @@ public class AggregationServiceImpl implements AggregationService {
         }
       });
     
-    return ((LongTerms) aggregations.asMap().get(bucketName)).getBuckets().stream().map(Terms.Bucket::getKeyAsNumber).mapToLong(Number::intValue).sum();
+    return Math.round(((Sum) aggregations.asMap().get(agg)).getValue());
   }
 
   @Override
   public Long getSumOfUpatedPrices(String type) {
+    final String agg = "getSumOfUpatedPrices";
     
-    /** 
-     * sum (purchase.price when prices is missing + 
-     * 
-     * 
-     */
+    Aggregations aggregations = this.elasticsearchOperations.query(
+      new NativeSearchQueryBuilder()
+        .withQuery(matchAllQuery())
+        .withSearchType(org.elasticsearch.action.search.SearchType.COUNT)
+        .withTypes(type)
+        .addAggregation(AggregationBuilders.sum(agg).field("mostUpdatedPrice")).build()
+    , new ResultsExtractor<Aggregations>() {
+        @Override
+        public Aggregations extract(SearchResponse response) {
+          return response.getAggregations();
+        }
+      });
     
-    
-   return null;
+    return Math.round(((Sum) aggregations.asMap().get(agg)).getValue());
   }
 
   @Override
@@ -61,7 +66,7 @@ public class AggregationServiceImpl implements AggregationService {
           .withQuery(matchAllQuery())
           .withSearchType(org.elasticsearch.action.search.SearchType.COUNT)
           .withTypes(type)
-          .addAggregation(AggregationBuilders.max(bucketName).field("price")).build()
+          .addAggregation(AggregationBuilders.max(bucketName).field("purchase.price")).build()
       , new ResultsExtractor<Aggregations>() {
           @Override
           public Aggregations extract(SearchResponse response) {

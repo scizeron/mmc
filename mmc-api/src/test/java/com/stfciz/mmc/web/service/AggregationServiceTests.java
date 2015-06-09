@@ -28,4 +28,8 @@ public class AggregationServiceTests extends AbstractWebApplicationTests {
   @Test public void getMaxPurchase() {
     Assert.assertThat(this.service.getMaxPurchase("md"), CoreMatchers.is(260L));
   }
+  
+  @Test public void getSumOfUpatedPrices() {
+    Assert.assertThat(this.service.getSumOfUpatedPrices("md"), CoreMatchers.is(595L));
+  }
 }
