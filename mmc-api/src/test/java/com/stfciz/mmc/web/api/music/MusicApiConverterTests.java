@@ -42,6 +42,21 @@ public class MusicApiConverterTests {
   /**
    * 
    */
+  @Test public void convertNewMusicRequestInWithPurchasePrice() {
+    // given
+    NewRequest request = new NewRequest();
+    request.setPurchasePrice(153);
+    
+    // when
+    MusicDocument result = this.apiConverter.convertNewMusicRequestIn(request);
+    // then
+    Assert.assertThat("The id is generated", result.getId(), CoreMatchers.notNullValue());
+    Assert.assertThat(result.getMostUpdatedPrice(), CoreMatchers.is(new Integer(153)));
+  }
+  
+  /**
+   * 
+   */
   @Test public void convertMusicDocumentToFindDocument() {
     // given
     MusicDocument doc = newMusicDocument();
@@ -74,5 +89,23 @@ public class MusicApiConverterTests {
     AbstractBaseResponse result = this.apiConverter.convertMusicDocumentToFindDocument(doc);
     // then
     Assert.assertThat(result.getId(), CoreMatchers.notNullValue());
+  }
+  
+  /**
+   * 
+   */
+  @Test public void convertUpdateMusicRequestInWithUpdatedPrices() {
+    // given
+    UpdateRequest request = new UpdateRequest();
+    request.setId("123456");
+    request.setPurchasePrice(153);
+    request.getPrices().add(new UpdatePrice(120,2007,12));
+    request.getPrices().add(new UpdatePrice(80,2008,11));
+    request.getPrices().add(new UpdatePrice(125,2008,12));
+    request.getPrices().add(new UpdatePrice(75,2003,12));
+    // when
+    MusicDocument result = this.apiConverter.convertUpdateMusicRequestIn(request);
+    // then
+    Assert.assertThat(result.getMostUpdatedPrice(), CoreMatchers.is(new Integer(125)));
   }
 }

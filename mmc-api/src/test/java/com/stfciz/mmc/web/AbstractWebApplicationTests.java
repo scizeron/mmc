@@ -1,5 +1,6 @@
 package com.stfciz.mmc.web;
 
+import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -13,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.github.tlrx.elasticsearch.test.EsSetup;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { AppTestSpringWebConfiguration.class})
 @WebAppConfiguration
@@ -25,6 +28,11 @@ public class AbstractWebApplicationTests {
   @Autowired
   private WebApplicationContext context;
   
+  private EsSetup esSetup;
+  
+  @Autowired
+  private Client client;
+  
   @BeforeClass
   public static void initEnv() {
     System.setProperty("spring.profiles.active","test");
@@ -35,6 +43,8 @@ public class AbstractWebApplicationTests {
   @Before
   public void setUp() {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+    this.esSetup = new EsSetup(this.client);
+    this.esSetup.execute(EsSetup.deleteAll(), EsSetup.createIndex("music").withData(EsSetup.fromClassPath("music.json")));
   }
   
 }

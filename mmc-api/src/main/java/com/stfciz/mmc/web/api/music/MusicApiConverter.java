@@ -107,6 +107,7 @@ public class MusicApiConverter {
       purchase.setMonth(request.getPurchaseMonth());
       purchase.setYear(request.getPurchaseYear());
       purchase.setVendor(request.getPurchaseVendor());
+      target.setMostUpdatedPrice(request.getPurchasePrice()); 
     }
     
     if (request.getSideMatrixes() != null && ! request.getSideMatrixes().isEmpty()) {
@@ -178,15 +179,31 @@ public class MusicApiConverter {
   public MusicDocument convertUpdateMusicRequestIn(UpdateRequest request) {
     MusicDocument target = convertNewMusicRequestIn(request);
     target.setId(request.getId());
-    
+    Integer mostUpdatedPrice = null;
+    UpdatePrice previous = null;
+
     // + prices
-    for (UpdatePrice updatePrice : request.getPrices()) {
-      if (updatePrice.getPrice() != null && updatePrice.getMonth()!= null && updatePrice.getYear() != null) {
+    for (UpdatePrice currentPrice : request.getPrices()) {
+      if (currentPrice.getPrice() != null && currentPrice.getMonth()!= null && currentPrice.getYear() != null) {
+        if (previous != null) {
+          if (currentPrice.getYear() > previous.getYear()) {
+            mostUpdatedPrice = currentPrice.getPrice(); 
+          } else if (currentPrice.getYear().equals(previous.getYear()) && currentPrice.getMonth() > previous.getMonth()) {
+            mostUpdatedPrice = currentPrice.getPrice();
+          }
+        } else {
+          mostUpdatedPrice = currentPrice.getPrice();
+        }
+        
+        previous = currentPrice;
+        
         com.stfciz.mmc.core.music.domain.UpdatePrice updatePriceTarget = new com.stfciz.mmc.core.music.domain.UpdatePrice();
-        BeanUtils.copyProperties(updatePrice, updatePriceTarget);
+        BeanUtils.copyProperties(currentPrice, updatePriceTarget);
         target.getPrices().add(updatePriceTarget);
       }
     }
+    
+    target.setMostUpdatedPrice(mostUpdatedPrice);
     
     return target;
   }

@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 
 import com.stfciz.mmc.core.music.ImageComparator;
+import com.stfciz.mmc.core.music.domain.UpdatePrice;
 import com.stfciz.mmc.core.photo.domain.PhotoDocument;
 
 /**
@@ -35,8 +36,13 @@ public abstract class AbstractDocument {
   /** year  **/
   private Integer           issue;
   
-  
+  /** photos **/
   private List<PhotoDocument> photos;
+  
+  /** updated prices  */
+  private List<UpdatePrice> prices;
+  
+  private Integer mostUpdatedPrice;
       
   public String getId() {
     return id;
@@ -113,6 +119,40 @@ public abstract class AbstractDocument {
       this.photos = new ArrayList<>();
     }
     return this.photos;
+  }
+  
+  /**
+   * @return the prices
+   */
+  public List<UpdatePrice> getPrices() {
+    if (this.prices == null) {
+      this.prices = new ArrayList<>();
+    }
+    return this.prices;
+  }
+
+  /**
+   * @param prices
+   *          the prices to set
+   */
+  public void setPrices(List<UpdatePrice> prices) {
+    this.prices = prices;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public Integer getMostUpdatedPrice() {
+    return mostUpdatedPrice;
+  }
+
+  /**
+   * 
+   * @param mostUpdatedPrice
+   */
+  public void setMostUpdatedPrice(Integer mostUpdatedPrice) {
+    this.mostUpdatedPrice = mostUpdatedPrice;
   }
 }
 

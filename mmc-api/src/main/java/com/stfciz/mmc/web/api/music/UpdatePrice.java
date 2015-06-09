@@ -12,6 +12,25 @@ public class UpdatePrice {
   private Integer month;
   
   private Integer year;
+
+  /**
+   * 
+   */
+  public UpdatePrice() {
+    
+  }
+
+  /**
+   * 
+   * @param price
+   * @param year
+   * @param month
+   */
+  public UpdatePrice(Integer price, Integer year, Integer month) {
+   this.price = price;
+   this.year = year;
+   this.month = month;
+  }
   
   public Integer getPrice() {
     return price;

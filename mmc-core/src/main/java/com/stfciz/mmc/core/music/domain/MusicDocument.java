@@ -46,12 +46,10 @@ public class MusicDocument extends AbstractDocument {
 
   /** uses the Goldmine Standard code **/
   private Integer           recordRating;
-
-  private List<UpdatePrice> prices;
   
   /** EP/LP side matrix number **/
   private List<SideMatrix>  sideMatrixes;
-
+  
   /**
    * @return the title
    */
@@ -174,23 +172,7 @@ public class MusicDocument extends AbstractDocument {
 
 
 
-  /**
-   * @return the prices
-   */
-  public List<UpdatePrice> getPrices() {
-    if (this.prices == null) {
-      this.prices = new ArrayList<>();
-    }
-    return this.prices;
-  }
 
-  /**
-   * @param prices
-   *          the prices to set
-   */
-  public void setPrices(List<UpdatePrice> prices) {
-    this.prices = prices;
-  }
 
   /**
    * 

@@ -100,7 +100,7 @@ public class MusicController extends AbstractApiController {
         queryBuilder.defaultOperator(QueryStringQueryBuilder.Operator.OR);
         result = this.repository.search(queryBuilder, pageable);
       }
-      
+            
       hasNext = result.hasNext();
       response.setPageSize(response.getPageSize() + result.getSize());
       

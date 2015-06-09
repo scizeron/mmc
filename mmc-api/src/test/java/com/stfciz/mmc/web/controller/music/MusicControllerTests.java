@@ -5,17 +5,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.elasticsearch.client.Client;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tlrx.elasticsearch.test.EsSetup;
 import com.stfciz.mmc.web.AbstractWebApplicationTests;
 import com.stfciz.mmc.web.api.music.FindElementResponse;
 import com.stfciz.mmc.web.api.music.FindResponse;
@@ -27,17 +23,6 @@ import com.stfciz.mmc.web.api.music.FindResponse;
 public class MusicControllerTests extends AbstractWebApplicationTests {
 
   private ObjectMapper mapper = new ObjectMapper();
-  
-  private EsSetup esSetup;
- 
-  @Autowired
-  private Client client;
-  
-  @Before
-  public void setUpIndex() {
-    this.esSetup = new EsSetup(this.client);
-    this.esSetup.execute(EsSetup.deleteAll(), EsSetup.createIndex("music").withData(EsSetup.fromClassPath("music.json")));
-  }
   
   /**
    * 
@@ -87,4 +72,5 @@ public class MusicControllerTests extends AbstractWebApplicationTests {
       Assert.assertThat(doc.getArtist().toLowerCase().contains("roger"), CoreMatchers.is(true));
     }
   }
+
 }
