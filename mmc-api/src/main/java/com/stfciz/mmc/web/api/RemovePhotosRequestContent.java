@@ -1,10 +1,10 @@
-package com.stfciz.mmc.web.api.music;
+package com.stfciz.mmc.web.api;
 /**
  * 
  * @author Bellevue
  *
  */
-public class RemovePhotosIn {
+public class RemovePhotosRequestContent {
 
   private String [] ids;
 

@@ -90,7 +90,7 @@ public class PdfHttpMessageFindResponseConverter extends
       f.setColor(BaseColor.WHITE);
       PdfPCell cell = new PdfPCell(new Phrase(String.format("%s - %d item(s)",
             new SimpleDateFormat("yyyy/MM/dd").format(new Date())
-          , findResponse.getDocs().size()),  f));
+          , findResponse.getItems().size()),  f));
       cell.setBackgroundColor(BaseColor.BLACK);
       cell.setHorizontalAlignment(Element.ALIGN_CENTER);
       cell.setColspan(NB_COLS);
@@ -115,7 +115,7 @@ public class PdfHttpMessageFindResponseConverter extends
       table.setFooterRows(1);
       // Now let's loop over the elements
 
-      List<FindElementResponse> docs = findResponse.getDocs();
+      List<FindElementResponse> docs = findResponse.getItems();
       for (FindElementResponse doc : docs) {
         addCell(table, doc.getArtist());
         addCell(table, doc.getTitle());

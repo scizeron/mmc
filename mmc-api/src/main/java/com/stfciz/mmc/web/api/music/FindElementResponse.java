@@ -6,8 +6,8 @@ package com.stfciz.mmc.web.api.music;
  * @author stfciz
  *
  */
-public class FindElementResponse extends AbstractBaseResponse {
-
+public class FindElementResponse extends AbstractMusicBaseResponse {
+ 
   private String thumbImageUrl;
 
   public String getThumbImageUrl() {
@@ -17,4 +17,5 @@ public class FindElementResponse extends AbstractBaseResponse {
   public void setThumbImageUrl(String thumbImageUrl) {
     this.thumbImageUrl = thumbImageUrl;
   }
+
 }

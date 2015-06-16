@@ -14,6 +14,8 @@ import com.stfciz.mmc.core.music.domain.MusicDocument;
 import com.stfciz.mmc.core.music.domain.Obi;
 import com.stfciz.mmc.core.music.domain.RecordCompany;
 import com.stfciz.mmc.core.music.domain.SideMatrix;
+import com.stfciz.mmc.web.api.AbstractApiConverter;
+import com.stfciz.mmc.web.api.UpdatePrice;
 import com.stfciz.mmc.web.api.photo.Photo;
 import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 
@@ -22,42 +24,16 @@ import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
  * @author stfciz
  *
  */
-@Component
-public class MusicApiConverter {
+@Component("musicApiConverter")
+public class MusicApiConverter extends AbstractApiConverter<MusicDocument, GetResponse, NewRequest, UpdateRequest, FindElementResponse, FindResponse> {
 
-  private PhotoApiConverter photoApiConverter;
-  
   @Autowired
-  public MusicApiConverter( PhotoApiConverter photoApiConverter) {
-    this.photoApiConverter = photoApiConverter;
+  public MusicApiConverter(PhotoApiConverter photoApiConverter) {
+    super(photoApiConverter);
   }
-  
-  /**
-   * 
-   * @param str
-   * @return
-   */
-  private String capitalizeWords(String str) {
-    if (StringUtils.isBlank(str)) {
-      return str;
-    }
-    StringBuilder result = new StringBuilder();
-    String [] words = StringUtils.split(str);
-    for (String word : words) {
-      if (result.length() > 0) {
-        result.append(" ");
-      }
-      result.append(StringUtils.capitalize(word.toLowerCase()));
-    }
-    return result.toString();
-  }
-  
-  /**
-   * 
-   * @param request
-   * @return
-   */
-  public MusicDocument convertNewMusicRequestIn(NewRequest request) {
+
+  @Override
+  public MusicDocument convertNewRequestContent(NewRequest request) {
     MusicDocument target = new MusicDocument();
     
     target.setId(UUID.randomUUID().toString());
@@ -126,7 +102,7 @@ public class MusicApiConverter {
    * @param target
    * @param src
    */
-  private void populateAbstractBaseResponseFromMusicDocument(AbstractBaseResponse target, MusicDocument src) {
+  private void populateAbstractBaseResponseFromMusicDocument(AbstractMusicBaseResponse target, MusicDocument src) {
     target.setLastModified(src.getModified());
     target.setId(src.getId());
     target.setTitle(src.getTitle());
@@ -153,16 +129,12 @@ public class MusicApiConverter {
     }
   }
   
-  /**
-   * 
-   * @param src
-   * @return
-   */
-  public FindElementResponse convertMusicDocumentToFindDocument(MusicDocument src) {
+  @Override
+  public FindElementResponse convertToFindDocument(MusicDocument src) {
     FindElementResponse target = new FindElementResponse();
     populateAbstractBaseResponseFromMusicDocument(target, src);
 
-    List<Photo> photos = this.photoApiConverter.convertToApiPhotos(src.getPhotos());
+    List<Photo> photos = getPhotoApiConverter().convertToApiPhotos(src.getPhotos());
     
     if (photos != null && photos.size() >= 1) {
       target.setThumbImageUrl(photos.get(0).getDetails().get("t").getUrl());
@@ -171,13 +143,9 @@ public class MusicApiConverter {
     return target;
   }
   
-  /**
-   * 
-   * @param request
-   * @return
-   */
-  public MusicDocument convertUpdateMusicRequestIn(UpdateRequest request) {
-    MusicDocument target = convertNewMusicRequestIn(request);
+  @Override
+  public MusicDocument convertUpdateRequestContent(UpdateRequest request) {
+    MusicDocument target = convertNewRequestContent(request);
     target.setId(request.getId());
     Integer mostUpdatedPrice = null;
     UpdatePrice previous = null;
@@ -208,12 +176,9 @@ public class MusicApiConverter {
     return target;
   }
   
-  /**
-   * 
-   * @param src
-   * @return
-   */
-  public GetResponse convertMusicDocumentToGetResponse(MusicDocument src) {
+  
+  @Override
+  public GetResponse convertToGetResponse(MusicDocument src) {
     GetResponse target = new GetResponse();
     populateAbstractBaseResponseFromMusicDocument(target, src);
     
@@ -229,7 +194,7 @@ public class MusicApiConverter {
         
     if (src.getPrices() != null && ! src.getPrices().isEmpty()) {
       for (com.stfciz.mmc.core.music.domain.UpdatePrice updatePrice : src.getPrices()) {
-        com.stfciz.mmc.web.api.music.UpdatePrice up = new com.stfciz.mmc.web.api.music.UpdatePrice();
+        com.stfciz.mmc.web.api.UpdatePrice up = new com.stfciz.mmc.web.api.UpdatePrice();
         BeanUtils.copyProperties(updatePrice, up);
         target.getPrices().add(up);
       }
@@ -243,8 +208,13 @@ public class MusicApiConverter {
       }
     }
     
-    target.setImages(this.photoApiConverter.convertToApiPhotos(src.getPhotos()));
+    target.setImages(getPhotoApiConverter().convertToApiPhotos(src.getPhotos()));
    
     return target;
+  }
+
+  @Override
+  public FindResponse newFindResponse() {
+    return new FindResponse();
   }
 }

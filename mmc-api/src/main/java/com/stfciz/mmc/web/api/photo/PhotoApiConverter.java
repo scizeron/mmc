@@ -70,7 +70,7 @@ public class PhotoApiConverter {
    * @return
    * @throws FlickrException 
    */
-  public com.stfciz.mmc.web.api.photo.Photo convertPhotoMusicDocumentToPhotoApi(PhotoDocument photoMusicDocument) {
+  public com.stfciz.mmc.web.api.photo.Photo convertPhotoDocument(PhotoDocument photoMusicDocument) {
     com.stfciz.mmc.web.api.photo.Photo target = new com.stfciz.mmc.web.api.photo.Photo();
     target.setId(photoMusicDocument.getId());
     for (Map.Entry<String, PhotoFeatures> photoFeatures : PHOTO_FEATURES_RETRIEVERS.entrySet()) {
@@ -185,7 +185,7 @@ public class PhotoApiConverter {
     
     List<com.stfciz.mmc.web.api.photo.Photo> target = new ArrayList<com.stfciz.mmc.web.api.photo.Photo>();
     for (PhotoDocument photoMusicDocument : photoMusicDocuments) {
-      target.add(convertPhotoMusicDocumentToPhotoApi(photoMusicDocument));
+      target.add(convertPhotoDocument(photoMusicDocument));
     }
     return target;
   }

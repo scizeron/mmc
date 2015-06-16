@@ -1,4 +1,4 @@
-package com.stfciz.mmc.web.api.music;
+package com.stfciz.mmc.web.api;
 
 /**
  * 

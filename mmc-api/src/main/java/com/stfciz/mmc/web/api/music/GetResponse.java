@@ -3,6 +3,7 @@ package com.stfciz.mmc.web.api.music;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.stfciz.mmc.web.api.UpdatePrice;
 import com.stfciz.mmc.web.api.photo.Photo;
 
 /**
@@ -10,7 +11,7 @@ import com.stfciz.mmc.web.api.photo.Photo;
  * @author stfciz
  *
  */
-public class GetResponse extends AbstractBaseResponse {
+public class GetResponse extends AbstractMusicBaseResponse {
 
   private String comment;
 

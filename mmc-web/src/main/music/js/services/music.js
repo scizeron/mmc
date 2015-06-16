@@ -27,7 +27,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
    }
   }
   
-  var uri = '/music/md?p=' + page + '&s=' + settings.pageSize;
+  var uri = '/music?p=' + page + '&s=' + settings.pageSize;
   if (query != null) {
    uri += '&q=' + encodeURIComponent(query);   
   }
@@ -72,7 +72,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
 	doc.obiPos = null;
 	doc.obiColor = null;
   }
-  $http.post('/music/md', JSON.stringify(doc)).
+  $http.post('/music', JSON.stringify(doc)).
    success(function(data, status) {
 	utils.debug('A new doc is created : ' + JSON.stringify(data));
 	onSuccessCallback(data);
@@ -90,7 +90,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
   * @returns
   */
  function updateDoc(doc, onSuccessCallback, onErrorCallack) {
-  $http.post('/music/md/' + doc.id, JSON.stringify(doc)).
+  $http.post('/music/' + doc.id, JSON.stringify(doc)).
    success(function(data, status) {
 	utils.debug('update ' + JSON.stringify(doc));
 	clearCache();
@@ -159,7 +159,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
    sessionStorage.removeItem('md');
   }
   
-  $http.get('/music/md/' + id).
+  $http.get('/music/' + id).
    success(function(doc) {
 	utils.debug('get: '+ JSON.stringify(doc)); 
 	putDocInCache(doc);
@@ -183,7 +183,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
   utils.debug('upload ' + file.name);
   var fd = new FormData();
   fd.append('file', file); 
-  $http.post('/music/md/' + id + '/photos', fd, {
+  $http.post('/music/' + id + '/photos', fd, {
 	transformRequest: angular.identity,
 	headers: {
 	  'Content-Type': undefined
@@ -212,7 +212,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
   */
  function removePhotos(id, photoIds, onSuccessCallback, onErrorCallack) {
   var removePhotosIn = { 'ids' : photoIds};
-  $http.delete('/music/md/' + id + '/photos', {
+  $http.delete('/music/' + id + '/photos', {
 	  'data' : JSON.stringify(removePhotosIn)
 	, 'headers': {
 		'Content-Type': 'application/json'
@@ -230,7 +230,7 @@ angular.module('mmcApp').factory('musicService', ['$http', '$q', 'utils', functi
   * @returns
   */
  function remove(id, onSuccessCallback, onErrorCallack) {
-  $http.delete('/music/md/' + id).success(function(status){clearCache(); onSuccessCallback();}).error(function(data, status, headers, config) { onErrorCallack();});
+  $http.delete('/music/' + id).success(function(status){clearCache(); onSuccessCallback();}).error(function(data, status, headers, config) { onErrorCallack();});
  }
  
  return { 
