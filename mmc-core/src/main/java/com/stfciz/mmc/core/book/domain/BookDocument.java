@@ -9,7 +9,7 @@ import com.stfciz.mmc.core.domain.AbstractDocument;
  * @author Bellevue
  *
  */
-@Document(indexName = "book", type = "bd")
+@Document(indexName = "book", type = "bk")
 public class BookDocument extends AbstractDocument {
 
   private String title;
@@ -39,7 +39,7 @@ public class BookDocument extends AbstractDocument {
   /**
    * 
    */
-  private int nbPages;
+  private Integer nbPages;
 
   /**
    * 
@@ -101,11 +101,11 @@ public class BookDocument extends AbstractDocument {
     this.distributer = distributer;
   }
 
-  public int getNbPages() {
+  public Integer getNbPages() {
     return nbPages;
   }
 
-  public void setNbPages(int nbPages) {
+  public void setNbPages(Integer nbPages) {
     this.nbPages = nbPages;
   }
 

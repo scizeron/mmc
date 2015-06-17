@@ -36,6 +36,14 @@ public abstract class AbstractDocument {
   /** year  **/
   private Integer           issue;
   
+  /** limited edition number **/
+  private Integer           pubNum;
+
+  /** limited edition total **/
+  private Integer           pubTotal;
+  
+  private boolean           promo;
+  
   /** photos **/
   private List<PhotoDocument> photos;
   
@@ -153,6 +161,30 @@ public abstract class AbstractDocument {
    */
   public void setMostUpdatedPrice(Integer mostUpdatedPrice) {
     this.mostUpdatedPrice = mostUpdatedPrice;
+  }
+
+  public Integer getPubNum() {
+    return pubNum;
+  }
+
+  public void setPubNum(Integer pubNum) {
+    this.pubNum = pubNum;
+  }
+
+  public Integer getPubTotal() {
+    return pubTotal;
+  }
+
+  public void setPubTotal(Integer pubTotal) {
+    this.pubTotal = pubTotal;
+  }
+
+  public boolean isPromo() {
+    return promo;
+  }
+
+  public void setPromo(boolean promo) {
+    this.promo = promo;
   }
 }
 

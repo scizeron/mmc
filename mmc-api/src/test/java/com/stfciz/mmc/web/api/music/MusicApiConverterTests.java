@@ -35,7 +35,7 @@ public class MusicApiConverterTests {
     // given
     NewRequest request = new NewRequest();
     // when
-    MusicDocument result = this.apiConverter.convertNewRequestContent(request);
+    MusicDocument result = this.apiConverter.convertNewRequestContentToDcoument(request);
     // then
     Assert.assertThat("The id is generated", result.getId(), CoreMatchers.notNullValue());
   }
@@ -49,7 +49,7 @@ public class MusicApiConverterTests {
     request.setPurchasePrice(153);
     
     // when
-    MusicDocument result = this.apiConverter.convertNewRequestContent(request);
+    MusicDocument result = this.apiConverter.convertNewRequestContentToDcoument(request);
     // then
     Assert.assertThat("The id is generated", result.getId(), CoreMatchers.notNullValue());
     Assert.assertThat(result.getMostUpdatedPrice(), CoreMatchers.is(new Integer(153)));
@@ -62,7 +62,7 @@ public class MusicApiConverterTests {
     // given
     MusicDocument doc = newMusicDocument();
     // when
-    AbstractMusicBaseResponse result = this.apiConverter.convertToFindDocument(doc);
+    AbstractMusicBaseResponse result = this.apiConverter.convertToFindElementResponse(doc);
     // then
     Assert.assertThat(result.getId(), CoreMatchers.notNullValue());
   }
@@ -87,7 +87,7 @@ public class MusicApiConverterTests {
     // given
     MusicDocument doc = newMusicDocument();
     // when
-    AbstractMusicBaseResponse result = this.apiConverter.convertToFindDocument(doc);
+    AbstractMusicBaseResponse result = this.apiConverter.convertToFindElementResponse(doc);
     // then
     Assert.assertThat(result.getId(), CoreMatchers.notNullValue());
   }

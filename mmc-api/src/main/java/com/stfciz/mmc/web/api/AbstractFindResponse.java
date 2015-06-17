@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * 
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 16 juin 2015
  */
 @JsonInclude(Include.NON_NULL)
-public class AbstractFindResponse<E extends AbstractBaseResponse> {
+public abstract class AbstractFindResponse<E extends AbstractBaseResponse> {
 
   @JsonProperty(value="docs")
   private List<E> items;

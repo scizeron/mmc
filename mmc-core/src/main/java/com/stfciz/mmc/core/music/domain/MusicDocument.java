@@ -19,8 +19,6 @@ public class MusicDocument extends AbstractDocument {
 
   private String            artist;
 
-  private boolean           promo;
-
   private String            serialNumber;
 
   /** code : LP, EP, CD ... **/
@@ -32,12 +30,6 @@ public class MusicDocument extends AbstractDocument {
   private String            vinylColor;
   
   private Obi               obi;
-
-  /** limited edition number **/
-  private Integer           pubNum;
-
-  /** limited edition total **/
-  private Integer           pubTotal;
 
   private RecordCompany     recordCompany;
 
@@ -126,36 +118,6 @@ public class MusicDocument extends AbstractDocument {
   }
 
   /**
-   * @return the pubNum
-   */
-  public Integer getPubNum() {
-    return this.pubNum;
-  }
-
-  /**
-   * @param pubNum
-   *          the pubNum to set
-   */
-  public void setPubNum(Integer pubNum) {
-    this.pubNum = pubNum;
-  }
-
-  /**
-   * @return the pubTotal
-   */
-  public Integer getPubTotal() {
-    return this.pubTotal;
-  }
-
-  /**
-   * @param pubTotal
-   *          the pubTotal to set
-   */
-  public void setPubTotal(Integer pubTotal) {
-    this.pubTotal = pubTotal;
-  }
-
-  /**
    * @return the recordCompany
    */
   public RecordCompany getRecordCompany() {
@@ -168,26 +130,6 @@ public class MusicDocument extends AbstractDocument {
    */
   public void setRecordCompany(RecordCompany recordCompany) {
     this.recordCompany = recordCompany;
-  }
-
-
-
-
-
-  /**
-   * 
-   * @return
-   */
-  public boolean isPromo() {
-    return promo;
-  }
-
-  /**
-   * 
-   * @param promo
-   */
-  public void setPromo(boolean promo) {
-    this.promo = promo;
   }
 
   /**

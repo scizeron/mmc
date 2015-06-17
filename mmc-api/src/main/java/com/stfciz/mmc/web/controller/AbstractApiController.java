@@ -36,6 +36,7 @@ import com.stfciz.mmc.core.photo.domain.TagName;
 import com.stfciz.mmc.web.api.AbstractApiConverter;
 import com.stfciz.mmc.web.api.AbstractBaseResponse;
 import com.stfciz.mmc.web.api.AbstractFindResponse;
+import com.stfciz.mmc.web.api.AbstractNewRequest;
 import com.stfciz.mmc.web.api.RemovePhotosRequestContent;
 import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
@@ -46,7 +47,7 @@ import com.stfciz.mmc.web.oauth2.UserRole;
  * @author Bellevue
  *
  */
-public abstract class AbstractApiController<D extends AbstractDocument, GR, NR, UR, FER extends AbstractBaseResponse, FR extends AbstractFindResponse<FER>> {
+public abstract class AbstractApiController<D extends AbstractDocument, GR extends AbstractBaseResponse, NR extends AbstractNewRequest, UR extends AbstractNewRequest, FER extends AbstractBaseResponse, FR extends AbstractFindResponse<FER>> {
 
   protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
   
@@ -69,7 +70,7 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR, NR, 
   
   @SuppressWarnings("unchecked")
   @PostConstruct
-  public void postContruct() {
+  public void wireConverters() {
     String domain = StringUtils.remove(this.getClass().getSimpleName(), "Controller").toLowerCase();
     String converterName = domain + "ApiConverter";
     LOGGER.debug("Wire '{}' for {}", converterName, this);
@@ -80,7 +81,7 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR, NR, 
   @Permission(scopes = { OAuth2ScopeApi.WRITE })
   public ResponseEntity<GR> create(@RequestBody(required = true) NR req) {
     return new ResponseEntity<GR>(this.apiConverter.convertToGetResponse(
-        this.repository.save(this.apiConverter.convertNewRequestContent(req))), HttpStatus.CREATED);
+        this.repository.save(this.apiConverter.convertNewRequestContentToDcoument(req))), HttpStatus.CREATED);
   }
   
   
@@ -227,7 +228,7 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR, NR, 
       
       if (result.hasContent()) {
         for (D doc : result.getContent()) {
-          response.getItems().add(this.apiConverter.convertToFindDocument(doc));
+          response.getItems().add(this.apiConverter.convertToFindElementResponse(doc));
         }
       }
       
