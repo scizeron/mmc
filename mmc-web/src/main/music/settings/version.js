@@ -1,1 +1,1 @@
-var siteInfos = { 'version' : '0.0.1'};
+var siteInfos = { 'version' : 'DEV'};

@@ -98,9 +98,9 @@ function Nav() {
  * @param page
  * @returns {___anonymous2351_2353}
  */
-function newNavFromMusicListResponse(response, index, page) {
+function newNavFromListResponse(response, type, index, page) {
  var nav = new Nav();
- nav.type = 'music';
+ nav.type = type;
  nav.totalPages = response.totalPages;
  nav.page = response.page;
  nav.pageSize = (response.docs == null) ? 0 : response.docs.length;
@@ -160,23 +160,21 @@ function() {
 
 angular.module('mmcApp').factory('appService', [ '$rootScope', 'musicService', 'utils', '$q', function($rootScope, musicService, utils,  $q) {
  return { 
+  init : function() {
+   utils.debug('******************************** INIT APP ********************************');
+   $rootScope.app = new App();	
+   $rootScope.nav = new Nav();
+   $rootScope.user = this.newUser(false,false); 
+   utils.debug('- app:' + JSON.stringify($rootScope.app));
+   utils.debug('- nav:' + JSON.stringify($rootScope.nav));
+   utils.debug('**************************************************************************');
+  },
   newUser : function(loggedInUser, loggedInAdminUser, user) {
    if (typeof(user) != 'undefined') { 
     return { 'loggedInUser' : loggedInUser, 'loggedInAdminUser' : loggedInAdminUser, 'usr' : user};
    } else {
 	return { 'loggedInUser' : loggedInUser, 'loggedInAdminUser' : loggedInAdminUser, 'usr' : null};
    }
-  },
-  init : function() {
-   utils.debug('******************************** INIT APP ********************************');
-   var app = $rootScope.app;
-   $rootScope.app = new App();	
-   $rootScope.nav = new Nav();
-   $rootScope.user = this.newUser(false,false); 
-   
-   utils.debug('- app:' + JSON.stringify(this.app()));
-   utils.debug('- nav:' + JSON.stringify(this.nav()));
-   utils.debug('**************************************************************************');
   },
   user : function() {
    return $rootScope.user;
@@ -197,42 +195,43 @@ angular.module('mmcApp').factory('appService', [ '$rootScope', 'musicService', '
   setNav : function(nav) {
    $rootScope.nav = nav; 
   }, 
-  navMusicDoc : function(navCallback) {
+  navigate : function(navCallback) {
    var newIndex = this.nav().index;
    var newPage = this.nav().page;
-   musicService.getDocs(this.app().query, newPage, true, 'json', function(response) {
-	var nav = newNavFromMusicListResponse(response, newIndex, newPage);
+   var type = this.app().universe;
+   musicService.getDocs(this.app().query, newPage, true, type, 'json', function(response) {
+	var nav = newNavFromListResponse(response, type, newIndex, newPage);
 	$rootScope.nav = nav;
 	navCallback(nav);
    });
   }, 
-  nextMusicDoc : function(navCallback) {
+  nextDoc : function(navCallback) {
    if (this.nav().hasNext()) {
-    this.navMusicDoc(navCallback);
+    this.navigate(navCallback);
    }
   },
-  previousMusicDoc : function(navCallback) {
+  previousDoc : function(navCallback) {
    if (this.nav().hasPrevious()) {
-    this.navMusicDoc(navCallback);
+    this.navigate(navCallback);
    }
   },
-  nextMusicDocPage : function(navCallback) {
+  nextPage : function(navCallback) {
    if (this.nav().hasNextPage()) {  
-	this.navMusicDoc(navCallback);   
+	this.navigate(navCallback);   
    }	  
   },
-  previousMusicDocPage : function(navCallback) {
+  previousPage : function(navCallback) {
    if (this.nav().hasPreviousPage(0)) {  
-	this.navMusicDoc(navCallback);   
+	this.navigate(navCallback);   
    }
   },   
-  firstMusicDocPage : function(navCallback) {
+  firstPage : function(navCallback) {
    this.nav().first();
-   this.navMusicDoc(navCallback);  
+   this.navigate(navCallback);  
   },
-  lastMusicDocPage : function(navCallback) {
+  lastPage : function(navCallback) {
    this.nav().last();
-   this.navMusicDoc(navCallback);	  
+   this.navigate(navCallback);	  
   }
  }
 }]);

@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('mmcApp').controller('musicEditResultCtrl', function($scope, $modalInstance, utils, result) {
+angular.module('mmcApp').controller('bookEditResultCtrl', function($scope, $modalInstance, utils, result) {
  $scope.result = result;
- utils.debug('musicEditResultCtrl doc: ' + JSON.stringify(result));
+ utils.debug('bookEditResultCtrl doc: ' + JSON.stringify(result));
 
  /**
   * 
@@ -24,7 +24,7 @@ angular.module('mmcApp').controller('musicEditResultCtrl', function($scope, $mod
 });
 
 angular.module('mmcApp')
-.controller('musicEditCtrl', ['$document', '$scope', '$rootScope', '$http', '$location', '$routeParams'
+.controller('bookEditCtrl', ['$document', '$scope', '$rootScope', '$http', '$location', '$routeParams'
                                ,'userService', 'musicService', 'refValues', 'utils'
                                , 'appService', '$modal', 
 function($document, $scope, $rootScope, $http, $location, $routeParams
@@ -49,7 +49,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
  $scope.displayPopup = function(booleanResult, docId, action) {
   var modalInstance = $modal.open({
    templateUrl : 'result',
-   controller : 'musicEditResultCtrl',
+   controller : 'bookEditResultCtrl',
    resolve: {
     result: function () {
  	 return {'ok' : booleanResult, 'id' : docId, 'action' : action};  
@@ -62,9 +62,9 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
 	var callback = function() {
 	 $location.path('/music_list');
 	};
-	musicService.remove($scope.doc.id, 'music', callback, callback);	   
+	musicService.remove($scope.doc.id, 'book', callback, callback);	   
    } else if ('back' == event) {
-    $location.path('/music_view/' + $scope.result.id);  
+    $location.path('/book_view/' + $scope.result.id);  
    }
    utils.debug(event);	  
   });
@@ -175,28 +175,18 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.selectTab(tabId); 
   $scope.countries = refValues.getCountries();
   $scope.grades = refValues.getGrades();
-  $scope.nbTypeRange = refValues.getNbTypeRange();
   $scope.years = refValues.getYears();
   $scope.months = refValues.getMonths();
   $scope.defaultMusicCountry = settings.music.defaultCountry;
-  $scope.types = settings.music.types;
   $scope.selectedImages = [];
   $scope.fileItems = [];
   $scope.newPrice = {};
   $scope.updatePrice = {};
   $scope.updatePrices = [];
-  $scope.colors = refValues.getColors(); 
-  $scope.newMatrice = {'disc':'', 'side' : 'A', 'value':''};
-  musicService.getDoc(docId, 'music', function(response) {
+  musicService.getDoc(docId, 'book', function(response) {
    $scope.doc = response;
    $scope.initSelectedImages();
    $scope.initUpdatePrices();
-   $scope.matrices = [];
-   if ($scope.doc.sideMatrixes != null) {
-    for (var i=0; i < $scope.doc.sideMatrixes.length; i++) {
-     $scope.matrices.push({'disc': $scope.doc.sideMatrixes[i].disc, 'side': $scope.doc.sideMatrixes[i].side, 'value' : $scope.doc.sideMatrixes[i].value});  
-	}   
-   }
   }, function() {
 	$scope.displayPopup(false, docId, 'edit');	 
   });
@@ -214,9 +204,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   */
  $scope.update = function() {
   utils.debug('"Update: ' + JSON.stringify($scope.doc));
-  // matrices
-  $scope.doc.sideMatrixes = $scope.matrices;
-  musicService.updateDoc($scope.doc, 'music', function(response) {
+  musicService.updateDoc($scope.doc, 'book', function(response) {
 	$scope.displayPopup(true, $scope.doc.id, 'save');
 	$scope.doc = response;
 	$scope.initUpdatePrices();
@@ -247,7 +235,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   var docId = $scope.doc.id;
   utils.debug('upload "' + fileItem.file.name + '", doc: "' + docId + '"');
   fileItem.status='p';
-  musicService.uploadPhoto(docId, 'music', fileItem.file, function(photo) {
+  musicService.uploadPhoto(docId, 'book', fileItem.file, function(photo) {
    utils.debug('upload ok "' + fileItem.file.name + '"');
    fileItem.status='o';
    // MAJ LIST
@@ -273,7 +261,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   }
   
   if (selectedPhotoIds.length > 0) {
-   musicService.removePhotos($scope.doc.id, 'music', selectedPhotoIds, function(doc) {
+   musicService.removePhotos($scope.doc.id, 'book', selectedPhotoIds, function(doc) {
 	utils.debug("removePhotos " + selectedPhotoIds + " ok"); 
 	$scope.doc = doc;
    }, function() {
@@ -296,7 +284,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.view = function() {
-  $location.path('/music_view/' + $scope.doc.id);
+  $location.path('/book_view/' + $scope.doc.id);
  };
  
  /**
@@ -358,27 +346,8 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   */
  $scope.uploadImages = function() {
   utils.debug($scope.doc.id);
-  var uri = '/music_edit/' + $scope.doc.id;	 
+  var uri = '/book_edit/' + $scope.doc.id;	 
   $location.path(uri); 
- };
- 
- /**
-  * 
-  */
- $scope.addNewMatrice = function() {
-  if ($scope.newMatrice.value != '') {
-   utils.debug('Add matrice : ' + JSON.stringify($scope.newMatrice));
-   $scope.matrices.push($scope.newMatrice);
-   $scope.newMatrice = {'disc':'', 'side' : 'A', 'value':''};
-  }
- };
- 
- /**
-  * 
-  */
- $scope.removeMatrice = function(index) {
-  utils.debug('removeMatrice:' + JSON.stringify($scope.matrices[index]));
-  $scope.matrices.splice(index, 1);
  };
 
  $scope.edit($routeParams.musicDocId, $routeParams.tabId);

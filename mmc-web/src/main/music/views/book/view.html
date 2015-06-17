@@ -1,0 +1,45 @@
+<div class="row" id="mainRow">
+ <div class="col-md-12" id="mainRowCol">
+  <div class="col-md-5" id="mainLeftPart">
+   <img id="zomImage" ng-jet-zoom class="jetzoom" ng-src="{{currentImage.m.url}}"
+        data-large-image="{{currentImage.o.url}}"
+        height="{{currentImage.m.height}}" width="{{currentImage.m.width}}"
+        style="border: 1px solid black; margin-right: 3em; margin-bottom: 2em; background-color: white"/>
+  </div>
+  <div ng-class="mainRightPartClazz" id="mainRightPart">
+   <div class="row" ng-class="titleBar"> 
+    <div class="col-md-12">
+     <h1>{{doc.title}}
+      <div class="btn-group" style="float: right;">
+       <button type="button" ng-click="gotoFind()" class="btn">Back</button>
+       <button ng-click="gotoEdit()" ng-show="canEdit" class="btn btn-primary">Edit</button>
+      </div>
+     </h1>
+    </div>
+   </div>   
+   <div class="row" id="infos">
+    <div class="col-md-7">
+     <div class="row"  ng-repeat="info in infos">
+      <div class="col-md-12" ng-if="$index == 1"><img ng-src="images/country/24/{{doc.origin}}.png"/> {{info}}</div>
+      <div class="col-md-12" ng-if="$index == 2 && doc.vinylColor != null"><img ng-src="images/vinyls/{{doc.vinylColor.replace('#','')}}.png"/> {{info}}</div>
+      <div class="col-md-12" ng-if="$index != 1 && $index != 2"> {{info}}</div>
+     </div>
+    </div>
+    <div class="col-md-3">
+	 <div ng-show="doc.globalRating">
+   	  <img src="images/rating/book.png" title="{{doc.globalRatingTip}}" style="margin-right: 5px;"/><img ng-src="images/rating/rating{{doc.globalRating}}.png" title="{{doc.globalRatingTip}}"/>
+     </div>
+    </div>
+   </div>
+   <div class="row" id="gallery">
+    <div class="col-md-12" style="margin-top: 15px;">
+  	 <ul class="images">
+  	  <li ng-repeat="image in doc.images">
+       <img ng-src="{{image.details.t.url}}" ng-click="setCurrentImage($index)" ng-class="{ 'selectedThumb': $index == currentImagePos }"/>
+      </li>
+     </ul>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>

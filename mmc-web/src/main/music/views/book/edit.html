@@ -1,0 +1,72 @@
+<script type="text/ng-template" id="result">
+ <div class="modal-header"></div>
+ <div ng-show="'save' == result.action">
+  <div class="modal-body alert alert-info" ng-show="result.ok">
+   <span class="glyphicon glyphicon-ok-sign"></span> <strong>{{result.id}}</strong> is saved.
+  </div>
+  <div class="modal-body alert alert-danger" ng-show="!result.ok">
+   <span class="glyphicon glyphicon-remove-sign"></span><strong> Error</strong>
+  </div>
+  <div class="modal-footer" ng-show="result.ok">
+   <button class="btn btn-primary" ng-click="closePopup()">Close</button>
+  </div>
+  <div class="modal-footer" ng-show="!result.ok">
+   <button class="btn btn-danger" ng-click="closePopup()">Close</button>
+  </div>
+</div>
+<div ng-show="'edit' == result.action">
+ <div class="modal-body alert alert-danger" ng-show="!result.ok">
+  <span class="glyphicon glyphicon-remove-sign"></span><strong> Error when loading {{result.id}}</strong>
+ </div>
+ <div class="modal-footer">
+  <button class="btn btn-danger" ng-click="closePopup('back')">Close</button>
+ </div>
+</div>
+<div ng-show="'delete' == result.action">
+ <div class="modal-body alert alert-danger">
+  <span class="glyphicon glyphicon-trash"></span><strong> Continue ?</strong>
+ </div>
+ <div class="modal-footer">
+  <button class="btn btn-danger" ng-click="closePopup('yesdelete')">Yes</button>
+  <button class="btn btn-primary" ng-click="closePopup('nodelete')">No</button>
+ </div>
+</div>
+</script>
+<div class="row">
+ <div class="col-md-12">
+  <div ng-show="doc.title != null && doc.title != ''">
+   <h1>{{doc.title}}
+    <div style="float: right;"> 
+     <div class="btn-group" role="group" style="float: right; margin-left: 15px;" >
+	  <button ng-click="view()" class="btn btn-default">Back</button>
+	  <button ng-click="update()" class="btn btn-primary">Save</button>
+	 </div>    
+    </div>     
+   </h1>
+  </div>
+  <form class="form-horizontal" role="form" ng-submit="update()">
+   <tabset>
+    <tab heading="General" active="tabs[0].active" select="selectTab('general')">
+	 <div style="padding-top: 15px"></div>
+     <ng-include src="'views/book/p_general.html'"></ng-include>
+     <div style="float: right;">
+      <button type="button" class="btn btn-danger" ng-click="remove(doc.id)">Delete</button>
+     </div>
+    </tab>
+    <tab heading="Purchase" active="tabs[1].active" select="selectTab('purchase')">
+     <div style="padding-top: 15px"></div>
+     <ng-include src="'views/book/p_purchase.html'"></ng-include>
+    </tab>
+    <tab heading="Photos" active="tabs[2].active" select="selectTab('photos')">
+     <div style="padding-top: 15px"></div>
+	 <ng-include src="'views/book/p_photos.html'"></ng-include>
+    </tab>
+    <tab active="tabs[3].active" select="selectTab('prices')" ng-show="user.loggedInAdminUser">
+     <tab-heading><span class="glyphicon glyphicon-star"></span> Prices</tab-heading>
+     <div style="padding-top: 15px"></div>
+	 <ng-include src="'views/book/p_prices.html'"></ng-include>
+    </tab>    
+   </tabset>
+  </form>
+ </div>
+</div>

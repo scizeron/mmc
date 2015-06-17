@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('musicListCtrl', ['$scope', 'musicService', 'userService', 'refValues', 'appService', 'utils', 
+.controller('bookListCtrl', ['$scope', 'musicService', 'userService', 'refValues', 'appService', 'utils', 
 function ($scope, musicService, userService, refValues, appService, utils) {
 
  $scope.$on('music', function(event, args) {
@@ -14,7 +14,7 @@ function ($scope, musicService, userService, refValues, appService, utils) {
 	
  $scope.list = function (page) {
   $scope.action = { 'result' : -1};	 
-  musicService.getDocs(appService.app().query, page, false, 'music', 'json', function(response) {
+  musicService.getDocs(appService.app().query, page, false, 'book', 'json', function(response) {
    $scope.totalPages = response.totalPages;
    $scope.action.result = 0; 
    $scope.docsInfos = [];
@@ -30,20 +30,18 @@ function ($scope, musicService, userService, refValues, appService, utils) {
 			 , 'line1' : '', 'line2' : '', 'line3' : ''};
 	 $scope.docsInfos.push(docInfos);
 	 
-	 docInfos.sleeveGrade = doc.sleeveGrade;
-	 docInfos.recordGrade = doc.recordGrade;
-	 docInfos.sleeveGradeTip = refValues.getGradeToString(doc.sleeveGrade);
-	 docInfos.recordGradeTip = refValues.getGradeToString(doc.recordGrade);
-	 docInfos.origin = (doc.origin == null) ? settings.music.defaultCountry : doc.origin;
+	 docInfos.globalRating = doc.globalRating;
+	 docInfos.globalRatingTip = refValues.getGradeToString(doc.globalRating);
+	 docInfos.origin = doc.origin;
 	 
-	 docInfos.line1 = doc.artist;
+	 docInfos.line1 = doc.author;
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.issue);
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.edition, function(value) {
 	  return 'ed. ' + value;   
      });
-	 docInfos.line2 = appendToLine(docInfos.line2, doc.mainType, function(value) {
+	 docInfos.line2 = appendToLine(docInfos.line2, doc.nbPages, function(value) {
       if (doc.nbType != null && doc.nbType > 1) {
-       return doc.nbType + ' ' + value;
+       return value + ' page(s)';
 	  }
       return value;	
      });
@@ -54,8 +52,8 @@ function ($scope, musicService, userService, refValues, appService, utils) {
    
 	 docInfos.line3 = appendToLine(docInfos.line3, doc.recordCompany);
 	 docInfos.line3 = appendToLine(docInfos.line3, doc.label);
-   	 docInfos.line3 = appendToLine(docInfos.line3, doc.serialNumber, function(value) {
-	  return 'N°' + value;   
+   	 docInfos.line3 = appendToLine(docInfos.line3, doc.isbn, function(value) {
+	  return 'ISBN ' + value;   
      });
 	 docInfos.line3 = appendToLine(docInfos.line3, doc.pubNum, function(value) {
 	  return 'Limited Edition : ' + value + '/' + doc.pubTotal;   
@@ -87,17 +85,17 @@ function ($scope, musicService, userService, refValues, appService, utils) {
   });
  };
 
- musicService.clearCache('music');
+ musicService.clearCache('book');
  $scope.list(0);
  
 }]);
 
 
-angular.module('mmcApp').controller('musicListingCtrl', ['$scope', 'appService', 'musicService', '$sce', 
+angular.module('mmcApp').controller('bookListingCtrl', ['$scope', 'appService', 'musicService', '$sce', 
 function ($scope, appService, musicService, $sce) {
  $scope.wating = true;
  $scope.listing=true;
- musicService.getDocs(appService.app().query, -1, false, 'music', 'pdf', function(response) {
+ musicService.getDocs(appService.app().query, -1, false, 'book', 'pdf', function(response) {
   $scope.listing = $sce.trustAsResourceUrl(URL.createObjectURL(new Blob([response], {type: 'application/pdf'})));
   $scope.wating = false;
  });

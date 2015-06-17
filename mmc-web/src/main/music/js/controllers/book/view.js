@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mmcApp').controller('musicViewCtrl', 
+angular.module('mmcApp').controller('bookViewCtrl', 
 		['$document', '$scope', '$rootScope', '$http', '$location', '$routeParams'
         ,'userService', 'musicService', 'refValues', 'utils', 'appService', 
 function($document, $scope, $rootScope, $http, $location, $routeParams
@@ -15,7 +15,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   $scope.currentImagePos = 0;
   $scope.canEdit = userService.userHasRole('WRITE');
   $scope.mainRightPartClazz = "col-md-7";
-  musicService.getDoc(docId, 'music', function(response) {
+  musicService.getDoc(docId, 'book', function(response) {
    $scope.doc = response;
   
    if ($scope.doc.images != null && $scope.doc.images.length > 0) {
@@ -25,25 +25,18 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
 	$scope.setCurrentImage(-1);
    }
 
-   $scope.doc.sleeveGradeTip = refValues.getGradeToString($scope.doc.sleeveGrade);
-   $scope.doc.recordGradeTip = refValues.getGradeToString($scope.doc.recordGrade);
-  
+   $scope.doc.globalRatingTip = refValues.getGradeToString($scope.doc.globalRating);
+    
    $scope.infos = []
    for (var i=0; i < 4; i++) {
 	$scope.infos.push('');   
    }
    
-   $scope.doc.origin = (response.origin == null) ? settings.music.defaultCountry : response.origin;
+   $scope.doc.origin = response.origin;
    
-   $scope.infos[0] = response.artist;
+   $scope.infos[0] = response.author;
    $scope.infos[1] = appendToLine($scope.infos[1], response.issue);
     
-   $scope.infos[1] = appendToLine($scope.infos[1], response.mainType, function(value) {
-    if (response.nbType != null && response.nbType > 1) {
-     return response.nbType + ' ' + value;
-    }
-    return value;	
-   });
    
    $scope.infos[1] = appendToLine($scope.infos[1], response.reEdition, function(value) {
 	return value ? 're-edition' : '';   
@@ -53,16 +46,15 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
     return value == true ? 'promo' : '';   
    });
    
-   $scope.infos[2] = appendToLine($scope.infos[2], response.serialNumber, function(value) {
-    return 'N° ' + value;   
+   $scope.infos[2] = appendToLine($scope.infos[2], response.isbn, function(value) {
+    return 'ISBN ' + value;   
    });
    
    $scope.infos[2] = appendToLine($scope.infos[2], response.pubNum, function(value) {
     return ' [Limited Edition : ' + value + '/' + response.pubTotal + ']';   
    });
 
-   $scope.infos[3] = appendToLine($scope.infos[3], response.recordCompany);
-   $scope.infos[3] = appendToLine($scope.infos[3], response.label);
+   $scope.infos[3] = appendToLine($scope.infos[3], response.description);
    
    for (var j= $scope.infos.length-1; j>=0; j--) {
     if ($scope.infos[j] == '') {
@@ -113,16 +105,16 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.gotoEdit = function() {
-  $location.path('/music_edit/' + $scope.doc.id);
+  $location.path('/book_edit/' + $scope.doc.id);
  };
  
  /**
   * 
   */
  $scope.gotoFind = function() {
-  $location.path('/music_list');
+  $location.path('/book_list');
  }; 
  
- $scope.view($routeParams.musicDocId);
+ $scope.view($routeParams.bookDocId);
 
 }]);

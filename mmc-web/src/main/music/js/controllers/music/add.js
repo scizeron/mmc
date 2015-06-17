@@ -88,7 +88,7 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
    }
   }
 	 
-  musicService.addDoc($scope.doc, function(response) {
+  musicService.addDoc($scope.doc, 'music', function(response) {
    $scope.doc = response; 
    $scope.submitCallback(true, response);
   }, function() {

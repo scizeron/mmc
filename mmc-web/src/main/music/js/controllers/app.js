@@ -38,100 +38,78 @@ function ($rootScope, $scope, $location, userService, utils, refValues, appServi
   app.query = query;
   // en fonction de l'univers, on redirige sur la page de recherche
   // si aucun univers selectionne par ex, on est sur la home, on fait une recherche sur tous les indexes
-  if ('music' == app.universe) {
-   if ($location.path() != '/music_list') {
-	$location.path('/music_list');
-   } else {
-	$scope.$broadcast('music');   
-   }
+  if ('music' == app.universe && $location.path() != '/music_list') {
+   $location.path('/music_list');
+  } else if ('book' == app.universe && $location.path() != '/book_list') {
+   $location.path('/book_list');
+  } else if ('misc' == app.universe && $location.path() != '/merchandising_list') {
+   $location.path('/merchandising_list');	  
   }
  };
  
  $scope.getPath = function() {
-	 // regex
-  if ($location.path().indexOf('/music_view') == 0) {
-	return '/music_view';  
-  } else if ($location.path().indexOf('/music_edit') == 0) {
-	return '/music_edit';  
-  }
- }
+  return '/' + appService.app().universe + '_view'; 
+ };
 
  /**
   * 
   */
  $scope.navigate = function(nav) {
-  var newPath = $scope.getPath() + '/' + nav.id;
-  if (appService.app().selectedTab != null &&  $scope.getPath().indexOf('/music_edit') == 0) {
-   newPath = newPath + '/' + appService.app().selectedTab;  
-  }
-  $location.path(newPath); 
+  $location.path('/' + appService.app().universe + '_view/' + nav.id); 
  };
  
  /**
   * 
   */
  $scope.nextPage = function() {
-  if ('music' == app.universe) {	 
-   appService.nextMusicDocPage(function(nav) {
-    $scope.navigate(nav);
-   });
-  }
+  appService.nextPage(function(nav) {
+   $scope.navigate(nav);
+  });
  }; 
 
  /**
   * 
   */
  $scope.previousPage = function() {
-  if ('music' == app.universe) {
-   appService.previousMusicDocPage(function(nav) {
-    $scope.navigate(nav);
-   });
-  }
+  appService.previousPage(function(nav) {
+   $scope.navigate(nav);
+  });
  }; 
  
  /**
   * 
   */
  $scope.first = function() {
-  if ('music' == app.universe) {
-   appService.firstMusicDocPage(function(nav) {
-    $scope.navigate(nav);
-   });
-  }
+  appService.firstPage(function(nav) {
+   $scope.navigate(nav);
+  });
  }; 
  
  /**
   * 
   */
  $scope.last = function() {
-  if ('music' == app.universe) {	 
-   appService.lastMusicDocPage(function(nav) {
-    $scope.navigate(nav);
-   });
-  }
+  appService.lastPage(function(nav) {
+   $scope.navigate(nav);
+  });
  }; 
  
  /**
   * 
   */
  $scope.next = function() {
-  if ('music' == app.universe) {	 
-   appService.nextMusicDoc(function(nav) {
-    $scope.navigate(nav);
-   });
-  }
+  appService.nextDoc(function(nav) {
+   $scope.navigate(nav);
+  });
  };
  
  /**
   * 
   */
  $scope.previous = function() {
-  if ('music' == app.universe) {
-   appService.previousMusicDoc(function(nav) {
-    $scope.navigate(nav);
-   });
-  }
+  appService.previousDoc(function(nav) {
+   $scope.navigate(nav);
+  });
  }; 
- 
  
 }]);

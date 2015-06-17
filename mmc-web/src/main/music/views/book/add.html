@@ -1,0 +1,46 @@
+<div class="container-fluid">
+ <script type="text/ng-template" id="result">
+  <div class="modal-header"></div>
+  <div class="modal-body alert alert-success" ng-show="result.ok">
+   <span class="glyphicon glyphicon-ok-sign"></span> <strong>{{result.id}}</strong> is created.
+  </div>
+  <div class="modal-body alert alert-danger" ng-show="!result.ok">
+   <span class="glyphicon glyphicon-remove-sign"></span><strong> Error</strong>
+  </div>
+  <div class="modal-footer" ng-show="result.ok">
+   <button class="btn btn-success" ng-click="addPhotos()">Add photo(s)</button>
+   <button class="btn btn-primary" ng-click="newDoc()">New</button>
+  </div>
+  <div class="modal-footer" ng-show="!result.ok">
+   <button class="btn btn-danger" ng-click="newDoc()">Close</button>
+  </div>
+ </script>
+ <div class="row">
+  <div class="col-md-12">
+   <div ng-show="doc.title != null && doc.title != ''">
+    <h1>{{doc.title}}
+     <div class="btn-group" role="group" style="float: right;">
+      <button class="btn btn-default" ng-click="cancel()">Reset</button>
+      <button class="btn btn-primary" ng-click="submit()">Save</button>
+     </div>
+    </h1>
+   </div>
+  </div>
+ </div>
+ <div class="row">
+  <div class="col-md-12">
+   <form class="form-horizontal" role="form" ng-submit="submit()">
+    <tabset>
+     <tab heading="General">
+      <div style="padding-top: 15px"></div>
+      <ng-include src="'views/book/p_general.html'"></ng-include>
+     </tab>
+     <tab heading="Purchase">
+      <div style="padding-top: 15px"></div>
+      <ng-include src="'views/book/p_purchase.html'"></ng-include>
+     </tab>
+    </tabset>
+   </form>
+  </div>
+ </div>
+</div>

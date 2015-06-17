@@ -1,4 +1,4 @@
-package com.stfciz.mmc.web.service;
+package com.stfciz.mmc.web.service.impl;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -11,6 +11,8 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ResultsExtractor;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Component;
+
+import com.stfciz.mmc.web.service.AggregationService;
 
 @Component
 public class AggregationServiceImpl implements AggregationService {

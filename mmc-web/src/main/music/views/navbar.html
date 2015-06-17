@@ -19,10 +19,15 @@
        <li class="divider" ng-show="user.loggedInAdminUser"></li>
        <li><a href="#/music_listing" ng-show="user.loggedInAdminUser"><span class="glyphicon glyphicon-star"></span> Listing</a></li>
        <li><a href="#/music_admin_photos" ng-show="user.loggedInAdminUser"><span class="glyphicon glyphicon-star"></span> Photos</a></li>
-       </li>
       </ul>     
      </li>
-     <li ng-class="{ active: navIsActive('/book')}"><a href="#/book"><span class="glyphicon glyphicon-book"></span> Book</a></li>
+     <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Book<b class="caret"></b></a>
+      <ul class="dropdown-menu">
+       <li><a href="#/book_add">Add</a></li>
+       <li><a href="#/book_list">Find</a></li>
+      </ul>
+     </li>
      <li ng-class="{ active: navIsActive('/merchandising')}"><a href="#/merchandising"><span class="glyphicon glyphicon-th-list"></span> Merchandising</a></li>
     </ul>
    </div> 

@@ -42,6 +42,7 @@ import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
 import com.stfciz.mmc.web.oauth2.Permission;
 import com.stfciz.mmc.web.oauth2.UserRole;
+import com.stfciz.mmc.web.service.FindRequestHandler;
 /**
  * 
  * @author Bellevue
@@ -50,6 +51,9 @@ import com.stfciz.mmc.web.oauth2.UserRole;
 public abstract class AbstractApiController<D extends AbstractDocument, GR extends AbstractBaseResponse, NR extends AbstractNewRequest, UR extends AbstractNewRequest, FER extends AbstractBaseResponse, FR extends AbstractFindResponse<FER>> {
 
   protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
+
+  @Autowired
+  private ApplicationContext applicationContext;
   
   @Autowired
   private CoreConfiguration configuration;
@@ -65,16 +69,20 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
   
   private AbstractApiConverter<D, GR, NR, UR, FER, FR> apiConverter;
   
-  @Autowired
-  private ApplicationContext applicationContext;
-  
+  private FindRequestHandler findRequestQueryHander;
+ 
   @SuppressWarnings("unchecked")
   @PostConstruct
-  public void wireConverters() {
+  public void wireCollaborators() {
     String domain = StringUtils.remove(this.getClass().getSimpleName(), "Controller").toLowerCase();
+
     String converterName = domain + "ApiConverter";
     LOGGER.debug("Wire '{}' for {}", converterName, this);
     this.apiConverter = (AbstractApiConverter<D, GR, NR, UR, FER, FR>) this.applicationContext.getBean(converterName);
+    
+    String findRequestHandlerName = domain + "FindRequestHandler";
+    LOGGER.debug("Wire '{}' for {}", findRequestHandlerName, this);
+    this.findRequestQueryHander = (FindRequestHandler) this.applicationContext.getBean(findRequestHandlerName);
   }
   
   @RequestMapping(method = RequestMethod.POST)
@@ -177,9 +185,14 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
   @Permission(scopes = { OAuth2ScopeApi.READ })
   public FR find(
       @RequestParam(value = "q", required = false) String query,
+      @RequestParam(value = "i", required = false) String index,
       @RequestParam(value = "p", required = false, defaultValue = "0") int page,
       @RequestParam(value = "s", required = false, defaultValue = "50") int pageSize) {
-
+    
+    if (index == null) {
+      index = "music";
+    }
+    
     PageRequest pageable = null;
     Page<D> result = null;
     boolean singlePage = (page == -1);
@@ -199,20 +212,14 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
       if (StringUtils.isBlank(query)) {
         Sort sort = new Sort(new  Sort.Order(Sort.Direction.DESC, "modified"));
         if (singlePage) {
-          sort = new Sort(new  Sort.Order(Sort.Direction.ASC, "artist")
-                        , new  Sort.Order(Sort.Direction.ASC, "title"));
+          sort = this.findRequestQueryHander.getSort(index);
         }
         
         result = this.repository.findAll(new PageRequest(page, pageSize, sort));
       } else {
-        pageable = new PageRequest(page, pageSize
-            , new Sort(new  Sort.Order(Sort.Direction.ASC, "artist")
-                     , new  Sort.Order(Sort.Direction.ASC, "title")
-        ));
+        pageable = new PageRequest(page, pageSize, this.findRequestQueryHander.getSort(index));
         QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(query);
-        queryBuilder.field("title");
-        queryBuilder.field("artist");
-        queryBuilder.defaultOperator(QueryStringQueryBuilder.Operator.OR);
+        this.findRequestQueryHander.customizeQueryStringQueryBuilder(queryBuilder);
         result = this.repository.search(queryBuilder, pageable);
       }
             

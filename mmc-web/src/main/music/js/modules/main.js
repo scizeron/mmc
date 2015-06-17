@@ -26,19 +26,18 @@ angular.module('mmcApp', [
    templateUrl: 'views/home.html',
    controller: 'appCtrl',
   }).  
-  when('/music_list', {
-   templateUrl: 'views/music/list.html',
-   controller: 'musicListCtrl'
-  }).
-  when('/music_listing', {
-   templateUrl: 'views/admin/music/list.html',
-   controller: 'musicListingCtrl',
-   role: 'admin'
-  }).  
   when('/music_add', {
    templateUrl: 'views/music/add.html',
    controller: 'musicAddCtrl'
   }).		 
+  when('/music_list', {
+   templateUrl: 'views/music/list.html',
+   controller: 'musicListCtrl'
+  }).
+  when('/music_view/:musicDocId', {
+   templateUrl: 'views/music/view.html',
+   controller: 'musicViewCtrl'
+  }).
   when('/music_edit/:musicDocId', {
    templateUrl: 'views/music/edit.html',
    controller: 'musicEditCtrl',
@@ -49,15 +48,38 @@ angular.module('mmcApp', [
    controller: 'musicEditCtrl',
    role: 'write'
   }).
-  when('/music_view/:musicDocId', {
-   templateUrl: 'views/music/view.html',
-   controller: 'musicViewCtrl'
-  }).
+  when('/music_listing', {
+   templateUrl: 'views/admin/music/list.html',
+   controller: 'musicListingCtrl',
+   role: 'admin'
+  }).  
   when('/music_admin_photos', {
    templateUrl: 'views/admin/photos.html',
    controller: 'adminPhotosCtrl',
    role: 'admin'
   }).
+  when('/book_add', {
+   templateUrl: 'views/book/add.html',
+   controller: 'bookAddCtrl'
+  }).  
+  when('/book_list', {
+   templateUrl: 'views/book/list.html',
+   controller: 'bookListCtrl'
+  }).  
+  when('/book_view/:bookDocId', {
+   templateUrl: 'views/book/view.html',
+   controller: 'bookViewCtrl'
+  }).  
+  when('/book_edit/:musicDocId', {
+   templateUrl: 'views/book/edit.html',
+   controller: 'bookEditCtrl',
+   role: 'write'
+  }).
+  when('/book_edit/:musicDocId/:tabId', {
+   templateUrl: 'views/book/edit.html',
+   controller: 'bookEditCtrl',
+   role: 'write'
+  }).  
   otherwise({
    redirectTo: '/home',
    role: 'anonymous',
@@ -73,13 +95,6 @@ angular.module('mmcApp', [
  
  $rootScope.$on( "$routeChangeStart", function(event, next, current) { 
   var app = appService.app();
-  
-  utils.debug('********************************** NEXT **********************************');
-  utils.debug('- app  : ' + JSON.stringify(app));
-  utils.debug('- nav  : ' + JSON.stringify(appService.nav()));
-  utils.debug('- next : ' + JSON.stringify(next));
-  utils.debug('**************************************************************************');
-  
   var nextPath = (typeof(next.$$route) != 'undefined') ? next.$$route.originalPath : '/home';
   
   if (nextPath == '/logout') {
@@ -89,20 +104,33 @@ angular.module('mmcApp', [
    return;
   }
   
-  var expectedRole = (typeof(next.$$route) != 'undefined' && typeof(next.$$route.role) != 'undefined') ? next.$$route.role : 'read';
-  var universe = 'music';
-  var jumbotron = false;
+  appService.setUser(userService.getUser());
+  
+  if (nextPath == '/music_list') {
+   app.universe = 'music';  
+  } else if (nextPath == '/book_list') {
+   app.universe = 'book';	  
+  } else if (nextPath == '/merchandising_list') {
+   app.universe = 'misc';	  
+  }
 
   if (nextPath == '' || nextPath == '/' || nextPath == '/home') {
    expectedRole = 'anonymous';
-   jumbotron = true;
+   app.jumbotron = true;
+  } else {
+   app.jumbotron = false;	  
   }
-  
-  appService.setUser(userService.getUser());
-  app.jumbotron = jumbotron;
-  app.universe = universe;
 
-  utils.debug('expectedRole: ' + expectedRole + ' for "' + nextPath + '"');
+  utils.debug('********************************** NEXT **********************************');
+  utils.debug('- app              : ' + JSON.stringify(app));
+  utils.debug('- nav              : ' + JSON.stringify(appService.nav()));
+  utils.debug('- next             : ' + JSON.stringify(next));
+  utils.debug('- $location.path() : ' + $location.path());
+  utils.debug('**************************************************************************');
+
+  
+  var expectedRole = (typeof(next.$$route) != 'undefined' && typeof(next.$$route.role) != 'undefined') ? next.$$route.role : 'read';
+  utils.debug('- expected role    : "' + expectedRole + '" for "' + nextPath + '"');
   
   if (expectedRole == 'anonymous') {
    utils.debug('anonymous access to "' + nextPath + '"');
@@ -122,10 +150,7 @@ angular.module('mmcApp', [
    }
   } 
   
-  if ($location.path().indexOf('/music_view') == 0 
-   || $location.path().indexOf('/book_view') == 0 
-   || $location.path().indexOf('/merchandising_view') == 0 
-  ) {
+  if (nextPath.indexOf('_view/') > 0) {
    $rootScope.$broadcast('showItemsNavBar', true);  
   } else {
    $rootScope.$broadcast('showItemsNavBar', false);
