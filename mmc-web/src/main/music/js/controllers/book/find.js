@@ -36,22 +36,15 @@ function ($scope, musicService, userService, refValues, appService, utils) {
 	 
 	 docInfos.line1 = doc.author;
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.issue);
-	 docInfos.line2 = appendToLine(docInfos.line2, doc.edition, function(value) {
-	  return 'ed. ' + value;   
-     });
+
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.nbPages, function(value) {
-      if (doc.nbType != null && doc.nbType > 1) {
-       return value + ' page(s)';
-	  }
-      return value;	
+      return value + ' page(s)';
      });
   
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.promo, function(value) {
 	  return value == true ? 'promo' : '';   
      });
    
-	 docInfos.line3 = appendToLine(docInfos.line3, doc.recordCompany);
-	 docInfos.line3 = appendToLine(docInfos.line3, doc.label);
    	 docInfos.line3 = appendToLine(docInfos.line3, doc.isbn, function(value) {
 	  return 'ISBN ' + value;   
      });

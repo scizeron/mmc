@@ -27,20 +27,18 @@ function ($scope, musicService, userService, refValues, appService, utils) {
 	 var doc = response.docs[idxDoc];
 	 var lines = [];
 	 var docInfos = {'id' : doc.id, 'url' : doc.thumbImageUrl, 'title' : doc.title
-			 , 'line1' : '', 'line2' : '', 'line3' : ''};
+			 , 'line1' : '', 'line2' : '', 'line3' : '', 'line4' : ''};
 	 $scope.docsInfos.push(docInfos);
 	 
 	 docInfos.sleeveGrade = doc.sleeveGrade;
 	 docInfos.recordGrade = doc.recordGrade;
 	 docInfos.sleeveGradeTip = refValues.getGradeToString(doc.sleeveGrade);
 	 docInfos.recordGradeTip = refValues.getGradeToString(doc.recordGrade);
-	 docInfos.origin = (doc.origin == null) ? settings.music.defaultCountry : doc.origin;
+	 docInfos.origin = doc.origin;
 	 
 	 docInfos.line1 = doc.artist;
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.issue);
-	 docInfos.line2 = appendToLine(docInfos.line2, doc.edition, function(value) {
-	  return 'ed. ' + value;   
-     });
+
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.mainType, function(value) {
       if (doc.nbType != null && doc.nbType > 1) {
        return doc.nbType + ' ' + value;
@@ -48,18 +46,23 @@ function ($scope, musicService, userService, refValues, appService, utils) {
       return value;	
      });
   
+	 docInfos.line2 = appendToLine(docInfos.line2, response.reEdition, function(value) {
+   	  return value ? 're-edition' : '';   
+     });  
+	 
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.promo, function(value) {
 	  return value == true ? 'promo' : '';   
      });
    
-	 docInfos.line3 = appendToLine(docInfos.line3, doc.recordCompany);
-	 docInfos.line3 = appendToLine(docInfos.line3, doc.label);
    	 docInfos.line3 = appendToLine(docInfos.line3, doc.serialNumber, function(value) {
 	  return 'N°' + value;   
      });
 	 docInfos.line3 = appendToLine(docInfos.line3, doc.pubNum, function(value) {
 	  return 'Limited Edition : ' + value + '/' + doc.pubTotal;   
      });
+	 
+	 docInfos.line4 = appendToLine(docInfos.line4, doc.recordCompany);
+	 docInfos.line4 = appendToLine(docInfos.line4, doc.label);
    }
    
    var navigHtml = '';

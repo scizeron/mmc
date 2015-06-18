@@ -43,6 +43,7 @@ public class BookApiConverter extends AbstractApiConverter<BookDocument, GetResp
     target.setDistributer(request.getDistributer());
     target.setIsbn(request.getIsbn());
     target.setTitle(request.getTitle());
+    target.setNbPages(request.getNbPages());
     
     if (request.getGlobalRating() != null && request.getGlobalRating() > 0) {
       target.setGlobalRating(request.getGlobalRating());
