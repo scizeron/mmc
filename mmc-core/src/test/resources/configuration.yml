@@ -1,0 +1,17 @@
+galleries:
+ - id : 123
+   name : book
+ - id : 456
+   name : music
+ - id : 789
+   name : misc
+user:
+ id: 123
+ apiKey: 456
+ secretCode: 789
+tokens:
+ secretCode: 12
+ read: 34
+ write: 56
+ delete: 78
+  

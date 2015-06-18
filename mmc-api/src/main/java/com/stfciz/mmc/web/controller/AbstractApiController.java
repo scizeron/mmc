@@ -252,6 +252,8 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
   @Permission(scopes = { OAuth2ScopeApi.WRITE })
   public ResponseEntity<com.stfciz.mmc.web.api.photo.Photo> uploadPhoto(@PathVariable String id, @RequestParam("file") MultipartFile file) throws Exception {
     D doc = this.repository.findOne(id);
+    
+    //String galleryId = this.configuration.getFlickr().get
     if (doc == null) {
       LOGGER.error("\"{}\" not found");
       return new ResponseEntity<com.stfciz.mmc.web.api.photo.Photo>(HttpStatus.BAD_REQUEST);
@@ -268,7 +270,7 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
       uploadPhoto.setAsync(false);
       uploadPhoto.setFilename(file.getOriginalFilename());
       uploadPhoto.getTags().add(new Tag(TagName.DOC_ID, id));
-      uploadPhoto.setPhotoSetId(this.configuration.getFlickr().getAppGalleryId());
+      uploadPhoto.setPhotoSetId(this.configuration.getFlickr().getGalleryId(StringUtils.remove(doc.getClass().getSimpleName(), "Document").toLowerCase()));
       uploadPhoto.setContent(file.getBytes());
       
       String photoId = this.flickrApi.uploadPhoto(uploadPhoto);

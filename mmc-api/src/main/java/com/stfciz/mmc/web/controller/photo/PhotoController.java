@@ -61,16 +61,22 @@ public class PhotoController {
   public List<com.stfciz.mmc.web.api.photo.Photo> getPhotos(@PathVariable(value = "id") String id,
       @RequestParam(value = "perPage", required = false) Integer perPage, @RequestParam(value = "page", required = false) Integer page) throws FlickrException {
     try {
+      
       PhotoList<Photo> photos = null;
-      if ("mmc".equals(id)) {
-        photos = this.flickrApi.getPhotos(this.coreConfiguration.getFlickr().getAppGalleryId(), perPage, page);
+      if (id.startsWith("mmc_")) {
+        photos = this.flickrApi.getPhotos(this.coreConfiguration.getFlickr().getGalleryId(id.split("_")[1]), perPage, page);
       } else {
         photos = this.flickrApi.getPhotos(id, perPage, page);
       }
       ListIterator<Photo> photosIt = photos.listIterator();
       List<com.stfciz.mmc.web.api.photo.Photo> result = new ArrayList<com.stfciz.mmc.web.api.photo.Photo>(photos.getTotal());
       while (photosIt.hasNext()) {
-        result.add(this.converter.convertFlickrPhotoToApiPhoto(photosIt.next()));
+        Photo photo = photosIt.next();
+        // The albums must be contain one photo at least
+        // We don't want to display this one
+        if (!"DoNotRemove".equals(photo.getTitle())) {
+          result.add(this.converter.convertFlickrPhotoToApiPhoto(photo));
+        }
       }
       return result;
     } catch(FlickrException e ) {

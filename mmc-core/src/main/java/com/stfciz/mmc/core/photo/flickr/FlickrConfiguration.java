@@ -1,5 +1,7 @@
 package com.stfciz.mmc.core.photo.flickr;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -139,8 +141,7 @@ public class FlickrConfiguration {
   @NotNull
   private Tokens tokens;
   
-  @NotNull
-  private String appGalleryId;
+  private List<Gallery> galleries;
   
   private String proxy;
   
@@ -179,26 +180,6 @@ public class FlickrConfiguration {
     this.tokens = tokens;
   }
 
-
-
-  /**
-   * @return the appGalleryId
-   */
-  public String getAppGalleryId() {
-    return this.appGalleryId;
-  }
-
-
-
-  /**
-   * @param appGalleryId the appGalleryId to set
-   */
-  public void setAppGalleryId(String appGalleryId) {
-    this.appGalleryId = appGalleryId;
-  }
-
-
-
   /**
    * @return the proxy
    */
@@ -206,12 +187,33 @@ public class FlickrConfiguration {
     return this.proxy;
   }
 
-
-
   /**
    * @param proxy the proxy to set
    */
   public void setProxy(String proxy) {
     this.proxy = proxy;
+  }
+
+
+
+  public List<Gallery> getGalleries() {
+    return galleries;
+  }
+  
+  /**
+   * 
+   * @param name
+   * @return
+   */
+  public String getGalleryId(String name) {
+    String galleryId = this.galleries.stream().filter(g -> g.getName().equals(name)).findFirst().get().getId();
+    if (galleryId == null) {
+      throw new IllegalAccessError("Configuration problem, gallery \"" + name + "\" not found");
+    }
+    return galleryId;
+  }
+
+  public void setGalleries(List<Gallery> galleries) {
+    this.galleries = galleries;
   }
 }
