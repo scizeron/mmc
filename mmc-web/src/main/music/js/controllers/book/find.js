@@ -27,7 +27,7 @@ function ($scope, musicService, userService, refValues, appService, utils) {
 	 var doc = response.docs[idxDoc];
 	 var lines = [];
 	 var docInfos = {'id' : doc.id, 'url' : doc.thumbImageUrl, 'title' : doc.title
-			 , 'line1' : '', 'line2' : '', 'line3' : ''};
+			 , 'line1' : '', 'line2' : '', 'line3' : '', 'line4' : ''};
 	 $scope.docsInfos.push(docInfos);
 	 
 	 docInfos.globalRating = doc.globalRating;
@@ -37,9 +37,9 @@ function ($scope, musicService, userService, refValues, appService, utils) {
 	 docInfos.line1 = doc.author;
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.issue);
 
-	 docInfos.line2 = appendToLine(docInfos.line2, doc.nbPages, function(value) {
-      return value + ' page(s)';
-     });
+	 docInfos.line2 = appendToLine(docInfos.line2, doc.reEdition, function(value) {
+   	  return value ? 're-edition' : '';   
+     });  
   
 	 docInfos.line2 = appendToLine(docInfos.line2, doc.promo, function(value) {
 	  return value == true ? 'promo' : '';   
@@ -51,6 +51,10 @@ function ($scope, musicService, userService, refValues, appService, utils) {
 	 docInfos.line3 = appendToLine(docInfos.line3, doc.pubNum, function(value) {
 	  return 'Limited Edition : ' + value + '/' + doc.pubTotal;   
      });
+	 docInfos.line4 = appendToLine(docInfos.line4, doc.nbPages, function(value) {
+      return value + ' page(s)';
+     });
+		 
    }
    
    var navigHtml = '';

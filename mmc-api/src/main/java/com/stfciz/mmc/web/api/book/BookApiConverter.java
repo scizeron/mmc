@@ -41,6 +41,7 @@ public class BookApiConverter extends AbstractApiConverter<BookDocument, GetResp
     target.setAuthor(request.getAuthor());
     target.setDescription(request.getDescription());
     target.setDistributer(request.getDistributer());
+    target.setPublisher(request.getPublisher());
     target.setIsbn(request.getIsbn());
     target.setTitle(request.getTitle());
     target.setNbPages(request.getNbPages());
@@ -81,10 +82,10 @@ public class BookApiConverter extends AbstractApiConverter<BookDocument, GetResp
     target.setTitle(doc.getTitle());
     target.setAuthor(doc.getAuthor());
     target.setDescription(doc.getDescription());
-    target.setDistributer(doc.getDistributer());
     target.setIsbn(doc.getIsbn());
     target.setNbPages(doc.getNbPages());
     target.setPublisher(doc.getPublisher());
+    target.setDistributer(doc.getDistributer());
     target.setGlobalRating(doc.getGlobalRating());
   }
 

@@ -26,18 +26,16 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
    }
 
    $scope.doc.globalRatingTip = refValues.getGradeToString($scope.doc.globalRating);
-    
-   $scope.infos = []
-   for (var i=0; i < 4; i++) {
+   $scope.doc.origin = response.origin;
+   
+   $scope.infos = [];
+   for (var i=0; i < 50; i++) {
 	$scope.infos.push('');   
    }
-   
-   $scope.doc.origin = response.origin;
    
    $scope.infos[0] = response.author;
    $scope.infos[1] = appendToLine($scope.infos[1], response.issue);
     
-   
    $scope.infos[1] = appendToLine($scope.infos[1], response.reEdition, function(value) {
 	return value ? 're-edition' : '';   
    });  
@@ -54,7 +52,13 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
     return ' [Limited Edition : ' + value + '/' + response.pubTotal + ']';   
    });
 
-   $scope.infos[3] = appendToLine($scope.infos[3], response.description);
+   $scope.infos[3] = appendToLine($scope.infos[3], response.nbPages, function(value) {
+    return value + ' page(s)';   
+   });
+   
+   $scope.infos[4] = appendToLine($scope.infos[4], response.publisher);
+   $scope.infos[5] = appendToLine($scope.infos[5], response.distributer);
+   $scope.infos[6] = appendToLine($scope.infos[6], response.description);
    
    for (var j= $scope.infos.length-1; j>=0; j--) {
     if ($scope.infos[j] == '') {

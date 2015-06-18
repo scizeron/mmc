@@ -84,7 +84,7 @@ angular.module('mmcApp').controller('popupBookPhotoCtrl', function($scope, $loca
 	$scope.doc = response;
 	$scope.doc.globalRatingTip = refValues.getGradeToString($scope.doc.globalRating);
     $scope.infos = []
-    for (var i=0; i < 4; i++) {
+    for (var i=0; i < 50; i++) {
 	 $scope.infos.push('');   
     }
 	   
@@ -108,8 +108,14 @@ angular.module('mmcApp').controller('popupBookPhotoCtrl', function($scope, $loca
      return ' [Limited Edition : ' + value + '/' + response.pubTotal + ']';   
     });
 
-    $scope.infos[3] = appendToLine($scope.infos[3], response.description);
+    $scope.infos[3] = appendToLine($scope.infos[3], response.nbPages, function(value) {
+     return value + ' page(s)';   
+    });
        
+   $scope.infos[4] = appendToLine($scope.infos[4], response.publisher);
+   $scope.infos[5] = appendToLine($scope.infos[5], response.distributer);
+   $scope.infos[6] = appendToLine($scope.infos[6], response.description)    
+    
     for (var j= $scope.infos.length-1; j>=0; j--) {
      if ($scope.infos[j] == '') {
       $scope.infos.splice(j, 1);   
