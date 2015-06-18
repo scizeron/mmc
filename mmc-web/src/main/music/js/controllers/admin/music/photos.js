@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('adminPhotosCtrl',['$scope', 'utils', 'photoService', '$timeout', '$modal', function($scope, utils, imgService, $timeout, $modal) {
+.controller('adminMusicPhotosCtrl',['$scope', 'utils', 'photoService', '$timeout', '$modal', function($scope, utils, imgService, $timeout, $modal) {
 
 
  $scope.displayPhoto = function (index) {
   utils.debug('display : ' + index);
   var modalInstance = $modal.open({
    templateUrl : 'popupPhoto',
-   controller : 'popupPhotoCtrl',
+   controller : 'popupMusicPhotoCtrl',
    windowClass: 'app-modal-window',
    resolve: {
     datas: function () {
@@ -26,7 +26,7 @@ angular.module('mmcApp')
   */
  $scope.getPhotos = function () {
   $scope.action = {'result' : 0};	
-  imgService.getPhotos(null, null, function(response) {
+  imgService.getPhotos(null, null, 'music', function(response) {
    var count = response.length;
    var nbImgPerRow = 11;
    $scope.slides = [];
@@ -67,7 +67,7 @@ angular.module('mmcApp')
 }]);
 
 
-angular.module('mmcApp').controller('popupPhotoCtrl', function($scope, $location, $timeout, $modalInstance, utils, musicService, refValues, datas) {
+angular.module('mmcApp').controller('popupMusicPhotoCtrl', function($scope, $location, $timeout, $modalInstance, utils, musicService, refValues, datas) {
  $scope.DELAY = 5;
  $scope.slides = datas.slides;
  $scope.pause = false;
@@ -80,7 +80,7 @@ angular.module('mmcApp').controller('popupPhotoCtrl', function($scope, $location
  $scope.loadCurrentInfos = function(index) {
   var docId = $scope.slides[index].image.docId;
   if (typeof(docId) != 'undefined' && docId != null) {
-   musicService.getDoc(docId, function(response) {
+   musicService.getDoc(docId, 'music', function(response) {
 	$scope.doc = response;
 	$scope.doc.sleeveGradeTip = refValues.getGradeToString($scope.doc.sleeveGrade);
 	$scope.doc.recordGradeTip = refValues.getGradeToString($scope.doc.recordGrade);
@@ -204,7 +204,7 @@ angular.module('mmcApp').controller('popupPhotoCtrl', function($scope, $location
   var docId = $scope.doc != null ? $scope.doc.id : null;
   if (docId != null) {
    $scope.close();
-   $location.path('/music_view/' + docId);
+   $location.path('/music/view/' + docId);
   }
  };
  

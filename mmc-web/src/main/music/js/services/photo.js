@@ -5,9 +5,9 @@ angular.module('mmcApp').service('photoService', ['$http', '$q', 'utils', functi
  var pages = {};
  
  return {
-  getPhotos: function(page, perPage, onSuccessCallback, onErrorCallack) {
+  getPhotos: function(page, perPage, type, onSuccessCallback, onErrorCallack) {
    utils.debug('getPhotos (page: ' + page + ', perPage:' + perPage + ')');
-   var uri = '/photosets/mmc';
+   var uri = '/photosets/mmc_' + type;
    
    if (page != null && perPage != null) {
 	uri += '&perPage=' + perPage;    

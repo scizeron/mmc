@@ -60,11 +60,11 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   modalInstance.result.then(function (event) {
    if ('performDelete' == event) {
 	var callback = function() {
-	 $location.path('/music_list');
+	 $location.path('/music/find');
 	};
 	musicService.remove($scope.doc.id, 'music', callback, callback);	   
    } else if ('back' == event) {
-    $location.path('/music_view/' + $scope.result.id);  
+    $location.path('/music/view/' + $scope.result.id);  
    }
    utils.debug(event);	  
   });
@@ -296,7 +296,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.view = function() {
-  $location.path('/music_view/' + $scope.doc.id);
+  $location.path('/music/view/' + $scope.doc.id);
  };
  
  /**
@@ -358,7 +358,7 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   */
  $scope.uploadImages = function() {
   utils.debug($scope.doc.id);
-  var uri = '/music_edit/' + $scope.doc.id;	 
+  var uri = '/music/edit/' + $scope.doc.id;	 
   $location.path(uri); 
  };
  

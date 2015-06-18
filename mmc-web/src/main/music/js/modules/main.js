@@ -26,60 +26,65 @@ angular.module('mmcApp', [
    templateUrl: 'views/home.html',
    controller: 'appCtrl',
   }).  
-  when('/music_add', {
+  when('/music/add', {
    templateUrl: 'views/music/add.html',
    controller: 'musicAddCtrl'
   }).		 
-  when('/music_list', {
-   templateUrl: 'views/music/list.html',
+  when('/music/find', {
+   templateUrl: 'views/music/find.html',
    controller: 'musicListCtrl'
   }).
-  when('/music_view/:musicDocId', {
+  when('/music/view/:musicDocId', {
    templateUrl: 'views/music/view.html',
    controller: 'musicViewCtrl'
   }).
-  when('/music_edit/:musicDocId', {
+  when('/music/edit/:musicDocId', {
    templateUrl: 'views/music/edit.html',
    controller: 'musicEditCtrl',
    role: 'write'
   }).
-  when('/music_edit/:musicDocId/:tabId', {
+  when('/music/edit/:musicDocId/:tabId', {
    templateUrl: 'views/music/edit.html',
    controller: 'musicEditCtrl',
    role: 'write'
   }).
-  when('/music_listing', {
+  when('/admin/music/list', {
    templateUrl: 'views/admin/music/list.html',
    controller: 'musicListingCtrl',
    role: 'admin'
   }).  
-  when('/music_admin_photos', {
-   templateUrl: 'views/admin/photos.html',
-   controller: 'adminPhotosCtrl',
-   role: 'admin'
-  }).
-  when('/book_add', {
+  when('/book/add', {
    templateUrl: 'views/book/add.html',
    controller: 'bookAddCtrl'
   }).  
-  when('/book_list', {
-   templateUrl: 'views/book/list.html',
+  when('/book/find', {
+   templateUrl: 'views/book/find.html',
    controller: 'bookListCtrl'
   }).  
-  when('/book_view/:bookDocId', {
+  when('/book/view/:bookDocId', {
    templateUrl: 'views/book/view.html',
    controller: 'bookViewCtrl'
   }).  
-  when('/book_edit/:musicDocId', {
+  when('/book/edit/:bookDocId', {
    templateUrl: 'views/book/edit.html',
    controller: 'bookEditCtrl',
    role: 'write'
   }).
-  when('/book_edit/:musicDocId/:tabId', {
+  when('/book/edit/:bookDocId/:tabId', {
    templateUrl: 'views/book/edit.html',
    controller: 'bookEditCtrl',
    role: 'write'
   }).  
+  when('/admin/music/photos', {
+   templateUrl: 'views/admin/music/photos.html',
+   controller: 'adminMusicPhotosCtrl',
+   role: 'admin'
+  }).
+  when('/admin/book/photos', {
+   templateUrl: 'views/admin/book/photos.html',
+   controller: 'adminBookPhotosCtrl',
+   role: 'admin'
+  }).	  
   otherwise({
    redirectTo: '/home',
    role: 'anonymous',
@@ -106,11 +111,11 @@ angular.module('mmcApp', [
   
   appService.setUser(userService.getUser());
   
-  if (nextPath == '/music_list') {
+  if (nextPath == '/music/find') {
    app.universe = 'music';  
-  } else if (nextPath == '/book_list') {
+  } else if (nextPath == '/book/find') {
    app.universe = 'book';	  
-  } else if (nextPath == '/merchandising_list') {
+  } else if (nextPath == '/misc/find') {
    app.universe = 'misc';	  
   }
 
@@ -150,7 +155,7 @@ angular.module('mmcApp', [
    }
   } 
   
-  if (nextPath.indexOf('_view/') > 0) {
+  if (nextPath.indexOf('/view/') > 0) {
    $rootScope.$broadcast('showItemsNavBar', true);  
   } else {
    $rootScope.$broadcast('showItemsNavBar', false);

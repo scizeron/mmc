@@ -105,14 +105,14 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.gotoEdit = function() {
-  $location.path('/book_edit/' + $scope.doc.id);
+  $location.path('/book/edit/' + $scope.doc.id);
  };
  
  /**
   * 
   */
  $scope.gotoFind = function() {
-  $location.path('/book_list');
+  $location.path('/book/find');
  }; 
  
  $scope.view($routeParams.bookDocId);

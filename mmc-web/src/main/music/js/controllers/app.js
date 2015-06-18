@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('mmcApp')
-.controller('appCtrl', ['$rootScope', '$scope', '$location', 'userService', 'utils', 'refValues', 'appService',
-function ($rootScope, $scope, $location, userService, utils, refValues, appService) {
+.controller('appCtrl', ['$rootScope', '$scope', '$route', '$location', 'userService', 'utils', 'refValues', 'appService',
+function ($rootScope, $scope, $route, $location, userService, utils, refValues, appService) {
  $rootScope.siteInfos = siteInfos;
  var app = appService.app();
  webUtils.debug('appCtrl : ' + $location.path());	
@@ -34,28 +34,38 @@ function ($rootScope, $scope, $location, userService, utils, refValues, appServi
  
  $scope.search = function(query) {
   var app = appService.app();
-  utils.debug('search : ' + query + ' [universe: ' + app.universe + ']');
+  var nextLocation = null;
+  utils.debug('search : "' + query + '" , universe: "' + app.universe + '", location: ' + $location.path());
   app.query = query;
   // en fonction de l'univers, on redirige sur la page de recherche
   // si aucun univers selectionne par ex, on est sur la home, on fait une recherche sur tous les indexes
-  if ('music' == app.universe && $location.path() != '/music_list') {
-   $location.path('/music_list');
-  } else if ('book' == app.universe && $location.path() != '/book_list') {
-   $location.path('/book_list');
-  } else if ('misc' == app.universe && $location.path() != '/merchandising_list') {
-   $location.path('/merchandising_list');	  
+  if ('book' == app.universe) {
+	nextLocation = '/book/find';
+  } else if ('misc' == app.universe) {
+	nextLocation = '/misc/find';	  
+  } else {
+	nextLocation = '/music/find';
   }
+  
+  if (nextLocation == $location.path()) {
+   $route.reload(); 
+   utils.debug('reload ' + nextLocation);
+  } else {
+   $location.path(nextLocation);
+   utils.debug('go to ' + nextLocation);
+  }
+  
  };
  
  $scope.getPath = function() {
-  return '/' + appService.app().universe + '_view'; 
+  return '/' + appService.app().universe + '/view'; 
  };
 
  /**
   * 
   */
  $scope.navigate = function(nav) {
-  $location.path('/' + appService.app().universe + '_view/' + nav.id); 
+  $location.path('/' + appService.app().universe + '/view/' + nav.id); 
  };
  
  /**

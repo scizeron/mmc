@@ -1,4 +1,4 @@
-package com.stfciz.mmc.web.controller.photo;
+package com.stfciz.mmc.web.controller;
 
 import java.util.ArrayList;
 import java.util.List;

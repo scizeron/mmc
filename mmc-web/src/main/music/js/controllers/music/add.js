@@ -62,7 +62,7 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
    if (mode == 'newDoc') {
 	$scope.init();
    } else if (mode.indexOf('addPhoto',0) == 0){
-	 $location.path('/music_edit/' + mode.split('#')[1] + '/photos');  
+	 $location.path('/music/edit/' + mode.split('#')[1] + '/photos');  
    }
   }, function () {
    utils.debug('Modal dismissed at: ' + new Date());
@@ -101,7 +101,7 @@ function($scope, $http, $location, musicService, userService, utils, refValues, 
   */
  $scope.uploadImages = function() {
   utils.debug($scope.doc.id);
-  var uri = '/music_edit/' + $scope.doc.id;	 
+  var uri = '/music/edit/' + $scope.doc.id;	 
   $location.path(uri); 
  };
  

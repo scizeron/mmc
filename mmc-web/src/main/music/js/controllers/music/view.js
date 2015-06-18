@@ -113,14 +113,14 @@ function($document, $scope, $rootScope, $http, $location, $routeParams
   * 
   */
  $scope.gotoEdit = function() {
-  $location.path('/music_edit/' + $scope.doc.id);
+  $location.path('/music/edit/' + $scope.doc.id);
  };
  
  /**
   * 
   */
  $scope.gotoFind = function() {
-  $location.path('/music_list');
+  $location.path('/music/find');
  }; 
  
  $scope.view($routeParams.musicDocId);
