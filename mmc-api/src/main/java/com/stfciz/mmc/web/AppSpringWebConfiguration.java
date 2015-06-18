@@ -30,7 +30,6 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-import com.stfciz.mmc.web.api.music.PdfHttpMessageFindResponseConverter;
 import com.stfciz.mmc.web.controller.CorsFilter;
 import com.stfciz.mmc.web.controller.LoggingFilter;
 import com.stfciz.mmc.web.oauth2.OAuth2Filter;
@@ -132,7 +131,8 @@ public class AppSpringWebConfiguration {
   
   @Bean
   public HttpMessageConverters customConverters() {
-    return new HttpMessageConverters(new PdfHttpMessageFindResponseConverter());
+    return new HttpMessageConverters(new com.stfciz.mmc.web.api.book.PdfHttpMessageFindResponseConverter()
+                                   , new com.stfciz.mmc.web.api.music.PdfHttpMessageFindResponseConverter());
   }
 
 }

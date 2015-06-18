@@ -48,11 +48,6 @@ angular.module('mmcApp', [
    controller: 'musicEditCtrl',
    role: 'write'
   }).
-  when('/admin/music/list', {
-   templateUrl: 'views/admin/music/list.html',
-   controller: 'musicListingCtrl',
-   role: 'admin'
-  }).  
   when('/book/add', {
    templateUrl: 'views/book/add.html',
    controller: 'bookAddCtrl'
@@ -85,6 +80,16 @@ angular.module('mmcApp', [
    controller: 'adminBookPhotosCtrl',
    role: 'admin'
   }).	  
+  when('/admin/music/list', {
+   templateUrl: 'views/admin/music/list.html',
+   controller: 'musicListingCtrl',
+   role: 'admin'
+  }).  
+  when('/admin/book/list', {
+   templateUrl: 'views/admin/book/list.html',
+   controller: 'bookListingCtrl',
+   role: 'admin'
+  }).  
   otherwise({
    redirectTo: '/home',
    role: 'anonymous',
