@@ -48,23 +48,23 @@
    <tabset>
     <tab heading="General" active="tabs[0].active" select="selectTab('general')">
 	 <div style="padding-top: 15px"></div>
-     <ng-include src="'views/book/p_general.html'"></ng-include>
+     <ng-include src="'views/misc/p_general.html'"></ng-include>
      <div style="float: right;">
       <button type="button" class="btn btn-danger" ng-click="remove(doc.id)">Delete</button>
      </div>
     </tab>
     <tab heading="Purchase" active="tabs[1].active" select="selectTab('purchase')">
      <div style="padding-top: 15px"></div>
-     <ng-include src="'views/book/p_purchase.html'"></ng-include>
+     <ng-include src="'views/common/p_purchase.html'"></ng-include>
     </tab>
     <tab heading="Photos" active="tabs[2].active" select="selectTab('photos')">
      <div style="padding-top: 15px"></div>
-	 <ng-include src="'views/book/p_photos.html'"></ng-include>
+	 <ng-include src="'views/common/p_photos.html'"></ng-include>
     </tab>
     <tab active="tabs[3].active" select="selectTab('prices')" ng-show="user.loggedInAdminUser">
      <tab-heading><span class="glyphicon glyphicon-star"></span> Prices</tab-heading>
      <div style="padding-top: 15px"></div>
-	 <ng-include src="'views/book/p_prices.html'"></ng-include>
+	 <ng-include src="'views/common/p_prices.html'"></ng-include>
     </tab>    
    </tabset>
   </form>

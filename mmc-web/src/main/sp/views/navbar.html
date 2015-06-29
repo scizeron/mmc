@@ -31,7 +31,16 @@
        <li><a href="#/admin/book/photos" ng-show="user.loggedInAdminUser"><span class="glyphicon glyphicon-star"></span> Photos</a></li>       
       </ul>
      </li>
-     <li ng-class="{ active: navIsActive('/merchandising')}"><a href="#/merchandising"><span class="glyphicon glyphicon-th-list"></span> Merchandising</a></li>
+     <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> Merchandising<b class="caret"></b></a>
+      <ul class="dropdown-menu">
+       <li><a href="#/misc/add">Add</a></li>
+       <li><a href="#/misc/find">Find</a></li>
+       <li class="divider" ng-show="user.loggedInAdminUser"></li>
+       <li><a href="#/admin/misc/list" ng-show="user.loggedInAdminUser"><span class="glyphicon glyphicon-star"></span> Listing</a></li>
+       <li><a href="#/admin/misc/photos" ng-show="user.loggedInAdminUser"><span class="glyphicon glyphicon-star"></span> Photos</a></li>       
+      </ul>
+     </li>     
     </ul>
    </div> 
    <div class="col-md-3">

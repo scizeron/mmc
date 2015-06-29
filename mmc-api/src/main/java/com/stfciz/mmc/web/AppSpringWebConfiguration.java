@@ -132,7 +132,8 @@ public class AppSpringWebConfiguration {
   @Bean
   public HttpMessageConverters customConverters() {
     return new HttpMessageConverters(new com.stfciz.mmc.web.api.book.PdfHttpMessageFindResponseConverter()
-                                   , new com.stfciz.mmc.web.api.music.PdfHttpMessageFindResponseConverter());
+                                   , new com.stfciz.mmc.web.api.music.PdfHttpMessageFindResponseConverter()                               
+                                   , new com.stfciz.mmc.web.api.misc.PdfHttpMessageFindResponseConverter());
   }
 
 }

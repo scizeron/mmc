@@ -39,13 +39,13 @@ function ($rootScope, $scope, $route, $location, userService, utils, refValues, 
   app.query = query;
   // en fonction de l'univers, on redirige sur la page de recherche
   // si aucun univers selectionne par ex, on est sur la home, on fait une recherche sur tous les indexes
-  if ('book' == app.universe) {
-	nextLocation = '/book/find';
-  } else if ('misc' == app.universe) {
-	nextLocation = '/misc/find';	  
+  if (app.universe == null || typeof(app.universe) == 'undefined') {
+   nextLocation = '/music';  
   } else {
-	nextLocation = '/music/find';
+   nextLocation = '/' +  app.universe;  
   }
+  
+  nextLocation += '/find';
   
   if (nextLocation == $location.path()) {
    $route.reload(); 

@@ -53,11 +53,11 @@ angular.module('mmcApp', [
    controller: 'bookAddCtrl'
   }).  
   when('/book/find', {
-   templateUrl: 'views/book/find.html',
+   templateUrl: 'views/common/find.html',
    controller: 'bookListCtrl'
   }).  
   when('/book/view/:bookDocId', {
-   templateUrl: 'views/book/view.html',
+   templateUrl: 'views/common/view.html',
    controller: 'bookViewCtrl'
   }).  
   when('/book/edit/:bookDocId', {
@@ -70,26 +70,58 @@ angular.module('mmcApp', [
    controller: 'bookEditCtrl',
    role: 'write'
   }).  
+  when('/misc/add', {
+   templateUrl: 'views/misc/add.html',
+   controller: 'miscAddCtrl'
+  }).  
+  when('/misc/find', {
+   templateUrl: 'views/common/find.html',
+   controller: 'miscListCtrl'
+  }).  
+  when('/misc/view/:miscDocId', {
+   templateUrl: 'views/common/view.html',
+   controller: 'miscViewCtrl'
+  }).  
+  when('/misc/edit/:miscDocId', {
+   templateUrl: 'views/misc/edit.html',
+   controller: 'miscEditCtrl',
+   role: 'write'
+  }).
+  when('/book/misc/:miscDocId/:tabId', {
+   templateUrl: 'views/misc/edit.html',
+   controller: 'miscEditCtrl',
+   role: 'write'
+  }).    
   when('/admin/music/photos', {
    templateUrl: 'views/admin/music/photos.html',
    controller: 'adminMusicPhotosCtrl',
    role: 'admin'
   }).
   when('/admin/book/photos', {
-   templateUrl: 'views/admin/book/photos.html',
+   templateUrl: 'views/admin/common/photos.html',
    controller: 'adminBookPhotosCtrl',
+   role: 'admin'
+  }).
+  when('/admin/misc/photos', {
+   templateUrl: 'views/admin/common/photos.html',
+   controller: 'adminMiscPhotosCtrl',
    role: 'admin'
   }).	  
   when('/admin/music/list', {
-   templateUrl: 'views/admin/music/list.html',
+   templateUrl: 'views/admin/common/list.html',
    controller: 'musicListingCtrl',
    role: 'admin'
   }).  
   when('/admin/book/list', {
-   templateUrl: 'views/admin/book/list.html',
+   templateUrl: 'views/admin/common/list.html',
    controller: 'bookListingCtrl',
    role: 'admin'
-  }).  
+  }).
+  when('/admin/misc/list', {
+   templateUrl: 'views/admin/common/list.html',
+   controller: 'miscListingCtrl',
+   role: 'admin'
+  }).    
   otherwise({
    redirectTo: '/home',
    role: 'anonymous',

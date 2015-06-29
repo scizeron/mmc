@@ -4,17 +4,17 @@ angular.module('mmcApp')
 .controller('bookListCtrl', ['$scope', 'musicService', 'userService', 'refValues', 'appService', 'utils', 
 function ($scope, musicService, userService, refValues, appService, utils) {
 
- $scope.$on('music', function(event, args) {
-  $scope.list(0);	 
+ $scope.$on('book', function(event, args) {
+  $scope.list(0, 'book');	 
  });
  
  $scope.selectItem = function(index) {
   appService.nav().index = index;
  };
 	
- $scope.list = function (page) {
+ $scope.list = function (page, type) {
   $scope.action = { 'result' : -1};	 
-  musicService.getDocs(appService.app().query, page, false, 'book', 'json', function(response) {
+  musicService.getDocs(appService.app().query, page, false, type, 'json', function(response) {
    $scope.totalPages = response.totalPages;
    $scope.action.result = 0; 
    $scope.docsInfos = [];
@@ -26,7 +26,7 @@ function ($scope, musicService, userService, refValues, appService, utils) {
    for (idxDoc in response.docs) {
 	 var doc = response.docs[idxDoc];
 	 var lines = [];
-	 var docInfos = {'id' : doc.id, 'url' : doc.thumbImageUrl, 'title' : doc.title
+	 var docInfos = {'id' : doc.id, 'type': type, 'url' : doc.thumbImageUrl, 'title' : doc.title
 			 , 'line1' : '', 'line2' : '', 'line3' : '', 'line4' : ''};
 	 $scope.docsInfos.push(docInfos);
 	 
@@ -83,7 +83,7 @@ function ($scope, musicService, userService, refValues, appService, utils) {
  };
 
  musicService.clearCache('book');
- $scope.list(0);
+ $scope.list(0, 'book');
  
 }]);
 
