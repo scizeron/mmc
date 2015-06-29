@@ -10,13 +10,12 @@ import org.springframework.stereotype.Component;
  * 29 juin 2015
  */
 
-@Component("musicFindRequestHandler")
-public class MusicFindRequestHandler extends AbstractFindRequestHandler {
+@Component("miscFindRequestHandler")
+public class MiscFindRequestHandler extends AbstractFindRequestHandler {
 
   @Override
   public Sort getSort(String index) {
-    return new Sort(new Sort.Order(Sort.Direction.ASC, "artist"),
-        new Sort.Order(Sort.Direction.ASC, "title"));
+    return new Sort(new Sort.Order(Sort.Direction.ASC, "title"));
   }
-  
+ 
 }
