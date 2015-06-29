@@ -52,7 +52,7 @@
   <parent>
     <groupId>com.stfciz.mmc</groupId>
     <artifactId>mmc-parent</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
 </project>
