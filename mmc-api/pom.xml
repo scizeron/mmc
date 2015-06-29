@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.stfciz.mmc</groupId>
     <artifactId>mmc-parent</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
 
