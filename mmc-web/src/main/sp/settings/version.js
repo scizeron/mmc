@@ -1,0 +1,1 @@
+var siteInfos = { 'version' : 'DEV'};

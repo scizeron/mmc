@@ -1,0 +1,54 @@
+<div class="form-group">
+ <label class="control-label col-md-2" for="purchasePrice">Price</label>
+ <div class="col-md-1">          
+  <input type="text" class="form-control" id="purchasePrice" name="purchasePrice" ng-model="doc.purchasePrice" placeholder="price">
+ </div>
+ <div class="col-md-5">   
+  <label class="control-label col-md-1" for="purchaseMonth">Date</label> 
+  <div class="col-md-2">      
+   <select class="form-control" id="purchaseMonth" name="purchaseMonth" ng-model="doc.purchaseMonth">
+    <option></option>
+    <option ng-repeat="month in months">{{month}}</option>
+   </select>
+  </div> 
+  <div class="col-md-3"> 
+   <select class="form-control" id="purchaseYear" name="purchaseYear" ng-model="doc.purchaseYear">
+    <option></option>
+    <option ng-repeat="year in years">{{year}}</option>
+   </select>
+  </div>  
+ </div>
+</div>
+<div class="form-group"> 
+ <label class="control-label col-md-2" for="purchasePrice">Vendor</label>
+ <div class="col-md-2">
+  <input type="text" class="form-control" id="purchaseVendor" name="purchaseVendor" ng-model="doc.purchaseVendor" placeholder="vendor">
+ </div>  
+ <label class="control-label col-md-1" for="purchasePrice">Context</label>
+ <div class="col-md-2">          
+  <input type="text" class="form-control" id="purchaseContext" name="purchaseContext" ng-model="doc.purchaseContext" placeholder="context/location">
+ </div>
+</div>
+<div class="form-group">
+ <label class="control-label col-md-2" for="rating">Rating</label>
+ <div class="col-md-10">
+  <div class="row">
+   <div class="col-md-offset-1 col-md-1"><label class="control-label" for="rating">Sleeve</label></div>
+   <div class="col-md-4">
+    <img src="images/rating/sleeve.png" title="sleeve rating"/>
+    <rating ng-model="doc.sleeveGrade" max="10"></rating><p ng-show="doc.sleeveGrade > 0"><i>{{doc.sleeveGrade}} : {{getGrade(doc.sleeveGrade)}}</i></p>
+   </div>
+   <div class="col-md-1"><label class="control-label" for="rating">Record</label></div>
+   <div class="col-md-4">
+    <img src="images/rating/record.png" title="record rating"/>
+    <rating ng-model="doc.recordGrade" max="10"></rating><p ng-show="doc.recordGrade > 0"><i>{{doc.recordGrade}} : {{getGrade(doc.recordGrade)}}</i></p>
+   </div>
+  </div>
+ </div> 
+</div>
+<div class="form-group">
+ <label class="control-label col-md-2" for="comment">Comment</label>
+ <div class="col-md-8">          
+  <textarea type="text" class="form-control" rows="4" id="comment"  name="comment" ng-model="doc.comment"></textarea>
+ </div>
+</div>

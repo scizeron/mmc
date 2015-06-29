@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 
 import com.stfciz.mmc.core.music.ImageComparator;
+import com.stfciz.mmc.core.music.domain.UpdatePrice;
 import com.stfciz.mmc.core.photo.domain.PhotoDocument;
 
 /**
@@ -35,8 +36,21 @@ public abstract class AbstractDocument {
   /** year  **/
   private Integer           issue;
   
+  /** limited edition number **/
+  private Integer           pubNum;
+
+  /** limited edition total **/
+  private Integer           pubTotal;
   
+  private boolean           promo;
+  
+  /** photos **/
   private List<PhotoDocument> photos;
+  
+  /** updated prices  */
+  private List<UpdatePrice> prices;
+  
+  private Integer mostUpdatedPrice;
       
   public String getId() {
     return id;
@@ -113,6 +127,64 @@ public abstract class AbstractDocument {
       this.photos = new ArrayList<>();
     }
     return this.photos;
+  }
+  
+  /**
+   * @return the prices
+   */
+  public List<UpdatePrice> getPrices() {
+    if (this.prices == null) {
+      this.prices = new ArrayList<>();
+    }
+    return this.prices;
+  }
+
+  /**
+   * @param prices
+   *          the prices to set
+   */
+  public void setPrices(List<UpdatePrice> prices) {
+    this.prices = prices;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public Integer getMostUpdatedPrice() {
+    return mostUpdatedPrice;
+  }
+
+  /**
+   * 
+   * @param mostUpdatedPrice
+   */
+  public void setMostUpdatedPrice(Integer mostUpdatedPrice) {
+    this.mostUpdatedPrice = mostUpdatedPrice;
+  }
+
+  public Integer getPubNum() {
+    return pubNum;
+  }
+
+  public void setPubNum(Integer pubNum) {
+    this.pubNum = pubNum;
+  }
+
+  public Integer getPubTotal() {
+    return pubTotal;
+  }
+
+  public void setPubTotal(Integer pubTotal) {
+    this.pubTotal = pubTotal;
+  }
+
+  public boolean isPromo() {
+    return promo;
+  }
+
+  public void setPromo(boolean promo) {
+    this.promo = promo;
   }
 }
 

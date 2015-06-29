@@ -3,27 +3,23 @@ package com.stfciz.mmc.web.api.music;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.stfciz.mmc.web.api.AbstractNewRequest;
+
 
 /**
  * 
  * @author ByTel
  *
  */
-public class NewRequest {
+public class NewRequest extends AbstractNewRequest {
   
   private String            title;
-
+  
   private String            artist;
 
   private boolean           promo;
   
-  private String            origin;
-
   private String            serialNumber;
-
-  private Boolean           reEdition;
-
-  private Integer           issue;
 
   private String            mainType;
   
@@ -35,10 +31,6 @@ public class NewRequest {
   
   private Integer           nbType;
 
-  private Integer           pubNum;
-
-  private Integer           pubTotal;
-
   private String            recordCompany;
 
   private String            label;
@@ -46,53 +38,9 @@ public class NewRequest {
   private Integer           sleeveGrade;
   
   private Integer           recordGrade;
-
-  private String            comment;
-  
-  private Integer           purchaseMonth;
-  
-  private Integer           purchaseYear;
- 
-  private Integer           purchasePrice;
-  
-  private String            purchaseVendor;
-  
-  private String            purchaseContext;
   
   private List<SideMatrix>  sideMatrixes;
   
-  public Boolean getReEdition() {
-    return reEdition;
-  }
-
-  public void setReEdition(Boolean reEdition) {
-    this.reEdition = reEdition;
-  }
-
-  public Integer getPurchaseMonth() {
-    return purchaseMonth;
-  }
-
-  public void setPurchaseMonth(Integer purchaseMonth) {
-    this.purchaseMonth = purchaseMonth;
-  }
-
-  public Integer getPurchaseYear() {
-    return purchaseYear;
-  }
-
-  public void setPurchaseYear(Integer purchaseYear) {
-    this.purchaseYear = purchaseYear;
-  }
-
-  public String getTitle() {
-    return this.title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
   public String getArtist() {
     return this.artist;
   }
@@ -109,14 +57,6 @@ public class NewRequest {
     this.promo = promo;
   }
 
-  public String getOrigin() {
-    return this.origin;
-  }
-
-  public void setOrigin(String origin) {
-    this.origin = origin;
-  }
-
   public String getSerialNumber() {
     return this.serialNumber;
   }
@@ -125,14 +65,6 @@ public class NewRequest {
     this.serialNumber = serialNumber;
   }
  
-  public Integer getIssue() {
-    return this.issue;
-  }
-
-  public void setIssue(Integer issue) {
-    this.issue = issue;
-  }
-
   public String getMainType() {
     return this.mainType;
   }
@@ -163,22 +95,6 @@ public class NewRequest {
 
   public void setNbType(Integer nbType) {
     this.nbType = nbType;
-  }
-
-  public Integer getPubNum() {
-    return this.pubNum;
-  }
-
-  public void setPubNum(Integer pubNum) {
-    this.pubNum = pubNum;
-  }
-
-  public Integer getPubTotal() {
-    return this.pubTotal;
-  }
-
-  public void setPubTotal(Integer pubTotal) {
-    this.pubTotal = pubTotal;
   }
 
   public String getRecordCompany() {
@@ -213,38 +129,6 @@ public class NewRequest {
     this.recordGrade = recordGrade;
   }
 
-  public String getComment() {
-    return this.comment;
-  }
-
-  public void setComment(String comment) {
-    this.comment = comment;
-  }
-
-  public Integer getPurchasePrice() {
-    return this.purchasePrice;
-  }
-
-  public void setPurchasePrice(Integer purchasePrice) {
-    this.purchasePrice = purchasePrice;
-  }
-
-  public String getPurchaseVendor() {
-    return this.purchaseVendor;
-  }
-
-  public void setPurchaseVendor(String purchaseVendor) {
-    this.purchaseVendor = purchaseVendor;
-  }
-
-  public String getPurchaseContext() {
-    return this.purchaseContext;
-  }
-
-  public void setPurchaseContext(String purchaseContext) {
-    this.purchaseContext = purchaseContext;
-  }
-
   public String getVinylColor() {
     return vinylColor;
   }
@@ -270,5 +154,13 @@ public class NewRequest {
    */
   public void setSideMatrixes(List<SideMatrix> sideMatrixes) {
     this.sideMatrixes = sideMatrixes;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 }

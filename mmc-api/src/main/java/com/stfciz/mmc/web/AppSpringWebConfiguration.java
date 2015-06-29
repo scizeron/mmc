@@ -3,6 +3,9 @@ package com.stfciz.mmc.web;
 import java.io.File;
 import java.util.Arrays;
 
+import javax.servlet.Filter;
+
+import org.apache.catalina.filters.RemoteIpFilter;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.NodeBuilder;
@@ -27,8 +30,8 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-import com.stfciz.mmc.web.api.music.PdfHttpMessageFindResponseConverter;
 import com.stfciz.mmc.web.controller.CorsFilter;
+import com.stfciz.mmc.web.controller.LoggingFilter;
 import com.stfciz.mmc.web.oauth2.OAuth2Filter;
 import com.stfciz.mmc.web.oauth2.PermissionAspect;
 
@@ -54,22 +57,40 @@ public class AppSpringWebConfiguration {
 
   private static final String[] FILTER_URL_PATTERNS = { "/*" };
   
-  @Bean
-  public FilterRegistrationBean getCORSFilter(CorsFilter filter) {
+  /**
+   * 
+   * @param filter
+   * @param order
+   * @return
+   */
+  private FilterRegistrationBean newFilterRegistration(Filter filter , int order) {
     FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
     registrationBean.setUrlPatterns(Arrays.asList(FILTER_URL_PATTERNS));
     registrationBean.setName(filter.getClass().getSimpleName());
-    registrationBean.setOrder(1);
+    registrationBean.setOrder(order);
     return registrationBean;
+  }
+  
+  @Bean
+  FilterRegistrationBean remoteIpFilter() {
+    RemoteIpFilter filter = new RemoteIpFilter();
+    filter.setProtocolHeader("X-Forwarded-Proto");
+    return newFilterRegistration(filter, 1);
+  }
+  
+  @Bean
+  FilterRegistrationBean loggingFilter() {
+    return newFilterRegistration(new LoggingFilter(), 2);
+  }
+  
+  @Bean
+  public FilterRegistrationBean getCORSFilter() {
+    return newFilterRegistration(new CorsFilter(), 3);
   }
 
   @Bean
-  public FilterRegistrationBean getOAuth2Filter(OAuth2Filter filter) {
-    FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
-    registrationBean.setUrlPatterns(Arrays.asList(FILTER_URL_PATTERNS));
-    registrationBean.setName(filter.getClass().getSimpleName());
-    registrationBean.setOrder(2);
-    return registrationBean;
+  public FilterRegistrationBean getOAuth2Filter() {
+    return newFilterRegistration(new OAuth2Filter(), 4);
   }
   
   @Bean
@@ -84,11 +105,11 @@ public class AppSpringWebConfiguration {
     ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder()
         .put("cluster.name", "elastic-mmc")
         .put("node.name", "rest-mmc")
-        .put("node.master", String.valueOf(true))
-        .put("node.data", String.valueOf(true))
-        .put("index.number_of_shards", String.valueOf(1))
-        .put("index.number_of_replicas", String.valueOf(0))
-        .put("http.enabled", String.valueOf(false))
+        .put("node.master", true)
+        .put("node.data", true)
+        .put("index.number_of_shards", 1)
+        .put("index.number_of_replicas", 0)
+        .put("http.enabled", true)
         .put("path.data", appConfiguration.getEsDirectory() + "/data")
         .put("path.work", appConfiguration.getEsDirectory() + "/work")
         .put("path.logs", appConfiguration.getEsDirectory() + "/log")
@@ -110,7 +131,9 @@ public class AppSpringWebConfiguration {
   
   @Bean
   public HttpMessageConverters customConverters() {
-    return new HttpMessageConverters(new PdfHttpMessageFindResponseConverter());
+    return new HttpMessageConverters(new com.stfciz.mmc.web.api.book.PdfHttpMessageFindResponseConverter()
+                                   , new com.stfciz.mmc.web.api.music.PdfHttpMessageFindResponseConverter()                               
+                                   , new com.stfciz.mmc.web.api.misc.PdfHttpMessageFindResponseConverter());
   }
 
 }

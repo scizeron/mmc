@@ -1,6 +1,12 @@
 core:
  flickr:
-  appGalleryId: 00000000000000000000
+  galleries :
+   - id : 123
+     name : music
+   - id : 456
+     name : book
+   - id : 789
+     name : misc
   user:
    id: 1111111111
    apiKey: 22222222222222222

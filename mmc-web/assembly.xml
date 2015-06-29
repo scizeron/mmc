@@ -12,7 +12,7 @@
 
 	<fileSets>
 		<fileSet>
-			<directory>${basedir}/src/main/music</directory>
+			<directory>${basedir}/src/main/sp</directory>
 			<outputDirectory></outputDirectory>
 			<lineEnding>keep</lineEnding>
 			<excludes>

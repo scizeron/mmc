@@ -12,7 +12,7 @@
   </parent>
 
   <properties>
-    <jidr.version>0.0.1</jidr.version>
+    <jidr.version>0.0.2</jidr.version>
     <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
   </properties>
 
@@ -47,16 +47,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>spring-boot-starter-tomcat</artifactId>
-          <groupId>org.springframework.boot</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-jetty</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -81,6 +71,11 @@
           <groupId>commons-logging</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.github.scizeron</groupId>
+      <artifactId>logback-sqs</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.github.tlrx</groupId>
