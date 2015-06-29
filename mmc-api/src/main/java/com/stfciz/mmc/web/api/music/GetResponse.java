@@ -13,6 +13,8 @@ public class GetResponse extends AbstractMusicBaseResponse {
 
   private List<SideMatrix> sideMatrixes;
   
+  private List<Song> songs;
+  
   /**
    * 
    * @return
@@ -30,5 +32,24 @@ public class GetResponse extends AbstractMusicBaseResponse {
    */
   public void setSideMatrixes(List<SideMatrix> sideMatrixes) {
     this.sideMatrixes = sideMatrixes;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public List<Song> getSongs() {
+    if (this.songs == null) {
+      this.songs = new ArrayList<>();
+    }
+    return this.songs;
+  }
+
+  /**
+   * 
+   * @param songs
+   */
+  public void setSongs(List<Song> songs) {
+    this.songs = songs;
   }
 }

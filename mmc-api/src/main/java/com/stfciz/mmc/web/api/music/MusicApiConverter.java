@@ -1,10 +1,13 @@
 package com.stfciz.mmc.web.api.music;
 
+import java.util.Comparator;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.mangofactory.swagger.models.Collections;
 import com.stfciz.mmc.core.music.domain.MusicDocument;
 import com.stfciz.mmc.core.music.domain.Obi;
 import com.stfciz.mmc.core.music.domain.RecordCompany;
@@ -84,6 +87,15 @@ public class MusicApiConverter extends AbstractApiConverter<MusicDocument, GetRe
         target.getSideMatrixs().add(targetSideMatrix);
       }
     }
+    
+    if (request.getSongs() != null && ! request.getSongs().isEmpty()) {
+      for (com.stfciz.mmc.web.api.music.Song srcSong : request.getSongs()) {
+        com.stfciz.mmc.core.music.domain.Song targetSong = new com.stfciz.mmc.core.music.domain.Song();
+        BeanUtils.copyProperties(srcSong, targetSong);
+        target.getSongs().add(targetSong);
+      }
+    }
+    
     return target;
   }
   
@@ -124,6 +136,27 @@ public class MusicApiConverter extends AbstractApiConverter<MusicDocument, GetRe
         target.getSideMatrixes().add(targetSideMatrix);
       }
     }
+    
+    if (src.getSongs() != null && ! src.getSongs().isEmpty()) {
+      for (com.stfciz.mmc.core.music.domain.Song srcSong : src.getSongs()) {
+        com.stfciz.mmc.web.api.music.Song targetSong = new  com.stfciz.mmc.web.api.music.Song();
+        BeanUtils.copyProperties(srcSong, targetSong);
+        target.getSongs().add(targetSong);
+      }
+      target.getSongs().sort(new Comparator<Song>() {
+        @Override
+        public int compare(Song s1, Song s2) {
+          if (s1.getDisc() == s2.getDisc()) {
+            if (s1.getSide() == s2.getSide()) {
+              return s1.getOrder() - s2.getOrder();
+            }
+            return s1.getSide() - s2.getSide();
+          }
+          return s1.getDisc() - s2.getDisc();
+        }
+      });
+    }
+    
     return target;
   }
 

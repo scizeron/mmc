@@ -41,6 +41,8 @@ public class NewRequest extends AbstractNewRequest {
   
   private List<SideMatrix>  sideMatrixes;
   
+  private List<Song> songs;
+  
   public String getArtist() {
     return this.artist;
   }
@@ -162,5 +164,24 @@ public class NewRequest extends AbstractNewRequest {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public List<Song> getSongs() {
+    if (this.songs == null) {
+      this.songs = new ArrayList<>();
+    }
+    return this.songs;
+  }
+
+  /**
+   * 
+   * @param songs
+   */
+  public void setSongs(List<Song> songs) {
+    this.songs = songs;
   }
 }

@@ -42,6 +42,8 @@ public class MusicDocument extends AbstractDocument {
   /** EP/LP side matrix number **/
   private List<SideMatrix>  sideMatrixes;
   
+  private List<Song>        songs; 
+  
   /**
    * @return the title
    */
@@ -213,5 +215,24 @@ public class MusicDocument extends AbstractDocument {
    */
   public void setSideMatrixs(List<SideMatrix> sideMatrixes) {
     this.sideMatrixes = sideMatrixes;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public List<Song> getSongs() {
+    if (this.songs == null) {
+      this.songs = new ArrayList<>();
+    }
+    return this.songs;
+  }
+
+  /**
+   * 
+   * @param songs
+   */
+  public void setSongs(List<Song> songs) {
+    this.songs = songs;
   }
 }
