@@ -10,22 +10,26 @@ public interface AggregationService {
 
   /**
    * 
+   * @param indices
+   * @param types
    * @return
    */
-  Long getSumOfPurchases(String type);
+  Long getSumOfPurchases(String [] indices, String [] types);
 
   /**
    * 
-   * @param type
+   * @param indices
+   * @param types
    * @return
    */
-  Long getSumOfUpatedPrices(String type);
+  Long getSumOfUpatedPrices(String [] indices, String [] types);
   
   /**
    * 
-   * @param type
+   * @param indices
+   * @param types
    * @return
    */
-  Long getMaxPurchase(String type);
+  Long getMaxPurchase(String [] indices, String [] types);
   
 }

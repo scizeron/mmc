@@ -1,15 +1,11 @@
-package com.stfciz.mmc.web.controller;
+package com.stfciz.mmc.web.api.misc;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stfciz.mmc.core.misc.domain.MiscDocument;
-import com.stfciz.mmc.web.api.misc.GetResponse;
-import com.stfciz.mmc.web.api.misc.NewRequest;
-import com.stfciz.mmc.web.api.misc.UpdateRequest;
-import com.stfciz.mmc.web.api.misc.FindElementResponse;
-import com.stfciz.mmc.web.api.misc.FindResponse;
+import com.stfciz.mmc.web.api.AbstractApiController;
 
 /**
  * 

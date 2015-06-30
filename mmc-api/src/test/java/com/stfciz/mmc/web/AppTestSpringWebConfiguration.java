@@ -6,6 +6,8 @@ import org.elasticsearch.node.NodeBuilder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,8 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @EnableAutoConfiguration(exclude = { 
   ElasticsearchAutoConfiguration.class
 , ElasticsearchDataAutoConfiguration.class
+, DataSourceAutoConfiguration.class
+, HibernateJpaAutoConfiguration.class
 })
 public class AppTestSpringWebConfiguration {
 

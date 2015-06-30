@@ -1,0 +1,4 @@
+{"index": {"_index": "misc", "_type": "ms", "_id": "1" }}
+{"id":1, "title": "The Wall", "modified" : 1425945600, "purchase" : { "price" : 120 } , "prices" : [{"price":150, "year":2005, "month":2},{"price":250, "year":2015, "month":5}], "mostUpdatedPrice":250}
+{"index": {"_index": "misc", "_type": "ms", "_id": "2" }}
+{"id":2, "title": "More", "modified" : 1423526400, "globalRating" : 5}

@@ -1,4 +1,4 @@
-package com.stfciz.mmc.web.controller;
+package com.stfciz.mmc.web;
 
 import java.io.IOException;
 

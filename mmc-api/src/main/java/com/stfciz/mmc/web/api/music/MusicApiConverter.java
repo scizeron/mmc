@@ -7,7 +7,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.mangofactory.swagger.models.Collections;
 import com.stfciz.mmc.core.music.domain.MusicDocument;
 import com.stfciz.mmc.core.music.domain.Obi;
 import com.stfciz.mmc.core.music.domain.RecordCompany;

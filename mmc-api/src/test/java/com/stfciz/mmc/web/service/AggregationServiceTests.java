@@ -22,14 +22,14 @@ public class AggregationServiceTests extends AbstractWebApplicationTests {
    * 
    */
   @Test public void getSumOfPurchases() {
-    Assert.assertThat(this.service.getSumOfPurchases("md"), CoreMatchers.is(430L));
+    Assert.assertThat(this.service.getSumOfPurchases(new String[]{"music"}, new String[]{"md"}), CoreMatchers.is(430L));
   }
   
   @Test public void getMaxPurchase() {
-    Assert.assertThat(this.service.getMaxPurchase("md"), CoreMatchers.is(260L));
+    Assert.assertThat(this.service.getMaxPurchase(new String[]{"music"}, new String[]{"md"}), CoreMatchers.is(260L));
   }
   
   @Test public void getSumOfUpatedPrices() {
-    Assert.assertThat(this.service.getSumOfUpatedPrices("md"), CoreMatchers.is(595L));
+    Assert.assertThat(this.service.getSumOfUpatedPrices(new String[]{"music"}, new String[]{"md"}), CoreMatchers.is(595L));
   }
 }

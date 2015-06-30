@@ -21,14 +21,15 @@ public class AggregationServiceImpl implements AggregationService {
   private ElasticsearchOperations elasticsearchOperations;
   
   @Override
-  public Long getSumOfPurchases(String type) {
+  public Long getSumOfPurchases(String [] indices, String [] types) {
     final String agg = "getSumOfUpatedPrices";
     
     Aggregations aggregations = this.elasticsearchOperations.query(
       new NativeSearchQueryBuilder()
         .withQuery(matchAllQuery())
         .withSearchType(org.elasticsearch.action.search.SearchType.COUNT)
-        .withTypes(type)
+        .withIndices(indices)
+        .withTypes(types)
         .addAggregation(AggregationBuilders.sum(agg).field("purchase.price")).build()
     , new ResultsExtractor<Aggregations>() {
         @Override
@@ -41,14 +42,15 @@ public class AggregationServiceImpl implements AggregationService {
   }
 
   @Override
-  public Long getSumOfUpatedPrices(String type) {
+  public Long getSumOfUpatedPrices(String [] indices, String [] types) {
     final String agg = "getSumOfUpatedPrices";
     
     Aggregations aggregations = this.elasticsearchOperations.query(
       new NativeSearchQueryBuilder()
         .withQuery(matchAllQuery())
         .withSearchType(org.elasticsearch.action.search.SearchType.COUNT)
-        .withTypes(type)
+        .withIndices(indices)
+        .withTypes(types)
         .addAggregation(AggregationBuilders.sum(agg).field("mostUpdatedPrice")).build()
     , new ResultsExtractor<Aggregations>() {
         @Override
@@ -61,13 +63,14 @@ public class AggregationServiceImpl implements AggregationService {
   }
 
   @Override
-  public Long getMaxPurchase(String type) {
+  public Long getMaxPurchase(String [] indices, String [] types) {
     final String bucketName = "purchase";
     Aggregations aggregations = this.elasticsearchOperations.query(
         new NativeSearchQueryBuilder()
           .withQuery(matchAllQuery())
           .withSearchType(org.elasticsearch.action.search.SearchType.COUNT)
-          .withTypes(type)
+          .withIndices(indices)
+          .withTypes(types)
           .addAggregation(AggregationBuilders.max(bucketName).field("purchase.price")).build()
       , new ResultsExtractor<Aggregations>() {
           @Override

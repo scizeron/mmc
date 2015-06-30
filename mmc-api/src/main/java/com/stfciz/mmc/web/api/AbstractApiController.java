@@ -1,4 +1,4 @@
-package com.stfciz.mmc.web.controller;
+package com.stfciz.mmc.web.api;
 
 import java.util.List;
 
@@ -33,11 +33,6 @@ import com.stfciz.mmc.core.photo.dao.UploadPhoto;
 import com.stfciz.mmc.core.photo.domain.PhotoDocument;
 import com.stfciz.mmc.core.photo.domain.Tag;
 import com.stfciz.mmc.core.photo.domain.TagName;
-import com.stfciz.mmc.web.api.AbstractApiConverter;
-import com.stfciz.mmc.web.api.AbstractBaseResponse;
-import com.stfciz.mmc.web.api.AbstractFindResponse;
-import com.stfciz.mmc.web.api.AbstractNewRequest;
-import com.stfciz.mmc.web.api.RemovePhotosRequestContent;
 import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
 import com.stfciz.mmc.web.oauth2.Permission;
@@ -66,23 +61,20 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
   
   @Autowired
   private ElasticsearchRepository<D, String> repository;
+
+  @Autowired
+  private FindRequestHandler findRequestHander;
   
   private AbstractApiConverter<D, GR, NR, UR, FER, FR> apiConverter;
   
-  private FindRequestHandler findRequestQueryHander;
- 
   @SuppressWarnings("unchecked")
   @PostConstruct
   public void wireCollaborators() {
-    String domain = StringUtils.remove(this.getClass().getSimpleName(), "Controller").toLowerCase();
+    final String domain = StringUtils.remove(this.getClass().getSimpleName(), "Controller").toLowerCase();
 
     String converterName = domain + "ApiConverter";
     LOGGER.debug("Wire '{}' for {}", converterName, this);
     this.apiConverter = (AbstractApiConverter<D, GR, NR, UR, FER, FR>) this.applicationContext.getBean(converterName);
-    
-    String findRequestHandlerName = domain + "FindRequestHandler";
-    LOGGER.debug("Wire '{}' for {}", findRequestHandlerName, this);
-    this.findRequestQueryHander = (FindRequestHandler) this.applicationContext.getBean(findRequestHandlerName);
   }
   
   @RequestMapping(method = RequestMethod.POST)
@@ -169,7 +161,7 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
   
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   @Permission(scopes = { OAuth2ScopeApi.READ })
-  public ResponseEntity<GR> find(@PathVariable String id) {
+  public ResponseEntity<GR> get(@PathVariable String id) {
     D result = this.repository.findOne(id);
     if (result == null) {
       return new ResponseEntity<GR>(HttpStatus.BAD_REQUEST);
@@ -183,7 +175,7 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
       , consumes = { MediaType.ALL_VALUE }
       , produces = { MediaType.APPLICATION_JSON_VALUE, "application/pdf" })
   @Permission(scopes = { OAuth2ScopeApi.READ })
-  public FR find(
+  public FR search(
       @RequestParam(value = "q", required = false) String query,
       @RequestParam(value = "i", required = false) String index,
       @RequestParam(value = "p", required = false, defaultValue = "0") int page,
@@ -212,14 +204,14 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
       if (StringUtils.isBlank(query)) {
         Sort sort = new Sort(new  Sort.Order(Sort.Direction.DESC, "modified"));
         if (singlePage) {
-          sort = this.findRequestQueryHander.getSort(index);
+          sort = this.findRequestHander.getSort(index);
         }
         
         result = this.repository.findAll(new PageRequest(page, pageSize, sort));
       } else {
-        pageable = new PageRequest(page, pageSize, this.findRequestQueryHander.getSort(index));
+        pageable = new PageRequest(page, pageSize, this.findRequestHander.getSort(index));
         QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(query);
-        this.findRequestQueryHander.customizeQueryStringQueryBuilder(queryBuilder);
+        this.findRequestHander.customizeQueryStringQueryBuilder(queryBuilder);
         result = this.repository.search(queryBuilder, pageable);
       }
             

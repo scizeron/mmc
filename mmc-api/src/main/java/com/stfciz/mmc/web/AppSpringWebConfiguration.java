@@ -19,6 +19,8 @@ import org.springframework.boot.actuate.autoconfigure.TraceWebFilterAutoConfigur
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -30,8 +32,6 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-import com.stfciz.mmc.web.controller.CorsFilter;
-import com.stfciz.mmc.web.controller.LoggingFilter;
 import com.stfciz.mmc.web.oauth2.OAuth2Filter;
 import com.stfciz.mmc.web.oauth2.PermissionAspect;
 
@@ -44,7 +44,8 @@ import com.stfciz.mmc.web.oauth2.PermissionAspect;
 @ComponentScan(basePackages = { "com.stfciz.mmc" })
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableElasticsearchRepositories(basePackages = { "com.stfciz.mmc" }, elasticsearchTemplateRef = "elasticsearchOperations")
-@EnableAutoConfiguration(exclude = { AuditAutoConfiguration.class
+@EnableAutoConfiguration(exclude = { 
+      AuditAutoConfiguration.class
     , CrshAutoConfiguration.class
     , MetricFilterAutoConfiguration.class
     , MetricRepositoryAutoConfiguration.class
@@ -52,7 +53,10 @@ import com.stfciz.mmc.web.oauth2.PermissionAspect;
     , TraceWebFilterAutoConfiguration.class
     , EndpointMBeanExportAutoConfiguration.class // exports de endpoints
     , ElasticsearchAutoConfiguration.class
-    , ElasticsearchDataAutoConfiguration.class })
+    , ElasticsearchDataAutoConfiguration.class
+    , DataSourceAutoConfiguration.class
+    , HibernateJpaAutoConfiguration.class    
+})
 public class AppSpringWebConfiguration {
 
   private static final String[] FILTER_URL_PATTERNS = { "/*" };

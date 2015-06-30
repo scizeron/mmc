@@ -1,4 +1,4 @@
-package com.stfciz.mmc.web.controller;
+package com.stfciz.mmc.web.api.photo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,6 @@ import com.flickr4java.flickr.photos.PhotoList;
 import com.stfciz.mmc.core.CoreConfiguration;
 import com.stfciz.mmc.core.photo.PhotoManager;
 import com.stfciz.mmc.core.photo.dao.FlickrApi;
-import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
 import com.stfciz.mmc.web.oauth2.Permission;
 import com.stfciz.mmc.web.oauth2.UserRole;
