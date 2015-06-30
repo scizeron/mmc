@@ -44,7 +44,8 @@ public class AbstractWebApplicationTests {
   public void setUp() {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
     this.esSetup = new EsSetup(this.client);
-    this.esSetup.execute(EsSetup.deleteAll()
+    this.esSetup.execute(
+          EsSetup.deleteAll()
         , EsSetup.createIndex("music").withData(EsSetup.fromClassPath("indices/music.json"))
         , EsSetup.createIndex("book").withData(EsSetup.fromClassPath("indices/book.json"))
         , EsSetup.createIndex("misc").withData(EsSetup.fromClassPath("indices/misc.json"))
