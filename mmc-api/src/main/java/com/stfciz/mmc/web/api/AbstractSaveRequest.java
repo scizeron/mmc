@@ -10,7 +10,7 @@ import java.util.List;
  *
  * 16 juin 2015
  */
-public abstract class AbstractNewRequest {
+public abstract class AbstractSaveRequest {
 
   private String            description;
   

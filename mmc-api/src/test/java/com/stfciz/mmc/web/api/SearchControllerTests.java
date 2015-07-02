@@ -15,8 +15,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stfciz.mmc.web.AbstractWebApplicationTests;
-import com.stfciz.mmc.web.api.search.SearchElementResponse;
-import com.stfciz.mmc.web.api.search.SearchResponse;
 
 
 /**
@@ -26,8 +24,6 @@ import com.stfciz.mmc.web.api.search.SearchResponse;
  */
 public class SearchControllerTests extends AbstractWebApplicationTests {
 
-  private ObjectMapper mapper = new ObjectMapper();
-  
   /**
    * 
    * @throws Exception
@@ -40,11 +36,11 @@ public class SearchControllerTests extends AbstractWebApplicationTests {
       .andExpect(status().is2xxSuccessful()).andReturn();
     
     // then
-    SearchResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), SearchResponse.class);
-    List<SearchElementResponse> items = response.getItems();
+    FindResponse response = new ObjectMapper().readValue(result.getResponse().getContentAsString(), FindResponse.class);
+    List<FindItemResponse> items = response.getItems();
     Assert.assertThat(items.size(), CoreMatchers.is(4));
-    for (SearchElementResponse searchElementResponse : items) {
-      Assert.assertThat(searchElementResponse.getType(), CoreMatchers.anyOf(CoreMatchers.is("music"), CoreMatchers.is("book"), CoreMatchers.is("misc")));
+    for (FindItemResponse item : items) {
+      Assert.assertThat(item.getType(), CoreMatchers.anyOf(CoreMatchers.is("music"), CoreMatchers.is("book"), CoreMatchers.is("misc")));
     }
   }
  

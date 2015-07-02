@@ -1,5 +1,7 @@
 package com.stfciz.mmc.web.service;
 
+import com.stfciz.mmc.core.domain.DocumentType;
+
 /**
  * 
  * @author stfciz
@@ -10,26 +12,23 @@ public interface AggregationService {
 
   /**
    * 
-   * @param indices
-   * @param types
+   * @param type
    * @return
    */
-  Long getSumOfPurchases(String [] indices, String [] types);
+  Long getSumOfPurchases(DocumentType type);
 
   /**
    * 
-   * @param indices
-   * @param types
+   * @param type
    * @return
    */
-  Long getSumOfUpatedPrices(String [] indices, String [] types);
+  Long getSumOfUpatedPrices(DocumentType type);
   
   /**
    * 
-   * @param indices
-   * @param types
+   * @param type
    * @return
    */
-  Long getMaxPurchase(String [] indices, String [] types);
+  Long getMaxPurchase(DocumentType type);
   
 }

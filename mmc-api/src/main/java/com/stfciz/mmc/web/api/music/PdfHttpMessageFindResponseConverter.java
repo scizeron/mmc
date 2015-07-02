@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.itextpdf.text.pdf.PdfPTable;
 import com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter;
+import com.stfciz.mmc.web.api.FindItemResponse;
+import com.stfciz.mmc.web.api.FindResponse;
 
 /**
  * 
@@ -13,7 +15,7 @@ import com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter;
  *
  * @param <T>
  */
-public class PdfHttpMessageFindResponseConverter extends AbstractPdfHttpMessageFindResponseConverter<FindResponse> {
+public class PdfHttpMessageFindResponseConverter extends AbstractPdfHttpMessageFindResponseConverter {
 
   @Override
   protected boolean supports(Class<?> clazz) {
@@ -36,8 +38,8 @@ public class PdfHttpMessageFindResponseConverter extends AbstractPdfHttpMessageF
 
   @Override
   protected void addItems(FindResponse findResponse, PdfPTable table) {
-    List<FindElementResponse> docs = findResponse.getItems();
-    for (FindElementResponse doc : docs) {
+    List<FindItemResponse> docs = findResponse.getItems();
+    for (FindItemResponse doc : docs) {
       addCell(table, doc.getArtist());
       addCell(table, doc.getTitle());
       table.addCell(String.format("%s %s", (doc.getNbType() != null && doc

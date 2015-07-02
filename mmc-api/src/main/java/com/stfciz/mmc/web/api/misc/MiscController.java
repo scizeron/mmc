@@ -4,8 +4,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.stfciz.mmc.core.misc.domain.MiscDocument;
 import com.stfciz.mmc.web.api.AbstractApiController;
+import com.stfciz.mmc.web.api.GetResponse;
 
 /**
  * 
@@ -15,7 +15,6 @@ import com.stfciz.mmc.web.api.AbstractApiController;
  */
 @RestController
 @RequestMapping(value = "/misc", produces = { MediaType.APPLICATION_JSON_VALUE })
-public class MiscController extends AbstractApiController<MiscDocument, GetResponse, NewRequest, UpdateRequest, FindElementResponse, FindResponse> {
-
+public class MiscController extends AbstractApiController<GetResponse, SaveRequest> {
 
 }

@@ -35,7 +35,7 @@ import com.stfciz.mmc.web.api.book.PdfHttpMessageFindResponseConverter;
  *
  * 18 juin 2015
  */
-public abstract class AbstractPdfHttpMessageFindResponseConverter<T extends AbstractFindResponse<?>> extends AbstractHttpMessageConverter<T> {
+public abstract class AbstractPdfHttpMessageFindResponseConverter extends AbstractHttpMessageConverter<FindResponse> {
  
   protected static final Logger LOGGER = LoggerFactory
       .getLogger(PdfHttpMessageFindResponseConverter.class);
@@ -54,9 +54,14 @@ public abstract class AbstractPdfHttpMessageFindResponseConverter<T extends Abst
   public AbstractPdfHttpMessageFindResponseConverter() {
     super(MediaType.valueOf("application/pdf"));
   }
-    
+  
   @Override
-  protected T readInternal(Class<? extends T> clazz,
+  protected boolean supports(Class<?> clazz) {
+    return clazz.isAssignableFrom(FindResponse.class);
+  }
+  
+  @Override
+  protected FindResponse readInternal(Class<? extends FindResponse> clazz,
       HttpInputMessage inputMessage) throws IOException,
       HttpMessageNotReadableException {
     return null;
@@ -165,21 +170,16 @@ public abstract class AbstractPdfHttpMessageFindResponseConverter<T extends Abst
       return null;
     }
   }
-
-  @Override
-  protected boolean supports(Class<?> clazz) {
-    return false;
-  }
   
   /**
    * 
    * @param findResponse
    * @param table
    */
-  protected abstract void addItems(T findResponse, PdfPTable table);
+  protected abstract void addItems(FindResponse findResponse, PdfPTable table);
   
   @Override
-  protected void writeInternal(T findResponse, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+  protected void writeInternal(FindResponse findResponse, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     OutputStream os = outputMessage.getBody();
     try {

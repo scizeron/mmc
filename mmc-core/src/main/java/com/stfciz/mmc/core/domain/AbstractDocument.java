@@ -7,8 +7,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
-import com.stfciz.mmc.core.music.ImageComparator;
-import com.stfciz.mmc.core.music.domain.UpdatePrice;
+import com.stfciz.mmc.core.photo.domain.ImageComparator;
 import com.stfciz.mmc.core.photo.domain.PhotoDocument;
 
 /**
@@ -20,6 +19,8 @@ public abstract class AbstractDocument {
 
   @Id
   private String            id;
+  
+  private String            title;
   
   private Date              modified;
   
@@ -50,7 +51,7 @@ public abstract class AbstractDocument {
   /** updated prices  */
   private List<UpdatePrice> prices;
   
-  private Integer mostUpdatedPrice;
+  private Integer           mostUpdatedPrice;
       
   public String getId() {
     return id;
@@ -185,6 +186,14 @@ public abstract class AbstractDocument {
 
   public void setPromo(boolean promo) {
     this.promo = promo;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 }
 

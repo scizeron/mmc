@@ -1,0 +1,54 @@
+<div class="row">
+ <div class="alert alert-danger alert-dismissible col-md-12" role="alert" ng-show="action.result == 1">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>Error</strong>
+ </div>
+</div>
+<div class="row">
+ <div class="col-md-4">
+  <input type="text" ng-focus="focus=true" ng-model="queryFilter" placeholder="Filter"  style="margin-left: 15px"/>
+  <span class="glyphicon glyphicon-filter"></span>
+ </div>
+ <div class="col-md-offset-3" ng-show="totalPages > 1">
+  <htmldiv content="navigation"></htmldiv>
+ </div>
+ <div class="col-md-offset-3" ng-hide="totalPages > 1">
+  <br/><br/>
+ </div> 
+</div>
+<div class="row" ng-repeat="docInfos in docsInfos | filter:queryFilter" style="border-width: 1px; border-radius: 5px; border-style: solid; border-color: #aaa; margin-left: 15px; margin-right: 15px; margin-bottom: 15px">
+ <div class="col-md-4" ng-show="docInfos.imgUrl != null">
+  <a href="{{docInfos.href}}" ng-click="selectItem($index)"><img ng-src="{{docInfos.imgUrl}}" style="margin-top: 10px; margin-bottom:10px; margin-right: 5px; border: 1px solid #aaa;border-radius: 5px;"/></a>
+  <a href="{{docInfos.href}}" ng-click="selectItem($index)">{{docInfos.title}}</a>
+ </div>
+ <div class="col-md-4" ng-show="docInfos.imgUrl == null">
+  <a href="{{docInfos.href}}" ng-click="selectItem($index)" style="margin-left: 115px">{{docInfos.title}}</a>
+ </div>
+ <div class="col-md-5" style="margin-top: 10px;">
+  <div class="row">
+   <div class="col-md-12">{{docInfos.line1}}</div>
+  </div>
+  <div class="row">
+   <div class="col-md-12"><img ng-src="images/country/24/{{docInfos.origin}}.png"/> {{docInfos.line2}}</div>
+  </div>
+  <div class="row">
+   <div class="col-md-12">{{docInfos.line3}}</div>
+  </div>
+  <div class="row">
+   <div class="col-md-12">{{docInfos.line4}}</div>
+  </div>
+ </div>
+ <div class="col-md-3" style="margin-top: 10px;" ng-show="docInfos.type == 'music'">
+  <div ng-show="docInfos.sleeveGrade">
+   <img src="images/rating/sleeve.png" title="{{docInfos.sleeveGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating/rating{{docInfos.sleeveGrade}}.png" title="{{docInfos.sleeveGradeTip}}"/>
+  </div>
+  <div ng-show="docInfos.recordGrade" style="border-top: 5px;" ng-show="docInfos.type == 'music'">
+   <img src="images/rating/record.png" title="{{docInfos.recordGradeTip}}" style="margin-right: 5px;"/><img ng-src="images/rating/rating{{docInfos.recordGrade}}.png" title="{{docInfos.recordGradeTip}}"/>
+  </div>
+ </div>
+ <div class="col-md-3" style="margin-top: 10px;" ng-show="docInfos.type != 'music'">
+  <div ng-show="docInfos.globalRating">
+   <img src="images/rating/globalRating.png" title="{{docInfos.globalRating}}" style="margin-right: 5px;"/><img ng-src="images/rating/rating{{docInfos.globalRating}}.png" title="{{docInfos.globalRatingTip}}"/>
+  </div>
+ </div>   
+</div>

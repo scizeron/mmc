@@ -5,14 +5,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.photos.Photo;
 import com.stfciz.mmc.core.CoreConfiguration;
-import com.stfciz.mmc.core.domain.AbstractDocument;
+import com.stfciz.mmc.core.domain.DocumentType;
+import com.stfciz.mmc.core.domain.MMCDocument;
 import com.stfciz.mmc.core.photo.dao.FlickrApi;
 import com.stfciz.mmc.core.photo.dao.UploadPhoto;
 import com.stfciz.mmc.core.photo.domain.PhotoDocument;
@@ -37,13 +34,13 @@ import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
 import com.stfciz.mmc.web.oauth2.Permission;
 import com.stfciz.mmc.web.oauth2.UserRole;
-import com.stfciz.mmc.web.service.FindRequestHandler;
+import com.stfciz.mmc.web.service.MMCService;
 /**
  * 
  * @author Bellevue
  *
  */
-public abstract class AbstractApiController<D extends AbstractDocument, GR extends AbstractBaseResponse, NR extends AbstractNewRequest, UR extends AbstractNewRequest, FER extends AbstractBaseResponse, FR extends AbstractFindResponse<FER>> {
+public abstract class AbstractApiController<GR extends FindItemResponse, SR extends AbstractSaveRequest> {
 
   protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
@@ -60,35 +57,36 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
   private FlickrApi flickrApi;
   
   @Autowired
-  private ElasticsearchRepository<D, String> repository;
+  private ElasticsearchRepository<MMCDocument, String> repository;
 
-  @Autowired
-  private FindRequestHandler findRequestHander;
+  private ApiConverter<GR, SR> apiConverter;
   
-  private AbstractApiConverter<D, GR, NR, UR, FER, FR> apiConverter;
+  @Autowired
+  private MMCService mmcService;
+  
+  private DocumentType supportedType;
   
   @SuppressWarnings("unchecked")
   @PostConstruct
   public void wireCollaborators() {
     final String domain = StringUtils.remove(this.getClass().getSimpleName(), "Controller").toLowerCase();
-
+    this.supportedType = DocumentType.valueOf(domain.toUpperCase());
     String converterName = domain + "ApiConverter";
-    LOGGER.debug("Wire '{}' for {}", converterName, this);
-    this.apiConverter = (AbstractApiConverter<D, GR, NR, UR, FER, FR>) this.applicationContext.getBean(converterName);
+    LOGGER.debug("Wire '{}' for {} [{}]", new Object[]{converterName, this.getClass().getSimpleName(), this.supportedType});
+    this.apiConverter = (ApiConverter<GR, SR>) this.applicationContext.getBean(converterName);
   }
   
   @RequestMapping(method = RequestMethod.POST)
   @Permission(scopes = { OAuth2ScopeApi.WRITE })
-  public ResponseEntity<GR> create(@RequestBody(required = true) NR req) {
+  public ResponseEntity<GR> create(@RequestBody(required = true) SR req) {
     return new ResponseEntity<GR>(this.apiConverter.convertToGetResponse(
-        this.repository.save(this.apiConverter.convertNewRequestContentToDcoument(req))), HttpStatus.CREATED);
+        this.repository.save(this.apiConverter.convertFromNewRequest(req))), HttpStatus.CREATED);
   }
-  
   
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   @Permission(scopes = { OAuth2ScopeApi.DELETE}, roles= { UserRole.ADMIN})
   public ResponseEntity<String> remove(@PathVariable String id) {
-    AbstractDocument result = this.repository.findOne(id);
+    MMCDocument result = this.mmcService.findById(id, this.supportedType);
     if (result == null) {
       return new ResponseEntity<String>(HttpStatus.OK);
     }
@@ -109,21 +107,23 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
   
   @RequestMapping(value = "/{id}", method = RequestMethod.POST)
   @Permission(scopes = { OAuth2ScopeApi.WRITE})
-  public ResponseEntity<GR> update(@PathVariable String id, @RequestBody(required = true) UR req) {
-    D partialDoc = this.apiConverter.convertUpdateRequestContent(req);
+  public ResponseEntity<GR> update(@PathVariable String id, @RequestBody(required = true) SR req) {
     // docToUpdate ne contient pas les images, elles seront supprimées si update
-    D docToUpdate = this.repository.findOne(id);
+    MMCDocument docToUpdate = this.mmcService.findById(id, this.supportedType);
+    
     if (docToUpdate == null) {
      return new ResponseEntity<GR>(HttpStatus.BAD_REQUEST);  
     }
+    
+    MMCDocument partialDoc = this.apiConverter.convertFromUpdateRequest(req);
     partialDoc.setPhotos(docToUpdate.getPhotos());
     return new ResponseEntity<GR>(this.apiConverter.convertToGetResponse(this.repository.save(partialDoc)), HttpStatus.OK);
   }
   
   @RequestMapping(value = "/{id}/photos", method = RequestMethod.DELETE)
   @Permission(scopes = { OAuth2ScopeApi.DELETE })
-  public ResponseEntity<GR> removePhotos(@PathVariable String id, @RequestBody(required=true) RemovePhotosRequestContent in) throws Exception {
-    D doc = this.repository.findOne(id);
+  public ResponseEntity<GR> removePhotos(@PathVariable String id, @RequestBody(required=true) RemovePhotosRequest in) throws Exception {
+    MMCDocument doc = this.mmcService.findById(id, this.supportedType);
     if (doc == null) {
       LOGGER.error("\"{}\" not found");
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -162,7 +162,7 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   @Permission(scopes = { OAuth2ScopeApi.READ })
   public ResponseEntity<GR> get(@PathVariable String id) {
-    D result = this.repository.findOne(id);
+    MMCDocument result = this.mmcService.findById(id, this.supportedType);
     if (result == null) {
       return new ResponseEntity<GR>(HttpStatus.BAD_REQUEST);
     }
@@ -175,75 +175,39 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
       , consumes = { MediaType.ALL_VALUE }
       , produces = { MediaType.APPLICATION_JSON_VALUE, "application/pdf" })
   @Permission(scopes = { OAuth2ScopeApi.READ })
-  public FR search(
+  public FindResponse search(
       @RequestParam(value = "q", required = false) String query,
-      @RequestParam(value = "i", required = false) String index,
       @RequestParam(value = "p", required = false, defaultValue = "0") int page,
       @RequestParam(value = "s", required = false, defaultValue = "50") int pageSize) {
     
-    if (index == null) {
-      index = "music";
+    boolean allPages = (page == -1);
+    
+    if (!allPages) {
+      return this.mmcService.search(query, page, pageSize, allPages, this.supportedType);
     }
     
-    PageRequest pageable = null;
-    Page<D> result = null;
-    boolean singlePage = (page == -1);
+   
     boolean hasNext = false;
-    
-    FR response = this.apiConverter.newFindResponse();
-
-    response.setPageSize(0);
+    FindResponse findResponsePage = null;
+    FindResponse response = new FindResponse();    
     
     do {
+      page++;
+      LOGGER.debug("page : {}", page);
+      findResponsePage = this.mmcService.search(query, page, pageSize, allPages, this.supportedType);
+      response.getItems().addAll(findResponsePage.getItems());
+      hasNext = findResponsePage.isNext();
       
-      if (singlePage) {
-        page++;
-        LOGGER.debug("\"single-page\" mode, page : {}", page);
-      }
-      
-      if (StringUtils.isBlank(query)) {
-        Sort sort = new Sort(new  Sort.Order(Sort.Direction.DESC, "modified"));
-        if (singlePage) {
-          sort = this.findRequestHander.getSort(index);
-        }
-        
-        result = this.repository.findAll(new PageRequest(page, pageSize, sort));
-      } else {
-        pageable = new PageRequest(page, pageSize, this.findRequestHander.getSort(index));
-        QueryStringQueryBuilder queryBuilder = new QueryStringQueryBuilder(query);
-        this.findRequestHander.customizeQueryStringQueryBuilder(queryBuilder);
-        result = this.repository.search(queryBuilder, pageable);
-      }
-            
-      hasNext = result.hasNext();
-      response.setPageSize(response.getPageSize() + result.getSize());
-      
-      if (!singlePage) {
-        response.setPrevious(result.hasPrevious());
-        response.setPage(result.getNumber());
-        response.setTotalPages(result.getTotalPages());
-        response.setNext(hasNext);
-      }
-      
-      if (result.hasContent()) {
-        for (D doc : result.getContent()) {
-          response.getItems().add(this.apiConverter.convertToFindElementResponse(doc));
-        }
-      }
-      
-    } while (singlePage && hasNext);
+    } while (hasNext);
 
-    if (singlePage) {
-      LOGGER.debug("\"single-page\" mode, {} item(s)", response.getItems().size());
-    }
-    
+    LOGGER.debug("{} item(s)", response.getItems().size());
     return response;
   }
   
   @RequestMapping(value = "/{id}/photos", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
   @Permission(scopes = { OAuth2ScopeApi.WRITE })
   public ResponseEntity<com.stfciz.mmc.web.api.photo.Photo> uploadPhoto(@PathVariable String id, @RequestParam("file") MultipartFile file) throws Exception {
-    D doc = this.repository.findOne(id);
+    MMCDocument doc = this.mmcService.findById(id, this.supportedType);
     
     //String galleryId = this.configuration.getFlickr().get
     if (doc == null) {
@@ -262,7 +226,7 @@ public abstract class AbstractApiController<D extends AbstractDocument, GR exten
       uploadPhoto.setAsync(false);
       uploadPhoto.setFilename(file.getOriginalFilename());
       uploadPhoto.getTags().add(new Tag(TagName.DOC_ID, id));
-      uploadPhoto.setPhotoSetId(this.configuration.getFlickr().getGalleryId(StringUtils.remove(doc.getClass().getSimpleName(), "Document").toLowerCase()));
+      uploadPhoto.setPhotoSetId(this.configuration.getFlickr().getGalleryId(this.supportedType.name().toLowerCase()));
       uploadPhoto.setContent(file.getBytes());
       
       String photoId = this.flickrApi.uploadPhoto(uploadPhoto);

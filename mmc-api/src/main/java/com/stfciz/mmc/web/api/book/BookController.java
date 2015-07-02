@@ -4,10 +4,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.stfciz.mmc.core.book.domain.BookDocument;
 import com.stfciz.mmc.web.api.AbstractApiController;
-import com.stfciz.mmc.web.api.music.FindElementResponse;
-import com.stfciz.mmc.web.api.music.FindResponse;
+import com.stfciz.mmc.web.api.GetResponse;
+import com.stfciz.mmc.web.api.book.SaveRequest;
 
 /**
  * 
@@ -17,7 +16,6 @@ import com.stfciz.mmc.web.api.music.FindResponse;
  */
 @RestController
 @RequestMapping(value = "/book", produces = { MediaType.APPLICATION_JSON_VALUE })
-public class BookController extends AbstractApiController<BookDocument, GetResponse, NewRequest, UpdateRequest, FindElementResponse, FindResponse> {
-
+public class BookController  extends AbstractApiController<GetResponse, SaveRequest> {
 
 }

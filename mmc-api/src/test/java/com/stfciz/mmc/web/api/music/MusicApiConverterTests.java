@@ -6,7 +6,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.stfciz.mmc.core.music.domain.MusicDocument;
+import com.stfciz.mmc.core.domain.MMCDocument;
+import com.stfciz.mmc.web.api.FindItemResponse;
 import com.stfciz.mmc.web.api.UpdatePrice;
 import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 /**
@@ -22,8 +23,8 @@ public class MusicApiConverterTests {
    * 
    * @return
    */
-  private MusicDocument newMusicDocument() {
-    MusicDocument doc = new MusicDocument();
+  private MMCDocument newMusicDocument() {
+    MMCDocument doc = new MMCDocument();
     doc.setId(UUID.randomUUID().toString());
     return doc;
   }
@@ -31,11 +32,11 @@ public class MusicApiConverterTests {
   /**
    * 
    */
-  @Test public void convertNewMusicRequestIn() {
+  @Test public void convertFromNewRequest() {
     // given
-    NewRequest request = new NewRequest();
+    SaveRequest request = new SaveRequest();
     // when
-    MusicDocument result = this.apiConverter.convertNewRequestContentToDcoument(request);
+    MMCDocument result = this.apiConverter.convertFromNewRequest(request);
     // then
     Assert.assertThat("The id is generated", result.getId(), CoreMatchers.notNullValue());
   }
@@ -43,13 +44,13 @@ public class MusicApiConverterTests {
   /**
    * 
    */
-  @Test public void convertNewMusicRequestInWithPurchasePrice() {
+  @Test public void convertFromNewRequestWithPurchasePrice() {
     // given
-    NewRequest request = new NewRequest();
+    SaveRequest request = new SaveRequest();
     request.setPurchasePrice(153);
     
     // when
-    MusicDocument result = this.apiConverter.convertNewRequestContentToDcoument(request);
+    MMCDocument result = this.apiConverter.convertFromNewRequest(request);
     // then
     Assert.assertThat("The id is generated", result.getId(), CoreMatchers.notNullValue());
     Assert.assertThat(result.getMostUpdatedPrice(), CoreMatchers.is(new Integer(153)));
@@ -60,9 +61,9 @@ public class MusicApiConverterTests {
    */
   @Test public void convertMusicDocumentToFindDocument() {
     // given
-    MusicDocument doc = newMusicDocument();
+    MMCDocument doc = newMusicDocument();
     // when
-    AbstractMusicBaseResponse result = this.apiConverter.convertToFindElementResponse(doc);
+    FindItemResponse result = this.apiConverter.convertToFindItemResponse(doc);
     // then
     Assert.assertThat(result.getId(), CoreMatchers.notNullValue());
   }
@@ -70,12 +71,12 @@ public class MusicApiConverterTests {
   /**
    * 
    */
-  @Test public void convertUpdateMusicRequestIn() {
+  @Test public void convertFromUpdateRequest() {
     // given
-    UpdateRequest request = new UpdateRequest();
+    SaveRequest request = new SaveRequest();
     request.setId("123456");
     // when
-    MusicDocument result = this.apiConverter.convertUpdateRequestContent(request);
+    MMCDocument result = this.apiConverter.convertFromUpdateRequest(request);
     // then
     Assert.assertThat("The id is copied", result.getId(), CoreMatchers.is("123456"));
   }
@@ -85,9 +86,9 @@ public class MusicApiConverterTests {
    */
   @Test public void convertMusicDocumentToGetResponse() {
     // given
-    MusicDocument doc = newMusicDocument();
+    MMCDocument doc = newMusicDocument();
     // when
-    AbstractMusicBaseResponse result = this.apiConverter.convertToFindElementResponse(doc);
+    FindItemResponse result = this.apiConverter.convertToFindItemResponse(doc);
     // then
     Assert.assertThat(result.getId(), CoreMatchers.notNullValue());
   }
@@ -97,7 +98,7 @@ public class MusicApiConverterTests {
    */
   @Test public void convertUpdateMusicRequestInWithUpdatedPrices() {
     // given
-    UpdateRequest request = new UpdateRequest();
+    SaveRequest request = new SaveRequest();
     request.setId("123456");
     request.setPurchasePrice(153);
     request.getPrices().add(new UpdatePrice(120,2007,12));
@@ -105,7 +106,7 @@ public class MusicApiConverterTests {
     request.getPrices().add(new UpdatePrice(125,2008,12));
     request.getPrices().add(new UpdatePrice(75,2003,12));
     // when
-    MusicDocument result = this.apiConverter.convertUpdateRequestContent(request);
+    MMCDocument result = this.apiConverter.convertFromUpdateRequest(request);
     // then
     Assert.assertThat(result.getMostUpdatedPrice(), CoreMatchers.is(new Integer(125)));
   }

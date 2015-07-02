@@ -3,13 +3,15 @@ package com.stfciz.mmc.web.api.music;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.stfciz.mmc.web.api.FindItemResponse;
+
 
 /**
  * 
  * @author stfciz
  *
  */
-public class GetResponse extends AbstractMusicBaseResponse {
+public class GetResponse extends FindItemResponse {
 
   private List<SideMatrix> sideMatrixes;
   

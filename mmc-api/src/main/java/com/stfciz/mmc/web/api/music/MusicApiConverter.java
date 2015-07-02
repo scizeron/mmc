@@ -7,10 +7,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.stfciz.mmc.core.music.domain.MusicDocument;
-import com.stfciz.mmc.core.music.domain.Obi;
-import com.stfciz.mmc.core.music.domain.RecordCompany;
-import com.stfciz.mmc.core.music.domain.SideMatrix;
+import com.stfciz.mmc.core.domain.MMCDocument;
+import com.stfciz.mmc.core.domain.DocumentType;
+import com.stfciz.mmc.core.domain.music.Obi;
+import com.stfciz.mmc.core.domain.music.RecordCompany;
+import com.stfciz.mmc.core.domain.music.SideMatrix;
 import com.stfciz.mmc.web.api.AbstractApiConverter;
 import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 
@@ -18,9 +19,10 @@ import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
  * 
  * @author stfciz
  *
+ * 2 juil. 2015
  */
 @Component("musicApiConverter")
-public class MusicApiConverter extends AbstractApiConverter<MusicDocument, GetResponse, NewRequest, UpdateRequest, FindElementResponse, FindResponse> {
+public class MusicApiConverter extends AbstractApiConverter<GetResponse, SaveRequest> {
 
   @Autowired
   public MusicApiConverter(PhotoApiConverter photoApiConverter) {
@@ -28,30 +30,18 @@ public class MusicApiConverter extends AbstractApiConverter<MusicDocument, GetRe
   }
 
   @Override
-  public MusicDocument newDocument() {
-    return new MusicDocument();
-  }
-
-  @Override
-  public FindResponse newFindResponse() {
-    return new FindResponse();
-  }
-  
-  @Override
-  public FindElementResponse newFindElementResponse() {
-    return new FindElementResponse();
-  }
-  
-  @Override
   public GetResponse newGetResponse() {
     return new GetResponse();
   }
 
   @Override
-  protected MusicDocument populateSpecificInfosFromNewRequest(MusicDocument target, NewRequest request) {
-    target.setTitle(capitalizeWords(request.getTitle()));
+  public DocumentType getDocumentType() {
+    return DocumentType.MUSIC;
+  }
+  
+  @Override
+  protected MMCDocument populateFromSaveRequest(MMCDocument target, SaveRequest request) {
     target.setArtist(capitalizeWords(request.getArtist()));
-    
     target.setMainType(request.getMainType());
     target.setNbType(request.getNbType());
     target.setSerialNumber(request.getSerialNumber());
@@ -82,62 +72,52 @@ public class MusicApiConverter extends AbstractApiConverter<MusicDocument, GetRe
     if (request.getSideMatrixes() != null && ! request.getSideMatrixes().isEmpty()) {
       for (com.stfciz.mmc.web.api.music.SideMatrix srcSideMatrix : request.getSideMatrixes()) {
         SideMatrix targetSideMatrix = new SideMatrix();
-        BeanUtils.copyProperties(srcSideMatrix, targetSideMatrix);
+        targetSideMatrix.setValue(srcSideMatrix.getValue());
+        targetSideMatrix.setIDisc(srcSideMatrix.getDisc());
+        targetSideMatrix.setISide(srcSideMatrix.getSide());
         target.getSideMatrixs().add(targetSideMatrix);
       }
     }
     
     if (request.getSongs() != null && ! request.getSongs().isEmpty()) {
       for (com.stfciz.mmc.web.api.music.Song srcSong : request.getSongs()) {
-        com.stfciz.mmc.core.music.domain.Song targetSong = new com.stfciz.mmc.core.music.domain.Song();
+        com.stfciz.mmc.core.domain.music.Song targetSong = new com.stfciz.mmc.core.domain.music.Song();
         BeanUtils.copyProperties(srcSong, targetSong);
         target.getSongs().add(targetSong);
       }
-    }
-    
+    }    
     return target;
-  }
-  
-  /**
-   * 
-   * @param src
-   * @param target
-   */
-  private void populateAbstractMusicBaseResponse(MusicDocument src, AbstractMusicBaseResponse target) {
-    target.setTitle(src.getTitle());
-    target.setArtist(src.getArtist());
-    target.setSerialNumber(src.getSerialNumber());
-
-    target.setMainType(src.getMainType());
-    target.setVinylColor(src.getVinylColor());
-    target.setNbType(src.getNbType());
-    target.setSleeveGrade(src.getSleeveRating());
-    target.setRecordGrade(src.getRecordRating());
-
-    if (src.getRecordCompany() != null) {
-      target.setLabel(src.getRecordCompany().getLabel());
-      target.setRecordCompany(src.getRecordCompany().getName());
-    }
-    
-    if ("JP".equals(src.getOrigin()) && src.getObi() != null && src.getObi().getOrientation() != null) {
-      target.setObiColor(src.getObi().getColor());
-      target.setObiPos(src.getObi().getOrientation().getValue());
-    }
   }
 
   @Override
-  protected GetResponse populateGetResponseWithSpecificInfos(MusicDocument src, GetResponse target) {
-    populateAbstractMusicBaseResponse(src, target);
+  protected GetResponse populateGetResponseWithSpecificInfos(MMCDocument src, GetResponse target) {
     if (src.getSideMatrixs() != null && ! src.getSideMatrixs().isEmpty()) {
-      for (com.stfciz.mmc.core.music.domain.SideMatrix srcSideMatrix : src.getSideMatrixs()) {
+      for (com.stfciz.mmc.core.domain.music.SideMatrix srcSideMatrix : src.getSideMatrixs()) {
         com.stfciz.mmc.web.api.music.SideMatrix targetSideMatrix = new  com.stfciz.mmc.web.api.music.SideMatrix();
-        BeanUtils.copyProperties(srcSideMatrix, targetSideMatrix);
+        //BeanUtils.copyProperties(srcSideMatrix, targetSideMatrix);
+        targetSideMatrix.setValue(srcSideMatrix.getValue());
+        if (srcSideMatrix.getDisc() != null) {
+          if ("A".equals(srcSideMatrix.getDisc())) {
+            targetSideMatrix.setSide(1);
+          } else if ("B".equals(srcSideMatrix.getDisc())) {
+            targetSideMatrix.setSide(2);
+          }
+        } else {
+          targetSideMatrix.setSide(srcSideMatrix.getISide());
+        }
+        
+        if (srcSideMatrix.getSide() != null) {
+          targetSideMatrix.setSide(Integer.parseInt(srcSideMatrix.getSide()));
+        } else {
+          targetSideMatrix.setDisc(srcSideMatrix.getIDisc());
+        }
+        
         target.getSideMatrixes().add(targetSideMatrix);
       }
     }
     
     if (src.getSongs() != null && ! src.getSongs().isEmpty()) {
-      for (com.stfciz.mmc.core.music.domain.Song srcSong : src.getSongs()) {
+      for (com.stfciz.mmc.core.domain.music.Song srcSong : src.getSongs()) {
         com.stfciz.mmc.web.api.music.Song targetSong = new  com.stfciz.mmc.web.api.music.Song();
         BeanUtils.copyProperties(srcSong, targetSong);
         target.getSongs().add(targetSong);
@@ -155,20 +135,6 @@ public class MusicApiConverter extends AbstractApiConverter<MusicDocument, GetRe
         }
       });
     }
-    
-    return target;
-  }
-
-  @Override
-  protected MusicDocument populateSpecificInfosFromUpdateRequest(
-      MusicDocument target, UpdateRequest request) {
-    return populateSpecificInfosFromNewRequest(target, request);
-  }
-
-  @Override
-  protected FindElementResponse populateFindElementResponseWithSpecificInfos(
-      MusicDocument doc, FindElementResponse target) {
-    populateAbstractMusicBaseResponse(doc, target);
     return target;
   }
 }

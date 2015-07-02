@@ -3,7 +3,11 @@
 angular.module('mmcApp').factory('oauth2Interceptor', ['$q', '$injector', 'utils', function($q, $injector, utils) {  
  var myInterceptor = {
   request: function(config) {
-   var apiCall = (config.url.indexOf('/music')  == 0 || config.url.indexOf('/book')  == 0 || config.url.indexOf('/misc')  == 0 || config.url.indexOf('/photosets/') == 0)
+   var apiCall = (config.url.indexOf('/music')  == 0 
+		      || config.url.indexOf('/book')  == 0 
+		      || config.url.indexOf('/misc')  == 0 
+		      || config.url.indexOf('/photosets/') == 0
+		      || config.url.indexOf('/search') == 0)
    if (apiCall) {
 	// REST api
 	utils.debug(config.method + ' '+  config.url);

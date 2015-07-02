@@ -1,12 +1,20 @@
 {"index": {"_index": "music", "_type": "md", "_id": "1" }}
-{"id":1, "title": "The Wall", "artist": "Pink Floyd", "modified" : 1425945600, "purchase" : { "price" : 120 } , "prices" : [{"price":150, "year":2005, "month":2},{"price":250, "year":2015, "month":5}], "mostUpdatedPrice":250}
+{"title": "The Wall", "artist": "Pink Floyd", "modified" : 1425945600, "purchase" : { "price" : 120 } , "prices" : [{"price":150, "year":2005, "month":2},{"price":250, "year":2015, "month":5}], "mostUpdatedPrice":250}
 {"index": {"_index": "music", "_type": "md", "_id": "2" }}
-{"id":2, "title": "More", "artist": "Pink Floyd", "modified" : 1423526400, "sleeveRating" : 5}
+{"title": "More", "artist": "Pink Floyd", "modified" : 1423526400, "sleeveRating" : 5}
 {"index": {"_index": "music", "_type": "md", "_id": "3" }}
-{"id":3, "title": "A momentary lapse of reason", "artist": "Pink Floyd", "modified" : 1426032000, "purchase" : { "price" : 50 }, "prices" : [{"price":85, "year":2011, "month":12}, {"price":75, "year":2008, "month":2}], "mostUpdatedPrice":85}
+{"type": "MUSIC", "title": "A momentary lapse of reason", "artist": "Pink Floyd", "promo" : "true", "issue": 1975, "modified" : 1426032000, "reEdition" : "true", "purchase" : { "price" : 50 }, "prices" : [{"price":85, "year":2011, "month":12}, {"price":75, "year":2008, "month":2}], "mostUpdatedPrice":85}
 {"index": {"_index": "music", "_type": "md", "_id": "4" }}
-{"id":4, "title": "THE WALL", "artist": "Roger Waters", "modified" : 1426032000}
+{"type": "MUSIC", "title": "THE WALL", "artist": "Roger Waters", "modified" : 1426032000, "promo" : "true", "issue": 1975, "modified" : 1426032000, "reEdition" : "true" , "sleeveRating" : 4}
 {"index": {"_index": "music", "_type": "md", "_id": "5" }}
-{"id":5, "title": "Amused to death", "artist": "roger waters", "modified" : 1426032000}
+{"type": "MUSIC", "title": "Amused to death", "artist": "roger waters", "modified" : 1426032000}
 {"index": {"_index": "music", "_type": "md", "_id": "6" }}
-{"id":6, "title": "pros and cons", "artist": "roger waters", "modified" : 1426032000, "sleeveRating" : 4, "purchase" : { "price" : 260 }, "mostUpdatedPrice":260}
+{"type": "MUSIC", "title": "pros and cons", "artist": "Woger waters", "modified" : 1426032000, "sleeveRating" : 4, "purchase" : { "price" : 260 }, "mostUpdatedPrice":260}
+{"index": {"_index": "music", "_type": "md", "_id": "7" }}
+{"type": "BOOK", "title": "The Wall", "author": "author1", "modified" : 1425945600, "purchase" : { "price" : 120 } , "prices" : [{"price":150, "year":2005, "month":2},{"price":250, "year":2015, "month":5}], "mostUpdatedPrice":250}
+{"index": {"_index": "music", "_type": "md", "_id": "8" }}
+{"type": "BOOK", "title": "More", "author": "author2", "modified" : 1423526400, "globalRating" : 5}
+{"index": {"_index": "music", "_type": "md", "_id": "9" }}
+{"type": "MISC", "title": "The Wall", "modified" : 1425945600, "purchase" : { "price" : 120 } , "prices" : [{"price":150, "year":2005, "month":2},{"price":250, "year":2015, "month":5}], "mostUpdatedPrice":250}
+{"index": {"_index": "music", "_type": "md", "_id": "10" }}
+{"type": "MISC", "title": "Misc", "modified" : 1423526400, "globalRating" : 5}

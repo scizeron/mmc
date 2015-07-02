@@ -25,15 +25,27 @@ angular.module('mmcApp', [
   when('/logout', {
    templateUrl: 'views/home.html',
    controller: 'appCtrl',
+  }). 
+  when('/search', {
+   templateUrl: 'views/search.html',
+   controller: 'searchCtrl'
   }).  
+  when('/music/find', {
+   templateUrl: 'views/search.html',
+   controller: 'searchCtrl'
+  }).  
+  when('/book/find', {
+   templateUrl: 'views/search.html',
+   controller: 'searchCtrl'
+  }).   
+  when('/misc/find', {
+   templateUrl: 'views/search.html',
+   controller: 'searchCtrl'
+  }).   
   when('/music/add', {
    templateUrl: 'views/music/add.html',
    controller: 'musicAddCtrl'
   }).		 
-  when('/music/find', {
-   templateUrl: 'views/music/find.html',
-   controller: 'musicListCtrl'
-  }).
   when('/music/view/:musicDocId', {
    templateUrl: 'views/music/view.html',
    controller: 'musicViewCtrl'
@@ -52,10 +64,6 @@ angular.module('mmcApp', [
    templateUrl: 'views/book/add.html',
    controller: 'bookAddCtrl'
   }).  
-  when('/book/find', {
-   templateUrl: 'views/common/find.html',
-   controller: 'bookListCtrl'
-  }).  
   when('/book/view/:bookDocId', {
    templateUrl: 'views/common/view.html',
    controller: 'bookViewCtrl'
@@ -73,10 +81,6 @@ angular.module('mmcApp', [
   when('/misc/add', {
    templateUrl: 'views/misc/add.html',
    controller: 'miscAddCtrl'
-  }).  
-  when('/misc/find', {
-   templateUrl: 'views/common/find.html',
-   controller: 'miscListCtrl'
   }).  
   when('/misc/view/:miscDocId', {
    templateUrl: 'views/common/view.html',
@@ -154,6 +158,8 @@ angular.module('mmcApp', [
    app.universe = 'book';	  
   } else if (nextPath == '/misc/find') {
    app.universe = 'misc';	  
+  } else {
+   app.universe = 'search' 
   }
 
   if (nextPath == '' || nextPath == '/' || nextPath == '/home') {
@@ -169,7 +175,6 @@ angular.module('mmcApp', [
   utils.debug('- next             : ' + JSON.stringify(next));
   utils.debug('- $location.path() : ' + $location.path());
   utils.debug('**************************************************************************');
-
   
   var expectedRole = (typeof(next.$$route) != 'undefined' && typeof(next.$$route.role) != 'undefined') ? next.$$route.role : 'read';
   utils.debug('- expected role    : "' + expectedRole + '" for "' + nextPath + '"');

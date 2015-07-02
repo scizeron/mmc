@@ -47,8 +47,6 @@ public class AbstractWebApplicationTests {
     this.esSetup.execute(
           EsSetup.deleteAll()
         , EsSetup.createIndex("music").withData(EsSetup.fromClassPath("indices/music.json"))
-        , EsSetup.createIndex("book").withData(EsSetup.fromClassPath("indices/book.json"))
-        , EsSetup.createIndex("misc").withData(EsSetup.fromClassPath("indices/misc.json"))
         );
   }
   

@@ -7,8 +7,9 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
-import com.stfciz.mmc.core.domain.AbstractDocument;
+import com.stfciz.mmc.core.domain.MMCDocument;
 import com.stfciz.mmc.core.domain.Purchase;
+import com.stfciz.mmc.core.domain.DocumentType;
 import com.stfciz.mmc.web.api.photo.Photo;
 import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
 /**
@@ -17,7 +18,7 @@ import com.stfciz.mmc.web.api.photo.PhotoApiConverter;
  *
  * 16 juin 2015
  */
-public abstract class AbstractApiConverter<D extends AbstractDocument, GR extends AbstractBaseResponse, NR extends AbstractNewRequest, UR extends AbstractNewRequest, FER extends AbstractBaseResponse, FR> {
+public abstract class AbstractApiConverter<GR extends FindItemResponse, SR extends AbstractSaveRequest> implements ApiConverter<GR, SR> {
   
   private PhotoApiConverter photoApiConverter;
   
@@ -57,37 +58,12 @@ public abstract class AbstractApiConverter<D extends AbstractDocument, GR extend
     return result.toString();
   }
 
-  /**
-   * 
-   * @return
-   */
-  public abstract FR newFindResponse();
-  
-  /**
-   * 
-   * @return
-   */
-  public abstract FER newFindElementResponse();
-  
-  /**
-   * 
-   * @return
-   */
-  public abstract D newDocument();
-  
-  /**
-   * 
-   * @return
-   */
+  @Override
   public abstract GR newGetResponse();
   
-  /**
-   * 
-   * @param target
-   * @param request
-   * @return
-   */
-  protected abstract D populateSpecificInfosFromNewRequest(D target, NR request);
+
+  @Override
+  public abstract DocumentType getDocumentType();
   
   /**
    * 
@@ -95,7 +71,32 @@ public abstract class AbstractApiConverter<D extends AbstractDocument, GR extend
    * @param request
    * @return
    */
-  protected abstract D populateSpecificInfosFromUpdateRequest(D target, UR request);
+  protected MMCDocument populateFromSaveRequest(MMCDocument target, SR request) {
+    return target;
+  }
+  
+
+  /**
+   * 
+   * @param doc
+   * @param target
+   * @return
+   */
+  protected GR populateGetResponseWithSpecificInfos(MMCDocument doc, GR target) {
+    return target;
+  }
+  
+  @Override
+  public FindItemResponse convertToFindItemResponse(MMCDocument src) {
+    FindItemResponse target = new FindItemResponse();
+    populateFindItemResponse(src, target);
+    List<Photo> photos = getPhotoApiConverter().convertToApiPhotos(src.getPhotos());
+    if (photos != null && photos.size() >= 1) {
+      target.setThumbImageUrl(photos.get(0).getDetails().get("t").getUrl());
+    };
+    return target;
+  }
+
   
   /**
    * 
@@ -103,8 +104,10 @@ public abstract class AbstractApiConverter<D extends AbstractDocument, GR extend
    * @param target
    * @return
    */
-  protected AbstractBaseResponse populateAbstractBaseResponseFromDocument(D src, AbstractBaseResponse target) {
+  protected FindItemResponse populateFindItemResponse(MMCDocument src, FindItemResponse target) {
     target.setId(src.getId());
+    target.setType(src.getType() == null ? DocumentType.MUSIC.name().toLowerCase() : src.getType().toLowerCase());
+    target.setTitle(src.getTitle());
     target.setLastModified(src.getModified());
     target.setPromo(src.isPromo());
     target.setReEdition(src.isReEdition());
@@ -114,7 +117,8 @@ public abstract class AbstractApiConverter<D extends AbstractDocument, GR extend
     target.setOrigin(src.getOrigin());
     target.setComment(src.getComment());
     target.setImages(getPhotoApiConverter().convertToApiPhotos(src.getPhotos()));
-    
+    target.setDescription(src.getDescription());
+ 
     if (src.getPurchase() != null) {
       target.setPurchasePrice(src.getPurchase().getPrice());
       target.setPurchaseMonth(src.getPurchase().getMonth());
@@ -124,48 +128,44 @@ public abstract class AbstractApiConverter<D extends AbstractDocument, GR extend
     }
         
     if (src.getPrices() != null && ! src.getPrices().isEmpty()) {
-      for (com.stfciz.mmc.core.music.domain.UpdatePrice updatePrice : src.getPrices()) {
+      for (com.stfciz.mmc.core.domain.UpdatePrice updatePrice : src.getPrices()) {
         com.stfciz.mmc.web.api.UpdatePrice up = new com.stfciz.mmc.web.api.UpdatePrice();
         BeanUtils.copyProperties(updatePrice, up);
         target.getPrices().add(up);
       }
     }
     
+    /** music **/
+    target.setArtist(src.getArtist());
+    target.setSerialNumber(src.getSerialNumber());
+
+    target.setMainType(src.getMainType());
+    target.setVinylColor(src.getVinylColor());
+    target.setNbType(src.getNbType());
+    target.setSleeveGrade(src.getSleeveRating());
+    target.setRecordGrade(src.getRecordRating());
+
+    if (src.getRecordCompany() != null) {
+      target.setLabel(src.getRecordCompany().getLabel());
+      target.setRecordCompany(src.getRecordCompany().getName());
+    }
+    
+    if ("JP".equals(src.getOrigin()) && src.getObi() != null && src.getObi().getOrientation() != null) {
+      target.setObiColor(src.getObi().getColor());
+      target.setObiPos(src.getObi().getOrientation().getValue());
+    }
+    
+    /** book  & misc **/
+    target.setAuthor(src.getAuthor());
+    target.setIsbn(src.getIsbn());
+    target.setNbPages(src.getNbPages());
+    target.setPublisher(src.getPublisher());
+    target.setDistributer(src.getDistributer());
+    
+    target.setGlobalRating(src.getGlobalRating());
+    
     return target;
   }
-
-  protected abstract GR populateGetResponseWithSpecificInfos(D doc, GR target);
-  
-  /**
-   * 
-   * @param doc
-   * @param target
-   * @return
-   */
-  protected abstract FER populateFindElementResponseWithSpecificInfos(D doc, FER target);
-  
-  /**
-   * 
-   * @param doc
-   * @return
-   */
-  public GR convertToGetResponse(D doc) {
-    GR target = newGetResponse();
-    populateAbstractBaseResponseFromDocument(doc, target);
-    return populateGetResponseWithSpecificInfos(doc, target);
-  }
-  
-  /**
-   * 
-   * @param request
-   * @return
-   */
-  public D convertNewRequestContentToDcoument(NR request) {
-    D target = newDocument();
-    populateDocumentFromNewRequest(target, request);
-    target.setId(UUID.randomUUID().toString());
-    return populateSpecificInfosFromNewRequest(target, request);
-  }
   
   /**
    * 
@@ -173,9 +173,12 @@ public abstract class AbstractApiConverter<D extends AbstractDocument, GR extend
    * @param request
    * @return
    */
-  private D populateDocumentFromNewRequest(D target, AbstractNewRequest request) {
+  private MMCDocument populateFromAbstractNewRequest(MMCDocument target, SR request) {
     target.setId(request.getId());
+    target.setTitle(capitalizeWords(request.getTitle()));
+    target.setType(getDocumentType().name());
     target.setModified(new Date());
+    target.setDescription(request.getDescription());
     target.setComment(request.getComment());
     target.setPubNum(request.getPubNum());
     target.setPubTotal(request.getPubTotal());
@@ -185,7 +188,6 @@ public abstract class AbstractApiConverter<D extends AbstractDocument, GR extend
     if (StringUtils.isNotBlank(request.getOrigin()) && ! "null".equals(request.getOrigin())) {
       target.setOrigin(request.getOrigin());
     }
-    
     
     if (request.getPurchasePrice() != null) {
       Purchase purchase = new Purchase();
@@ -215,7 +217,7 @@ public abstract class AbstractApiConverter<D extends AbstractDocument, GR extend
           
           previous = currentPrice;
       
-          com.stfciz.mmc.core.music.domain.UpdatePrice updatePriceTarget = new com.stfciz.mmc.core.music.domain.UpdatePrice();
+          com.stfciz.mmc.core.domain.UpdatePrice updatePriceTarget = new com.stfciz.mmc.core.domain.UpdatePrice();
           BeanUtils.copyProperties(currentPrice, updatePriceTarget);
           target.getPrices().add(updatePriceTarget);
         }        
@@ -228,31 +230,35 @@ public abstract class AbstractApiConverter<D extends AbstractDocument, GR extend
     
     return target;
   }
-  
-  /**
-   * 
-   * @param request
-   * @return
+
+
+  /* (non-Javadoc)
+   * @see com.stfciz.mmc.web.api.ApiConverter#convertToGetResponse(com.stfciz.mmc.core.domain.MMCDocument)
    */
-  public D convertUpdateRequestContent(UR request) {
-    return populateSpecificInfosFromUpdateRequest(populateDocumentFromNewRequest(newDocument(), request), request);
+  @Override
+  public GR convertToGetResponse(MMCDocument doc) {
+    GR target = newGetResponse();
+    populateFindItemResponse(doc, target);
+    return populateGetResponseWithSpecificInfos(doc, target);
   }
   
-  /**
-   * 
-   * @param src
-   * @return
+  /* (non-Javadoc)
+   * @see com.stfciz.mmc.web.api.ApiConverter#convertFromNewRequest(SR)
    */
-  public FER convertToFindElementResponse(D src) {
-    FER target = newFindElementResponse();
-    populateAbstractBaseResponseFromDocument(src, target);
-    populateFindElementResponseWithSpecificInfos(src,target);
-    List<Photo> photos = getPhotoApiConverter().convertToApiPhotos(src.getPhotos());
-    if (photos != null && photos.size() >= 1) {
-      target.setThumbImageUrl(photos.get(0).getDetails().get("t").getUrl());
-    };
-    
-    return target;
+  @Override
+  public MMCDocument convertFromNewRequest(SR request) {
+    MMCDocument target = new MMCDocument();
+    populateFromAbstractNewRequest(target, request);
+    target.setId(UUID.randomUUID().toString());
+    return populateFromSaveRequest(target, request);
+  }
+  
+  /* (non-Javadoc)
+   * @see com.stfciz.mmc.web.api.ApiConverter#convertFromUpdateRequest(SR)
+   */
+  @Override
+  public MMCDocument convertFromUpdateRequest(SR request) {
+    return populateFromSaveRequest(populateFromAbstractNewRequest(new MMCDocument(), request), request);
   }
  
 }

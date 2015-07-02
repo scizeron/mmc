@@ -32,20 +32,20 @@ function ($rootScope, $scope, $route, $location, userService, utils, refValues, 
   return $location.path().lastIndexOf(viewLocation, 0) == 0; 
  };
  
- $scope.search = function(query) {
+ $scope.search = function(query, universe) {
   var app = appService.app();
   var nextLocation = null;
-  utils.debug('search : "' + query + '" , universe: "' + app.universe + '", location: ' + $location.path());
+  utils.debug('search : "' + query + '" , universe: "' + universe + '", location: ' + $location.path());
   app.query = query;
+  app.universe = universe;
+  
   // en fonction de l'univers, on redirige sur la page de recherche
   // si aucun univers selectionne par ex, on est sur la home, on fait une recherche sur tous les indexes
-  if (app.universe == null || typeof(app.universe) == 'undefined') {
-   nextLocation = '/music';  
+  if (app.universe != 'search') {
+   nextLocation = '/' +  app.universe + '/find';  
   } else {
-   nextLocation = '/' +  app.universe;  
+   nextLocation = '/search';  
   }
-  
-  nextLocation += '/find';
   
   if (nextLocation == $location.path()) {
    $route.reload(); 

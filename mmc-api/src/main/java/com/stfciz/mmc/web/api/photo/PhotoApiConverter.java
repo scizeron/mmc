@@ -17,7 +17,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
-import com.stfciz.mmc.core.music.ImageComparator;
+import com.stfciz.mmc.core.photo.domain.ImageComparator;
 import com.stfciz.mmc.core.photo.domain.PhotoDocument;
 import com.stfciz.mmc.core.photo.domain.PhotoDocumentSize;
 import com.stfciz.mmc.core.photo.domain.TagName;

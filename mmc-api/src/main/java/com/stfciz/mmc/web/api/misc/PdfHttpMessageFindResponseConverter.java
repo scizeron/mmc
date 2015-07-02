@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.itextpdf.text.pdf.PdfPTable;
 import com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter;
+import com.stfciz.mmc.web.api.FindItemResponse;
+import com.stfciz.mmc.web.api.FindResponse;
 
 /**
  * 
@@ -11,18 +13,14 @@ import com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter;
  *
  * @param <T>
  */
-public class PdfHttpMessageFindResponseConverter extends AbstractPdfHttpMessageFindResponseConverter<FindResponse> {
+public class PdfHttpMessageFindResponseConverter extends AbstractPdfHttpMessageFindResponseConverter {
   
-  @Override
-  protected boolean supports(Class<?> clazz) {
-    return clazz.isAssignableFrom(FindResponse.class);
-  }
 
   @Override
   protected com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter.Column[] getColumns() {
     return new com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter.Column[] {
-          new com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter.Column("Title", 3),
-          new com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter.Column("Description", 6),
+           new com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter.Column("Title", 3),
+           new com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter.Column("Description", 6),
            new com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter.Column("Origin", 2),
            new com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter.Column("Year", 2),
            new com.stfciz.mmc.web.api.AbstractPdfHttpMessageFindResponseConverter.Column("Edition", 2),
@@ -32,8 +30,8 @@ public class PdfHttpMessageFindResponseConverter extends AbstractPdfHttpMessageF
 
   @Override
   protected void addItems(FindResponse findResponse, PdfPTable table) {
-    List<FindElementResponse> docs = findResponse.getItems();
-    for (FindElementResponse doc : docs) {
+    List<FindItemResponse> docs = findResponse.getItems();
+    for (FindItemResponse doc : docs) {
       addCell(table, doc.getTitle());
       addCell(table, doc.getDescription());
       addCell(table, doc.getOrigin());
@@ -63,5 +61,4 @@ public class PdfHttpMessageFindResponseConverter extends AbstractPdfHttpMessageF
       addCell(table, formatRatingValue(doc.getGlobalRating()));
     }
   }
-
 }
