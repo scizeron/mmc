@@ -63,12 +63,7 @@ public class MMCServiceImpl implements MMCService, AggregationService {
     if (type == null) {
       return doc;
     }
-    if (DocumentType.MUSIC.equals(type)) {
-      // TODO
-      return doc.getType() == null || type.name().equals(doc.getType()) ? doc : null;
-    } else {
-      return type.name().equals(doc.getType()) ? doc : null;
-    }
+    return type.name().equals(doc.getType()) ? doc : null;
   }
 
   /**
@@ -92,13 +87,7 @@ public class MMCServiceImpl implements MMCService, AggregationService {
     Criteria criteria = null;
     
     if (type != null) {
-      criteria = Criteria.where("type");
-     if (DocumentType.MUSIC.equals(type)) {
-       // TODO remove when datas will be cleaned
-       criteria.is(DocumentType.BOOK).not().and(Criteria.where("type").is(DocumentType.MISC).not());
-     } else {
-       criteria.is(type.name());
-     }
+      criteria = Criteria.where("type").is(type.name());
     }
     
     if (StringUtils.isNotBlank(query)) {
@@ -160,13 +149,7 @@ public class MMCServiceImpl implements MMCService, AggregationService {
    */
   private void withDocumentTypeQuery(NativeSearchQueryBuilder queryBuilder, DocumentType type) {
     if (type != null) {
-      if (DocumentType.MUSIC.equals(type)) {
-        queryBuilder.withQuery(QueryBuilders.boolQuery().
-             mustNot(QueryBuilders.termQuery("type", DocumentType.MISC.name()))
-            .mustNot(QueryBuilders.termQuery("type", DocumentType.BOOK.name())));
-      } else {
-        queryBuilder.withQuery(QueryBuilders.matchQuery("type", type.name()));
-      }
+      queryBuilder.withQuery(QueryBuilders.matchQuery("type", type.name()));
     }    
   }
 

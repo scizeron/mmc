@@ -106,7 +106,7 @@ public abstract class AbstractApiConverter<GR extends FindItemResponse, SR exten
    */
   protected FindItemResponse populateFindItemResponse(MMCDocument src, FindItemResponse target) {
     target.setId(src.getId());
-    target.setType(src.getType() == null ? DocumentType.MUSIC.name().toLowerCase() : src.getType().toLowerCase());
+    target.setType(src.getType().toLowerCase());
     target.setTitle(src.getTitle());
     target.setLastModified(src.getModified());
     target.setPromo(src.isPromo());

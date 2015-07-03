@@ -7,12 +7,6 @@ package com.stfciz.mmc.core.domain.music;
  */
 public class SideMatrix {
 
-  @Deprecated
-  private String disc;
-  
-  @Deprecated
-  private String side;
-  
   private int iSide;
   
   private int iDisc;
@@ -25,22 +19,6 @@ public class SideMatrix {
 
   public void setValue(String value) {
     this.value = value;
-  }
-
-  public String getDisc() {
-    return disc;
-  }
-
-  public void setDisc(String disc) {
-    this.disc = disc;
-  }
-
-  public String getSide() {
-    return side;
-  }
-
-  public void setSide(String side) {
-    this.side = side;
   }
 
   public int getISide() {

@@ -1,7 +1,7 @@
 {"index": {"_index": "music", "_type": "md", "_id": "1" }}
-{"title": "The Wall", "artist": "Pink Floyd", "modified" : 1425945600, "purchase" : { "price" : 120 } , "prices" : [{"price":150, "year":2005, "month":2},{"price":250, "year":2015, "month":5}], "mostUpdatedPrice":250}
+{"type": "MUSIC", "title": "The Wall", "artist": "Pink Floyd", "modified" : 1425945600, "purchase" : { "price" : 120 } , "prices" : [{"price":150, "year":2005, "month":2},{"price":250, "year":2015, "month":5}], "mostUpdatedPrice":250}
 {"index": {"_index": "music", "_type": "md", "_id": "2" }}
-{"title": "More", "artist": "Pink Floyd", "modified" : 1423526400, "sleeveRating" : 5}
+{"type": "MUSIC", "title": "More", "artist": "Pink Floyd", "modified" : 1423526400, "sleeveRating" : 5}
 {"index": {"_index": "music", "_type": "md", "_id": "3" }}
 {"type": "MUSIC", "title": "A momentary lapse of reason", "artist": "Pink Floyd", "promo" : "true", "issue": 1975, "modified" : 1426032000, "reEdition" : "true", "purchase" : { "price" : 50 }, "prices" : [{"price":85, "year":2011, "month":12}, {"price":75, "year":2008, "month":2}], "mostUpdatedPrice":85}
 {"index": {"_index": "music", "_type": "md", "_id": "4" }}

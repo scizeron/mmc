@@ -96,22 +96,8 @@ public class MusicApiConverter extends AbstractApiConverter<GetResponse, SaveReq
         com.stfciz.mmc.web.api.music.SideMatrix targetSideMatrix = new  com.stfciz.mmc.web.api.music.SideMatrix();
         //BeanUtils.copyProperties(srcSideMatrix, targetSideMatrix);
         targetSideMatrix.setValue(srcSideMatrix.getValue());
-        if (srcSideMatrix.getDisc() != null) {
-          if ("A".equals(srcSideMatrix.getSide())) {
-            targetSideMatrix.setSide(1);
-          } else if ("B".equals(srcSideMatrix.getSide())) {
-            targetSideMatrix.setSide(2);
-          }
-        } else {
-          targetSideMatrix.setSide(srcSideMatrix.getISide());
-        }
-        
-        if (srcSideMatrix.getDisc() != null) {
-          targetSideMatrix.setSide(Integer.parseInt(srcSideMatrix.getDisc()));
-        } else {
-          targetSideMatrix.setDisc(srcSideMatrix.getIDisc());
-        }
-        
+        targetSideMatrix.setSide(srcSideMatrix.getISide());
+        targetSideMatrix.setDisc(srcSideMatrix.getIDisc());
         target.getSideMatrixes().add(targetSideMatrix);
       }
     }
