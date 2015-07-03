@@ -97,17 +97,17 @@ public class MusicApiConverter extends AbstractApiConverter<GetResponse, SaveReq
         //BeanUtils.copyProperties(srcSideMatrix, targetSideMatrix);
         targetSideMatrix.setValue(srcSideMatrix.getValue());
         if (srcSideMatrix.getDisc() != null) {
-          if ("A".equals(srcSideMatrix.getDisc())) {
+          if ("A".equals(srcSideMatrix.getSide())) {
             targetSideMatrix.setSide(1);
-          } else if ("B".equals(srcSideMatrix.getDisc())) {
+          } else if ("B".equals(srcSideMatrix.getSide())) {
             targetSideMatrix.setSide(2);
           }
         } else {
           targetSideMatrix.setSide(srcSideMatrix.getISide());
         }
         
-        if (srcSideMatrix.getSide() != null) {
-          targetSideMatrix.setSide(Integer.parseInt(srcSideMatrix.getSide()));
+        if (srcSideMatrix.getDisc() != null) {
+          targetSideMatrix.setSide(Integer.parseInt(srcSideMatrix.getDisc()));
         } else {
           targetSideMatrix.setDisc(srcSideMatrix.getIDisc());
         }
