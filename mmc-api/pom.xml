@@ -77,11 +77,11 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>com.github.scizeron</groupId>
-      <artifactId>logback-sqs</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>com.github.scizeron</groupId> -->
+<!--       <artifactId>logback-sqs</artifactId> -->
+<!--       <version>0.0.1-SNAPSHOT</version> -->
+<!--     </dependency> -->
     <dependency>
       <groupId>com.github.tlrx</groupId>
       <artifactId>elasticsearch-test</artifactId>
