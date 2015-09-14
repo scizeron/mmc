@@ -136,14 +136,13 @@ public class ApiControllerTests extends AbstractWebApplicationTests {
    */
   @Test public void findMisc() throws Exception {
     // when
-    MvcResult result = this.mockMvc.perform(get("/book").param("q", "misc").accept(MediaType.ALL_VALUE))
+    MvcResult result = this.mockMvc.perform(get("/misc").accept(MediaType.ALL_VALUE))
       .andDo(print())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().is2xxSuccessful()).andReturn();
     // then
     FindResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), FindResponse.class);
     for (FindItemResponse doc : response.getItems()) {
-      Assert.assertThat(doc.getTitle().contains("Misc"), CoreMatchers.is(true));
       Assert.assertThat(doc.getType(), CoreMatchers.is("misc"));
     }
   }

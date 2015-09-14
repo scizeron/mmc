@@ -14,7 +14,7 @@ import com.flickr4java.flickr.auth.Permission;
  */
 @Target(value={ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OAuthContext {
+public @interface FlickrOAuthContext {
 
   /**
    * 

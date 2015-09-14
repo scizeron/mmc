@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Permission {
 
-  OAuth2ScopeApi[] scopes() default {};
+  OAuth2Scope[] scopes() default {};
 
   UserRole[] roles() default {};
 }

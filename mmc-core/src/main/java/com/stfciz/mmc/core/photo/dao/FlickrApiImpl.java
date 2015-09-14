@@ -26,7 +26,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.stfciz.mmc.core.photo.domain.Tag;
 import com.stfciz.mmc.core.photo.flickr.FlickrConnect;
-import com.stfciz.mmc.core.photo.oauth.OAuthContext;
+import com.stfciz.mmc.core.photo.oauth.FlickrOAuthContext;
 
 /**
  * 
@@ -48,25 +48,26 @@ public class FlickrApiImpl implements FlickrApi {
   }
 
   @Override
-  @OAuthContext(Permission.READ_TYPE)
+  @FlickrOAuthContext(Permission.READ_TYPE)
   public int getPhotosetCount() throws FlickrException {
     return this.flickrConnect.getFlickr().getPhotosetsInterface().getPhotosetCount(this.flickrConnect.getUserId());
   }
 
   @Override
-  @OAuthContext(Permission.READ_TYPE)
+  @FlickrOAuthContext(Permission.READ_TYPE)
   public Photosets getPhotosets() throws FlickrException {
     return this.flickrConnect.getFlickr().getPhotosetsInterface().getList(this.flickrConnect.getUserId());
   }
   
   @Override
-  @OAuthContext(Permission.DELETE_TYPE)
+  @FlickrOAuthContext(Permission.DELETE_TYPE)
   public void deletePhoto(String photoId) throws FlickrException {
     this.flickrConnect.getFlickr().getPhotosInterface().delete(photoId);
+    LOGGER.debug("\"{}\" is deleted", photoId);
   }  
 
   @Override
-  @OAuthContext(Permission.READ_TYPE)
+  @FlickrOAuthContext(Permission.READ_TYPE)
   public PhotoList<Photo> getPhotos(String photoSetId, Integer aPerPage, Integer aPage) throws FlickrException {
     int perPage = aPerPage == null ? 500 : aPerPage;
     int page = aPage == null ? 1 : aPage;
@@ -104,7 +105,7 @@ public class FlickrApiImpl implements FlickrApi {
   }
 
   @Override
-  @OAuthContext(Permission.WRITE_TYPE)
+  @FlickrOAuthContext(Permission.WRITE_TYPE)
   public String uploadPhoto(UploadPhoto uploadPhoto) throws FlickrException {
     final String filename = new File(uploadPhoto.getFilename()).getName().toLowerCase();
     UploadMetaData metaData = new UploadMetaData();
@@ -164,7 +165,7 @@ public class FlickrApiImpl implements FlickrApi {
   }
 
   @Override
-  @OAuthContext(Permission.READ_TYPE)
+  @FlickrOAuthContext(Permission.READ_TYPE)
   public Photo getPhoto(String photoId) throws FlickrException {
     Photo photo = this.flickrConnect.getFlickr().getPhotosInterface().getPhoto(photoId);
     if (photo != null) {

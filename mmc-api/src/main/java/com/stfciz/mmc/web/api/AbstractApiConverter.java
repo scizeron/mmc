@@ -96,7 +96,6 @@ public abstract class AbstractApiConverter<GR extends FindItemResponse, SR exten
     };
     return target;
   }
-
   
   /**
    * 

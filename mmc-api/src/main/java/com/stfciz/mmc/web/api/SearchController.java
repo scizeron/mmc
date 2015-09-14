@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stfciz.mmc.web.api.FindResponse;
-import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
+import com.stfciz.mmc.web.oauth2.OAuth2Scope;
 import com.stfciz.mmc.web.oauth2.Permission;
 import com.stfciz.mmc.web.service.MMCService;
 
@@ -21,7 +21,7 @@ public class SearchController {
   
   @RequestMapping(method = RequestMethod.GET
       , consumes = { MediaType.ALL_VALUE })
-  @Permission(scopes = { OAuth2ScopeApi.READ })
+  @Permission(scopes = { OAuth2Scope.READ })
   public FindResponse find(
       @RequestParam(value = "q", required = false) String query,
       @RequestParam(value = "p", required = false, defaultValue = "0") int page,

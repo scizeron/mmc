@@ -9,6 +9,7 @@ import org.apache.catalina.filters.RemoteIpFilter;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.NodeBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.AuditAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.EndpointMBeanExportAutoConfiguration;
@@ -23,6 +24,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -61,6 +63,9 @@ public class AppSpringWebConfiguration {
 
   private static final String[] FILTER_URL_PATTERNS = { "/*" };
   
+  @Autowired
+  private ApplicationContext applicationContext;
+  
   /**
    * 
    * @param filter
@@ -98,14 +103,27 @@ public class AppSpringWebConfiguration {
   }
   
   @Bean
-  @Profile("!test")
   public Client elasticSearchClient(AppConfiguration appConfiguration) {
+    if (Arrays.asList(applicationContext.getEnvironment().getActiveProfiles()).contains("test")) {
+      ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder()
+          .put("http.enabled", String.valueOf(false))
+          .put("index.store.type", "memory")
+          .put("node.local", String.valueOf(true))
+          .put("path.logs", "target/es/log")
+          .put("path.data", "target/es/data")
+          .put("path.work", "target/es/work")
+          .put("path.config", "target/es/config")
+          ;
+      
+      return new NodeBuilder().settings(settings).clusterName("test").node().client();
+    } 
+
     if (!new File(appConfiguration.getEsDirectory()).exists()) {
       new File(appConfiguration.getEsDirectory() + "/data").mkdirs();
       new File(appConfiguration.getEsDirectory() + "/work").mkdirs();
       new File(appConfiguration.getEsDirectory() + "/log").mkdirs();
     }
-    
+  
     ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder()
         .put("cluster.name", "elastic-mmc")
         .put("node.name", "rest-mmc")
@@ -123,16 +141,16 @@ public class AppSpringWebConfiguration {
   }
   
   @Bean
-  public ElasticsearchOperations elasticsearchOperations(Client client) {
-    return new ElasticsearchTemplate(client);
-  }
-
-  @Bean
   @Profile("!test")
   public PermissionAspect permissionAspect() {
     return new PermissionAspect();
   }
-  
+
+  @Bean
+  public ElasticsearchOperations elasticsearchOperations(Client client) {
+    return new ElasticsearchTemplate(client);
+  }
+
   @Bean
   public HttpMessageConverters customConverters() {
     return new HttpMessageConverters(new com.stfciz.mmc.web.api.book.PdfHttpMessageFindResponseConverter()

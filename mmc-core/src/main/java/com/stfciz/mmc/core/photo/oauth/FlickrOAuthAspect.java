@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-public class OAuthAspect {
+public class FlickrOAuthAspect {
   
   @Autowired
   private AuthStore authStore;
   
-  @Around("@annotation(oauthContext)")
-  public Object around(ProceedingJoinPoint pjp, OAuthContext oauthContext) throws Throwable {
-    this.authStore.setTheRequestContext(PermissionUtils.from(oauthContext.value()));
+  @Around("@annotation(flickrOauthContext)")
+  public Object around(ProceedingJoinPoint pjp, FlickrOAuthContext flickrOauthContext) throws Throwable {
+    this.authStore.setTheRequestContext(PermissionUtils.from(flickrOauthContext.value()));
     return pjp.proceed();
   }
 }

@@ -38,6 +38,8 @@ public class PermissionAspect {
 
   @Autowired
   private AppConfiguration appConfiguration;
+  
+  private PermissionValidator permissionValidator = new PermissionValidator();
 
   @Around("@annotation(permission)")
   public Object around(ProceedingJoinPoint pjp, Permission permission) throws Throwable {
@@ -76,85 +78,18 @@ public class PermissionAspect {
     // verify
     ////////////////////////////////////////////////////////////////////////
     
-    // check scopes
-    OAuth2ScopeApi[] scopes = permission.scopes();
-    boolean check = false;
-    if (scopes == null || scopes.length == 0) {
-      check = true;
-    } else {
-      if (grantedScopes == null || grantedScopes.length == 0) {
-        check = false;
-      } else {
-        for (OAuth2ScopeApi scopeApi : scopes) {
-          check = false;
-          for (String grantedScope : grantedScopes) {
-            if (scopeApi.name().equalsIgnoreCase(grantedScope)) {
-              check = true;
-              break;
-            }
-          }
-          if (!check) {
-            break;
-          }
-        }
-      }
-    }
-
-    if (!check) {
-     LOGGER.error("OAuth2 verify failed, {} scopes not granted for \"{}\".", grantedScopes, accessToken);
-     throw new PermissionException("Insufficient granted scopes", 403);
-    } 
-
-    // check roles
-    UserRole[] expectedRoles = permission.roles();
-    if (expectedRoles == null || expectedRoles.length == 0) {
-      check = true;
-    } else {
-      if (userRoles == null || userRoles.length == 0) {
-        check = false;
-      } else {
-        for (UserRole role : expectedRoles) {
-          check = false;
-          for (String userRole : userRoles) {
-            if (UserRole.ADMIN.name().equalsIgnoreCase(userRole)) {
-             LOGGER.debug("{} can perform all.", userRole);
-             check = true;
-             break;
-            } else {
-             if (role.name().equalsIgnoreCase(userRole)) {
-               LOGGER.debug("{} can perform the {}.", userRole, method);
-              check = true;
-              break;
-             }
-            }
-          }
-          if (!check) {
-            break;
-          }
-        }
-      }
+    if (!this.permissionValidator.validScopes(grantedScopes, permission.scopes())) {
+      LOGGER.error("OAuth2 verify failed, {} scopes not granted for \"{}\".", grantedScopes, accessToken);
+      throw new PermissionException("Insufficient granted scopes", 403);
     }
     
-    if (!check) {
-     LOGGER.error("OAuth2 verify failed for {}, {} roles not allowed for \"{}\".", method, userRoles, accessToken);
-     throw new PermissionException("Insufficient roles", 403);
-    } 
+    if (!this.permissionValidator.validRoles(userRoles, permission.roles())) {
+      LOGGER.error("OAuth2 verify failed for {}, {} roles not allowed for \"{}\".", method, userRoles, accessToken);
+      throw new PermissionException("Insufficient roles", 403);
+    }
     
     LOGGER.debug("OAuth2 verify OK for {} - \"{}\".", method, accessToken);
     return pjp.proceed();
-  }
-
-  /**
-   * 
-   * @param scopeSingleValue
-   * @param scopes
-   * @return
-   */
-  public boolean containsScope(String scopeSingleValue, String[] scopes) {
-    if (scopes == null || scopes.length == 0) {
-      return false;
-    }
-    return Arrays.asList(scopes).contains(scopeSingleValue);
   }
 
   /**

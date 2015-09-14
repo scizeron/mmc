@@ -23,7 +23,7 @@ import com.flickr4java.flickr.photos.PhotoList;
 import com.stfciz.mmc.core.CoreConfiguration;
 import com.stfciz.mmc.core.photo.PhotoManager;
 import com.stfciz.mmc.core.photo.dao.FlickrApi;
-import com.stfciz.mmc.web.oauth2.OAuth2ScopeApi;
+import com.stfciz.mmc.web.oauth2.OAuth2Scope;
 import com.stfciz.mmc.web.oauth2.Permission;
 import com.stfciz.mmc.web.oauth2.UserRole;
 
@@ -50,13 +50,13 @@ public class PhotoController {
   private FlickrApi    flickrApi;
 
   @RequestMapping(value = "/photosets", method = RequestMethod.GET)
-  @Permission(scopes={OAuth2ScopeApi.READ})
+  @Permission(scopes={OAuth2Scope.READ})
   public String get() throws FlickrException {
     return String.valueOf(this.flickrApi.getPhotosetCount());
   }
   
   @RequestMapping(value = "/photosets/{id}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-  @Permission(scopes={OAuth2ScopeApi.READ})
+  @Permission(scopes={OAuth2Scope.READ})
   public List<com.stfciz.mmc.web.api.photo.Photo> getPhotos(@PathVariable(value = "id") String id,
       @RequestParam(value = "perPage", required = false) Integer perPage, @RequestParam(value = "page", required = false) Integer page) throws FlickrException {
     try {
@@ -88,7 +88,7 @@ public class PhotoController {
   }
   
   @RequestMapping(value = "/photosets/{id}", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-  @Permission(scopes = {OAuth2ScopeApi.WRITE}, roles = {UserRole.WRITE})
+  @Permission(scopes = {OAuth2Scope.WRITE}, roles = {UserRole.WRITE})
   @ResponseStatus(value=HttpStatus.CREATED)
   public void addPhoto(@PathVariable String id, @RequestParam("file") MultipartFile[] files) throws Exception {
     for (MultipartFile file : files) {
@@ -98,7 +98,7 @@ public class PhotoController {
   }   
   
   @RequestMapping(value = "/photo/{id}", method = RequestMethod.DELETE, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-  @Permission(scopes = {OAuth2ScopeApi.WRITE}, roles = {UserRole.ADMIN})
+  @Permission(scopes = {OAuth2Scope.WRITE}, roles = {UserRole.ADMIN})
   @ResponseStatus(value=HttpStatus.OK)
   public void deletePhoto(@PathVariable String photoId) throws Exception {
     this.photoManager.deletePhoto(photoId);

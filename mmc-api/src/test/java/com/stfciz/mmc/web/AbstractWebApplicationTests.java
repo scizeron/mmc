@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,8 +18,10 @@ import org.springframework.web.context.WebApplicationContext;
 import com.github.tlrx.elasticsearch.test.EsSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { AppTestSpringWebConfiguration.class})
+//@SpringApplicationConfiguration(classes = { AppTestSpringWebConfiguration.class})
+@SpringApplicationConfiguration(classes = { AppSpringWebConfiguration.class})
 @WebAppConfiguration
+@ActiveProfiles("test")
 public class AbstractWebApplicationTests {
 
   protected MockMvc mockMvc;
@@ -35,7 +38,6 @@ public class AbstractWebApplicationTests {
   
   @BeforeClass
   public static void initEnv() {
-    System.setProperty("spring.profiles.active","test");
     System.setProperty("spring.config.location","src/test/resources/configuration.yml");
     System.setProperty("external.config.dir", "src/test/resources");
   }
@@ -46,7 +48,7 @@ public class AbstractWebApplicationTests {
     this.esSetup = new EsSetup(this.client);
     this.esSetup.execute(
           EsSetup.deleteAll()
-        , EsSetup.createIndex("music").withData(EsSetup.fromClassPath("indices/music.json"))
+        , EsSetup.createIndex("music").withData(EsSetup.fromClassPath("indices/dataset.json"))
         );
   }
   
