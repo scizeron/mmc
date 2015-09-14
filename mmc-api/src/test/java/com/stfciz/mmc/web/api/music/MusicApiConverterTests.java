@@ -6,6 +6,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.stfciz.mmc.core.domain.DocumentType;
 import com.stfciz.mmc.core.domain.MMCDocument;
 import com.stfciz.mmc.web.api.FindItemResponse;
 import com.stfciz.mmc.web.api.UpdatePrice;
@@ -26,6 +27,7 @@ public class MusicApiConverterTests {
   private MMCDocument newMusicDocument() {
     MMCDocument doc = new MMCDocument();
     doc.setId(UUID.randomUUID().toString());
+    doc.setType(DocumentType.MUSIC.name());
     return doc;
   }
 
